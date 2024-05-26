@@ -1,0 +1,54 @@
+
+#include "imgui.h"
+
+
+static void doMenuOptionsDialogs()
+{
+    if (ImGui::BeginPopup("OptionsRendering"))
+    {
+        ImGui::Text("Rendering Options");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("OptionsOrbitalRendering"))
+    {
+        ImGui::Text("Earthview Orbital Rendering Options");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("OptionsView"))
+    {
+        ImGui::Text("View Options");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("OptionsCockpit"))
+    {
+        ImGui::Text("Cockpit View Options");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("OptionsStereoscopic"))
+    {
+        ImGui::Text("Stereoscopic View Options");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("OptionsVirtualReality"))
+    {
+        ImGui::Text("Virtual Reality Options");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+}

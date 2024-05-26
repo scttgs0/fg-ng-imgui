@@ -1,0 +1,362 @@
+
+#include "imgui.h"
+
+
+static void doMenuFileDialogs()
+{
+    if (ImGui::BeginPopup("FileScreenshotFolder"))
+    {
+        ImGui::Text("Screenshot Folder");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileVideoControl"))
+    {
+        static float f_quality = 1.0f;
+        static float f_speed = 1.0f;
+        static int i_bitRate = 0;
+        static int format = 0;
+        static int codec = 2;
+
+        ImGui::Text("Video Control");
+        //ImGui::Separator();
+
+        ImGui::SeparatorText("Format");
+        ImGui::RadioButton("MP4", &format, 0);
+        ImGui::RadioButton("MPEG", &format, 1);
+        ImGui::RadioButton("MKV", &format, 2);
+        ImGui::RadioButton("OGV", &format, 3);
+        //ImGui::Separator();
+
+        ImGui::SeparatorText("Codec");
+        ImGui::RadioButton("MPEG2", &codec, 0);
+        ImGui::RadioButton("H.264", &codec, 1);
+        ImGui::RadioButton("H.265", &codec, 2);
+        ImGui::RadioButton("VP8", &codec, 3);
+        ImGui::RadioButton("Theora", &codec, 4);
+        //ImGui::Separator();
+
+        ImGui::SeparatorText("Settings");
+        ImGui::InputFloat("Quality (-1 or 0..1)", &f_quality);
+        ImGui::InputFloat("Speed (-1 or 0..1)", &f_speed);
+        ImGui::InputInt("Bitrate", &i_bitRate);
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileFlightRecorder"))
+    {
+        static bool b_snapshot = false;
+        static bool b_captureCompression = true;
+        static bool b_captureUser = true;
+        static bool b_captureMultiplayer = false;
+        static bool b_capturePosSize = false;
+        static bool b_captureView = false;
+        static bool b_replayPosition = false;
+        static bool b_replaySize = false;
+        static bool b_replayView = false;
+
+        ImGui::Text("Flight Recorder Control");
+        ImGui::Separator();
+
+        ImGui::Text("General");
+        if(ImGui::Button("Replay recording", ImVec2(250, 20)))
+            ImGui::CloseCurrentPopup();
+        if(ImGui::Button("Replay recording from file...", ImVec2(250, 20)))
+            ImGui::CloseCurrentPopup();
+        if(ImGui::Button("Show Replay dialog", ImVec2(250, 20)))
+            ImGui::CloseCurrentPopup();
+        if(ImGui::Button("Save recording to file...", ImVec2(250, 20)))
+            ImGui::CloseCurrentPopup();
+        ImGui::Checkbox("Maintain recovery snapshot", &b_snapshot);
+        ImGui::Separator();
+
+        ImGui::Text("Continuous Record");
+        if(ImGui::Button("Start recording to file", ImVec2(250, 20)))
+            ImGui::CloseCurrentPopup();
+        if(ImGui::Button("Stop recording", ImVec2(250, 20)))
+            ImGui::CloseCurrentPopup();
+        ImGui::Checkbox("Use compression", &b_captureCompression);
+        ImGui::Checkbox("User aircraft", &b_captureUser);
+        ImGui::Checkbox("Multiplayer aircraft", &b_captureMultiplayer);
+        ImGui::Checkbox("Main Window position and size", &b_capturePosSize);
+        ImGui::Checkbox("Main Window View", &b_captureView);
+        ImGui::Separator();
+
+        ImGui::Text("Continuous Replay");
+        ImGui::Checkbox("Main Window position", &b_replayPosition);
+        ImGui::Checkbox("Main Window size", &b_replaySize);
+        ImGui::Checkbox("Main Window View", &b_replayView);
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileTimeMode"))
+    {
+        static char fixedDateTime[20] = "";
+
+        ImGui::Text("Time Mode");
+        ImGui::Separator();
+
+        ImGui::RadioButton("Actual Time", true);
+        ImGui::SameLine();
+        ImGui::Button("Settings");
+        ImGui::RadioButton("Fixed Time", false);
+        ImGui::SameLine();
+        ImGui::InputText("##Date-Time", fixedDateTime, 20);
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileSoundConfiguration"))
+    {
+        static int i_soundDevice = 0;
+        static bool b_voiceSynth = true;
+        static bool b_row0_enabled = true;
+        static bool b_row1_enabled = true;
+        static bool b_row2_enabled = true;
+        static bool b_row3_enabled = true;
+        static bool b_row4_enabled = false;
+        static bool b_row2_external = true;
+        static bool b_row3_external = true;
+        static float f_row0_volume = 1.0f;
+        static float f_row1_volume = 0.7f;
+        static float f_row2_volume = 0.7f;
+        static float f_row3_volume = 0.3f;
+        static float f_row4_volume = 0.3f;
+
+        ImGui::Text("Sound Configuration");
+        ImGui::Separator();
+
+        ImGui::Combo("Device", &i_soundDevice, "openAL\0AeronWave\0", -1);
+        ImGui::Separator();
+
+        ImGui::Spacing();
+        ImGui::BeginTable("table_custom_headers", 4, ImGuiTableFlags_Borders);
+        ImGui::TableSetupColumn("Channel");
+        ImGui::TableSetupColumn("Enabled");
+        ImGui::TableSetupColumn("Volume", 0, 75);
+        ImGui::TableSetupColumn("External");
+        ImGui::TableHeadersRow();
+
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("Master");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Checkbox("##enabled0", &b_row0_enabled);
+            ImGui::TableSetColumnIndex(2);
+            ImGui::PushItemWidth(-FLT_MIN);
+            ImGui::SliderFloat("##volume0", &f_row0_volume, 0.0f, 1.0f);
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("Effects");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Checkbox("##enabled1", &b_row1_enabled);
+            ImGui::TableSetColumnIndex(2);
+            ImGui::SliderFloat("##volume1", &f_row1_volume, 0.0f, 1.0f);
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("Avionics");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Checkbox("##enabled2", &b_row2_enabled);
+            ImGui::TableSetColumnIndex(2);
+            ImGui::SliderFloat("##volume2", &f_row2_volume, 0.0f, 1.0f);
+            ImGui::TableSetColumnIndex(3);
+            ImGui::Checkbox("##external2", &b_row2_external);
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("ATC");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Checkbox("##enabled3", &b_row3_enabled);
+            ImGui::TableSetColumnIndex(2);
+            ImGui::SliderFloat("##volume3", &f_row3_volume, 0.0f, 1.0f);
+            ImGui::TableSetColumnIndex(3);
+            ImGui::Checkbox("##external3", &b_row3_external);
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("AI/MP");
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Checkbox("##enabled4", &b_row4_enabled);
+            ImGui::TableSetColumnIndex(2);
+            ImGui::SliderFloat("##volume4", &f_row4_volume, 0.0f, 1.0f);
+        }
+
+        ImGui::EndTable();
+        ImGui::Spacing();
+        ImGui::Separator();
+
+        ImGui::Checkbox("Use voice synthesis tutorials and comm.", &b_voiceSynth);
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileMouseConfiguration"))
+    {
+        static bool b_MouseFlightControl = false;
+        static bool b_MouseInvert = false;
+        static bool b_MouseControlSync = false;
+        static float f_sensitivity = 4.0;
+
+        ImGui::Text("Mouse Configuration");
+        ImGui::Separator();
+
+        ImGui::Spacing();
+        ImGui::TextWrapped("TAB cycles the mouse mode through different behaviors:\n"
+                            "                 normal / flight / view");
+        ImGui::Spacing();
+        ImGui::Separator();
+
+        ImGui::RadioButton("Hold right-button to look around", true);
+        ImGui::RadioButton("Click right-button to cycle views", false);
+        ImGui::Spacing();
+
+        ImGui::SliderFloat("Flight Control Sensitivity", &f_sensitivity, 0.0f, 4.0f);
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Disable flight control via mouse", &b_MouseFlightControl);
+        ImGui::Checkbox("Invert mouse wheel", &b_MouseInvert);
+        ImGui::Checkbox("Mouse Rudder also controls Elevator", &b_MouseControlSync);
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileJoystickConfiguration"))
+    {
+        static int i_device = 0;
+
+        ImGui::Text("Joystick Configuration");
+        ImGui::Separator();
+
+        ImGui::Spacing();
+        ImGui::Text("To configure your joystick / yoke / pedals:");
+        ImGui::BulletText("Select the device you wish to configure.");
+        ImGui::BulletText("Identify the control you wish to configure by moving the control or pressing a button.\nThe result is shown in the Input column.");
+        ImGui::BulletText("Select what you want the control to do. Custom indicates a manually configured command.");
+        ImGui::BulletText("Test your control. Some controls may be inverted to take effect in the opposite direction.");
+        ImGui::Spacing();
+        ImGui::Text("Your modified configuration is saved automatically.");
+        ImGui::Spacing();
+        ImGui::Separator();
+
+        ImGui::Combo("Device", &i_device, "joystick\0yoke\0pedals\0", -1);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::Button("Refresh");
+        ImGui::SameLine();
+        ImGui::Button("Reset");
+
+        ImGui::Text("Configuration File: ");
+        ImGui::Separator();
+
+        //ImGui::ListBox();
+        ImGui::Spacing();
+        ImGui::Separator();
+
+        ImGui::LabelText("Aileron", "0.00000");
+        ImGui::LabelText("Rudder", "0.00000");
+        ImGui::LabelText("Elevator", "0.00000");
+        ImGui::LabelText("Throttle", "0.00000");
+        ImGui::LabelText("Propeller", "0.00000");
+        ImGui::LabelText("Mixture", "0.00000");
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileSceneryDownload"))
+    {
+        static bool b_terrasyncDownload = true;
+        static bool b_terrasyncAI = true;
+
+        ImGui::Text("Scenery Download (TerraSync)");
+        ImGui::Separator();
+
+        ImGui::Text("Automatic download active. Monitor your bandwidth on metered connection.");
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Enable automatic scenery download", &b_terrasyncDownload);
+        ImGui::Checkbox("Update AI Traffic during startup", &b_terrasyncAI);
+        ImGui::SameLine();
+        ImGui::Button("Update Now");
+        ImGui::Separator();
+
+        ImGui::Spacing();
+        if (ImGui::BeginTabBar("MyTabBar", 0))
+        {
+            if (ImGui::BeginTabItem("Information"))
+            {
+                ImGui::LabelText("Status", "Downloading: 0 KB/sec");
+                ImGui::LabelText("KB Downloaded", "303");
+                ImGui::LabelText("Processed Elements", "14");
+                ImGui::LabelText("Processed Scenery Tiles", "14");
+                ImGui::LabelText("Error Count", "1");
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Log"))
+            {
+                ImGui::SetNextItemWidth(1024);
+                ImGui::TextWrapped("next_type=OSMTile next_dir=Details/e000n040/e008n049 cacheStatus=Cached\n"
+                                    "next_type=OSMTile next_dir=Details/e000n040/e008n049 cacheStatus=Cached\n"
+                                    "next_type=OSMTile next_dir=Details/e000n040/e008n049 cacheStatus=Cached\n"
+                                    "\n"
+                                    "PNG warning : interface handling should be turned on when using png_read_image.\n");
+                ImGui::EndTabItem();
+            }
+            ImGui::EndTabBar();
+        }
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileViewErrors"))
+    {
+        char error[1024] = "Scenery downloaded via TerraSync is not loading correctly. This usually indicates a problem  with your network\nconnection or local disk.";
+        char descr[1024] = "Network connection failure\n(failed to get TerraSync repository root.socket error)\nfrom https://ukmirror.flightgear.org/osm2city/Details";
+
+        ImGui::Text("View Errors");
+        ImGui::Separator();
+
+        ImGui::InputTextMultiline("##error", error, 1024, ImVec2(800, 128));
+        ImGui::Separator();
+        ImGui::Spacing();
+        ImGui::TextWrapped("This dialog is a work in progress. The information included above may not be fully correct, so please check the "
+            "detailed information below and give feedback if something seems wrong. Please include all the information below, as well as the message above.");
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::InputTextMultiline("##descr", descr, 1024, ImVec2(800, 128));
+
+        ImGui::Separator();
+        ImGui::Button("Save to Desktop");
+        ImGui::SameLine();
+        ImGui::Button("Copy to Clipboard");
+        ImGui::SameLine(0.0f, 20.0f);
+
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("FileExit"))
+    {
+        ImGui::Text("Exit FlightGear?");
+        ImGui::Separator();
+
+        ImGui::Button("Exit");
+
+        ImGui::SameLine(0.0f, 20.0f);
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
+
+        ImGui::EndPopup();
+    }
+}

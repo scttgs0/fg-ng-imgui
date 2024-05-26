@@ -1,0 +1,22 @@
+
+#include "imgui.h"
+
+
+static void doMenuLocationDialogs()
+{
+    if (ImGui::BeginPopup("LocationAirborne"))
+    {
+        ImGui::Text("Airborne Location");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("LocationAirport"))
+    {
+        ImGui::Text("Airport Location");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+}

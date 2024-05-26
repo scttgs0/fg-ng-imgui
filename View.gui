@@ -1,0 +1,45 @@
+
+#include "imgui.h"
+
+
+static void doMenuViewDialogs() {
+    if (ImGui::BeginPopup("ViewAdjustPosition"))
+    {
+        ImGui::Text("Adjust View Position");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("ViewLodRange"))
+    {
+        ImGui::Text("Level of Detail Ranges");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("ViewHud"))
+    {
+        ImGui::Text("HUD Configuration");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("ViewFilterEffects"))
+    {
+        ImGui::Text("Filter Settings");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("ViewReplay"))
+    {
+        ImGui::Text("Replay");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+}

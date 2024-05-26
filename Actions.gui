@@ -1,0 +1,57 @@
+
+#include <string>
+#include "imgui.h"
+
+
+static void doMenuAction(std::string& menu_action)
+{
+    if(menu_action == "FileScreenshotFolder")
+        ImGui::OpenPopup("FileScreenshotFolder");
+    if(menu_action == "FileVideoControl")
+        ImGui::OpenPopup("FileVideoControl");
+    if(menu_action == "FileFlightRecorder")
+        ImGui::OpenPopup("FileFlightRecorder");
+    if(menu_action == "FileTimeMode")
+        ImGui::OpenPopup("FileTimeMode");
+    if(menu_action == "FileSoundConfiguration")
+        ImGui::OpenPopup("FileSoundConfiguration");
+    if(menu_action == "FileMouseConfiguration")
+        ImGui::OpenPopup("FileMouseConfiguration");
+    if(menu_action == "FileJoystickConfiguration")
+        ImGui::OpenPopup("FileJoystickConfiguration");
+    if(menu_action == "FileSceneryDownload")
+        ImGui::OpenPopup("FileSceneryDownload");
+    if(menu_action == "FileViewErrors")
+        ImGui::OpenPopup("FileViewErrors");
+    if(menu_action == "FileExit")
+        ImGui::OpenPopup("FileExit");
+
+    if(menu_action == "ViewAdjustPosition")
+        ImGui::OpenPopup("ViewAdjustPosition");
+    if(menu_action == "ViewLodRange")
+        ImGui::OpenPopup("ViewLodRange");
+    if(menu_action == "ViewHud")
+        ImGui::OpenPopup("ViewHud");
+    if(menu_action == "ViewFilterEffects")
+        ImGui::OpenPopup("ViewFilterEffects");
+    if(menu_action == "ViewReplay")
+        ImGui::OpenPopup("ViewReplay");
+
+    if(menu_action == "OptionsRendering")
+        ImGui::OpenPopup("OptionsRendering");
+    if(menu_action == "OptionsOrbitalRendering")
+        ImGui::OpenPopup("OptionsOrbitalRendering");
+    if(menu_action == "OptionsView")
+        ImGui::OpenPopup("OptionsView");
+    if(menu_action == "OptionsCockpit")
+        ImGui::OpenPopup("OptionsCockpit");
+    if(menu_action == "OptionsStereoscopic")
+        ImGui::OpenPopup("OptionsStereoscopic");
+    if(menu_action == "OptionsVirtualReality")
+        ImGui::OpenPopup("OptionsVirtualReality");
+
+    if(menu_action == "LocationAirborne")
+        ImGui::OpenPopup("LocationAirborne");
+    if(menu_action == "LocationAirport")
+        ImGui::OpenPopup("LocationAirport");
+}
