@@ -61,7 +61,7 @@ static void doMenuFileDialogs()
         ImGui::Text("Flight Recorder Control");
         ImGui::Separator();
 
-        ImGui::Text("General");
+        ImGui::SeparatorText("General");
         if(ImGui::Button("Replay recording", ImVec2(250, 20)))
             ImGui::CloseCurrentPopup();
         if(ImGui::Button("Replay recording from file...", ImVec2(250, 20)))
@@ -71,9 +71,8 @@ static void doMenuFileDialogs()
         if(ImGui::Button("Save recording to file...", ImVec2(250, 20)))
             ImGui::CloseCurrentPopup();
         ImGui::Checkbox("Maintain recovery snapshot", &b_snapshot);
-        ImGui::Separator();
 
-        ImGui::Text("Continuous Record");
+        ImGui::SeparatorText("Continuous Record");
         if(ImGui::Button("Start recording to file", ImVec2(250, 20)))
             ImGui::CloseCurrentPopup();
         if(ImGui::Button("Stop recording", ImVec2(250, 20)))
@@ -83,12 +82,11 @@ static void doMenuFileDialogs()
         ImGui::Checkbox("Multiplayer aircraft", &b_captureMultiplayer);
         ImGui::Checkbox("Main Window position and size", &b_capturePosSize);
         ImGui::Checkbox("Main Window View", &b_captureView);
-        ImGui::Separator();
 
-        ImGui::Text("Continuous Replay");
+        ImGui::SeparatorText("Continuous Replay");
         ImGui::Checkbox("Main Window position", &b_replayPosition);
         ImGui::Checkbox("Main Window size", &b_replaySize);
-        ImGui::Checkbox("Main Window View", &b_replayView);
+        ImGui::Checkbox("Main Window view", &b_replayView);
 
         ImGui::EndPopup();
     }
@@ -96,14 +94,15 @@ static void doMenuFileDialogs()
     if (ImGui::BeginPopup("FileTimeMode"))
     {
         static char fixedDateTime[20] = "";
+        static int timeMode = 0;
 
         ImGui::Text("Time Mode");
         ImGui::Separator();
 
-        ImGui::RadioButton("Actual Time", true);
+        ImGui::RadioButton("Actual Time", &timeMode, 0);
         ImGui::SameLine();
         ImGui::Button("Settings");
-        ImGui::RadioButton("Fixed Time", false);
+        ImGui::RadioButton("Fixed Time", &timeMode, 1);
         ImGui::SameLine();
         ImGui::InputText("##Date-Time", fixedDateTime, 20);
 
@@ -203,6 +202,7 @@ static void doMenuFileDialogs()
 
     if (ImGui::BeginPopup("FileMouseConfiguration"))
     {
+        static int rightButtonMode = 0;
         static bool b_MouseFlightControl = false;
         static bool b_MouseInvert = false;
         static bool b_MouseControlSync = false;
@@ -212,13 +212,13 @@ static void doMenuFileDialogs()
         ImGui::Separator();
 
         ImGui::Spacing();
-        ImGui::TextWrapped("TAB cycles the mouse mode through different behaviors:\n"
-                            "                 normal / flight / view");
+        ImGui::TextWrapped("TAB cycles the mouse mode through different behaviors:");
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "                 Normal | Flight | View");
         ImGui::Spacing();
         ImGui::Separator();
 
-        ImGui::RadioButton("Hold right-button to look around", true);
-        ImGui::RadioButton("Click right-button to cycle views", false);
+        ImGui::RadioButton("Hold right-button to look around", &rightButtonMode, 0);
+        ImGui::RadioButton("Click right-button to cycle views", &rightButtonMode, 1);
         ImGui::Spacing();
 
         ImGui::SliderFloat("Flight Control Sensitivity", &f_sensitivity, 0.0f, 4.0f);
@@ -346,15 +346,15 @@ static void doMenuFileDialogs()
         ImGui::EndPopup();
     }
 
+    ImGui::SetNextWindowSize(ImVec2(160, 60));
     if (ImGui::BeginPopup("FileExit"))
     {
         ImGui::Text("Exit FlightGear?");
         ImGui::Separator();
 
-        ImGui::Button("Exit");
-
+        ImGui::Button("  Exit  ");
         ImGui::SameLine(0.0f, 20.0f);
-        if (ImGui::Button("Close"))
+        if (ImGui::Button(" Close "))
             ImGui::CloseCurrentPopup();
 
         ImGui::EndPopup();
