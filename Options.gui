@@ -53,7 +53,7 @@ static void doMenuOptionsDialogs()
         ImGui::SameLine();
         if (ImGui::Button("Close"))
             ImGui::CloseCurrentPopup();
-        
+
         if (ImGui::BeginPopup("AdvancedOptions"))
         {
             static int renderMode = 0;
@@ -85,6 +85,9 @@ static void doMenuOptionsDialogs()
             static bool useParticles = false;
             static bool usePrecipitation = true;
             static bool use3DCloud = true;
+
+            ImGui::Text("Advanced Options");
+            ImGui::Separator();
 
             ImGui::BeginChild("ChildL", ImVec2(450, 525));
                 ImGui::SeparatorText("General");
@@ -174,32 +177,268 @@ static void doMenuOptionsDialogs()
 
     if (ImGui::BeginPopup("OptionsOrbitalRendering"))
     {
+        static bool showCloudLayer = true;
+        static bool showCloudShadows = true;
+        static bool useALS = true;
+        static bool useOverlay = true;
+        static bool useTerrainNormal = false;
+        static bool useCloudNormal = false;
+
+        static int visibilityRange = 33;
+
+        static float cloudRotation = 0.0f;
+        static float mieFactor = 0.005f;
+        static float rayleighFactor = 0.003f;
+        static float densityFactor = 0.3f;
+        static float dustDensity = 0.0f;
+        static float cloudCover = 1.0f;
+
         ImGui::Text("Earthview Orbital Rendering Options");
         ImGui::Separator();
+
+        ImGui::Checkbox("Show cloud layer", &showCloudLayer);
+        ImGui::Checkbox("Show cloud shadows", &showCloudShadows);
+        ImGui::Checkbox("Automatic light scattering", &useALS);
+        ImGui::Checkbox("Overlay textures", &useOverlay);
+        ImGui::Checkbox("Terrain normal mapping", &useTerrainNormal);
+        ImGui::Checkbox("Cloud normal mapping", &useCloudNormal);
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Cloudsphere Rotation");
+        ImGui::SliderAngle("Rotation angle", &cloudRotation, 0.0f);
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Atmospheric Effects");
+        ImGui::SliderFloat("Mie factor", &mieFactor, 0.0f, 0.01f, "%0.3f");
+        ImGui::SliderFloat("Rayleigh factor", &rayleighFactor, 0.0f, 0.001f, "%0.5f");
+        ImGui::SliderFloat("Density factor", &densityFactor, 0.0f, 1.0f, "%0.1f");
+        ImGui::SliderInt("Visibility", &visibilityRange, 30, 250, "%d km");
+        ImGui::SliderFloat("Relative dust density", &dustDensity, 0.0f, 1.0f, "%0.1f");
+        ImGui::SliderFloat("Cloudcover", &cloudCover, 0.5f, 2.0f, "%0.1f");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("OptionsView"))
     {
+        static bool viewCockpit = true;
+        static bool viewHelicopter = true;
+        static bool viewChase = true;
+        static bool viewChaseNoYaw = false;
+        static bool viewTower = true;
+        static bool viewTowerLookFrom = false;
+        static bool viewTowerAgl = false;
+        static bool viewFlyBy = true;
+        static bool viewStill = false;
+        static bool viewCamera = false;
+        static bool viewGroundServices = false;
+
+        static bool optionFrameRate = false;
+        static bool optionFrameSpacing = false;
+        static bool optionChat = true;
+        static bool optionShowPopupMess = true;
+        static bool optionShowPopupMouse = true;
+        static bool optionShowTooltips = true;
+        static bool optionShowTooltipMouse = true;
+        static bool optionShow2D = false;
+        static bool optionHide2DOffcenter = false;
+        static bool optionHide2DNotCockpit = false;
+        static bool optionHideMenu = true;
+        static bool optionHideCursor = true;
+        static bool optionLegacyMP = false;
+
+        static bool markerShow = false;
+        static bool markerAirport = false;
+        static bool markerNavaid = false;
+        static bool markerFixes = false;
+        static bool markerPOI = false;
+        static bool markerTraffic = false;
+
+        static int optionChatPosition = 0;
+        static int cursorHideDelay = 10;
+
         ImGui::Text("View Options");
         ImGui::Separator();
+
+        ImGui::BeginChild("ChildL", ImVec2(160, 370), true);
+            ImGui::Text("Select Active Views");
+            ImGui::Spacing();
+
+            ImGui::Separator();
+            ImGui::SeparatorText("Standard Views");
+            ImGui::Checkbox("Cockpit", &viewCockpit);
+            ImGui::Checkbox("Helicopter", &viewHelicopter);
+            ImGui::Checkbox("Chase", &viewChase);
+            ImGui::Checkbox("Chase No-Yaw", &viewChaseNoYaw);
+            ImGui::Checkbox("Tower", &viewTower);
+            ImGui::Checkbox("Tower Look-From", &viewTowerLookFrom);
+            ImGui::Checkbox("Tower AGL", &viewTowerAgl);
+            ImGui::Checkbox("Fly-By", &viewFlyBy);
+            ImGui::Checkbox("Still", &viewStill);
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("Other Views");
+            ImGui::Checkbox("Camera", &viewCamera);
+            ImGui::Checkbox("Ground Services", &viewGroundServices);
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("ChildM", ImVec2(320, 370), true);
+            ImGui::SeparatorText("Display Options");
+            ImGui::Checkbox("Show frame rate", &optionFrameRate);
+            ImGui::Checkbox("Show frame spacing", &optionFrameSpacing);
+            ImGui::Checkbox("Show chat messages", &optionChat);
+            if (!optionChat)
+                ImGui::BeginDisabled();
+            ImGui::Indent();
+            ImGui::PushItemWidth(100);
+            ImGui::Combo("Log position", &optionChatPosition, "Default\0Left\0");
+            ImGui::PopItemWidth();
+            ImGui::Unindent();
+            if (!optionChat)
+                ImGui::EndDisabled();
+            ImGui::Checkbox("Show popup messages", &optionShowPopupMess);
+            ImGui::Checkbox("Show popup when cycling mouse behaviour", &optionShowPopupMouse);
+            ImGui::Checkbox("Show tooltips", &optionShowTooltips);
+            ImGui::Checkbox("Show tooltip on mouse press", &optionShowTooltipMouse);
+            ImGui::Checkbox("Show 2D panel", &optionShow2D);
+            if (!optionShow2D)
+                ImGui::BeginDisabled();
+            ImGui::Indent();
+            ImGui::Checkbox("Hide in non-centered view", &optionHide2DOffcenter);
+            ImGui::Checkbox("Hide in non-cockpit view", &optionHide2DNotCockpit);
+            ImGui::Unindent();
+            if (!optionShow2D)
+                ImGui::EndDisabled();
+            ImGui::Checkbox("Auto-hide menubar", &optionHideMenu);
+            ImGui::Checkbox("Auto-hide cursor in", &optionHideCursor);
+            ImGui::SameLine(0.0f, 10.0f);
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("sec##cursorHideDelay", &cursorHideDelay);
+            ImGui::PopItemWidth();
+            ImGui::Checkbox("Legacy multiplayer view selector", &optionLegacyMP);
+            ImGui::Spacing();
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("ChildR", ImVec2(160, 370), true);
+            ImGui::SeparatorText("Marker Pins");
+            ImGui::Checkbox("Show", &markerShow);
+            ImGui::Spacing();
+
+            if (!markerShow)
+                ImGui::BeginDisabled();
+
+            ImGui::Separator();
+            ImGui::Checkbox("Airports", &markerAirport);
+            ImGui::Checkbox("Navaids", &markerNavaid);
+            ImGui::Checkbox("Fixes", &markerFixes);
+            ImGui::Checkbox("POI", &markerPOI);
+            ImGui::Spacing();
+
+            ImGui::Separator();
+            ImGui::Checkbox("Traffic", &markerTraffic);
+
+            if (!markerShow)
+                ImGui::EndDisabled();
+
+        ImGui::EndChild();
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("OptionsCockpit"))
     {
+        static bool enableDynamicView = true;
+        static bool enableViewMovement = true;
+        static bool enableBlackout = true;
+
+        static float shakeRate = 0.015f;
+        static float groundRate = 1.0f;
+
+        static float blackoutOnSet = 2.5f;
+        static float blackoutComplete = 4.5f;
+        static float redoutOnSet = -2.0f;
+        static float redoutComplete = -4.0f;
+
         ImGui::Text("Cockpit View Options");
         ImGui::Separator();
+
+        ImGui::Checkbox("Enable dynamic Cockpit View", &enableDynamicView);
+        ImGui::Checkbox("Enable View Movement due to G-Force", &enableViewMovement);
+
+        if (!enableViewMovement)
+            ImGui::BeginDisabled();
+
+        ImGui::Indent();
+        ImGui::SliderFloat("m/g, Effect rate", &shakeRate, 0.0f, 0.1f, "%0.3f");
+        ImGui::SliderFloat("Ground shake", &groundRate, 0.0f, 2.0f, "%0.1f");
+        ImGui::Unindent();
+
+        if (!enableViewMovement)
+            ImGui::EndDisabled();
+
+        ImGui::Checkbox("Enable Blackout and Redout due to G-Force", &enableBlackout);
+        ImGui::Spacing();
+
+        if (!enableBlackout)
+            ImGui::BeginDisabled();
+
+        ImGui::SeparatorText("Blackout");
+        ImGui::SliderFloat("Onset##blackout", &blackoutOnSet, 1.0f, 15.0f, "%0.1f");
+        ImGui::SliderFloat("Complete##blackout", &blackoutComplete, 1.0f, 15.0f, "%0.1f");
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Redout");
+        ImGui::SliderFloat("Onset##redout", &redoutOnSet, -15.0f, -1.0f, "%0.1f");
+        ImGui::SliderFloat("Complete##redout", &redoutComplete, -15.0f, -1.0f, "%0.1f");
+
+        if (!enableBlackout)
+            ImGui::EndDisabled();
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("OptionsStereoscopic"))
     {
+        static bool preserveAspect = true;
+        static int stereoMode = 0;
+
+        static float screenDistance = 0.3f;
+        static float eyeSeparation = 0.05f;
+
         ImGui::Text("Stereoscopic View Options");
         ImGui::Separator();
+
+        ImGui::Combo("Stereo Mode", &stereoMode, "OFF\0"
+                                                 "QUAD_BUFFER\0"
+                                                 "ANAGLYPHIC\0"
+                                                 "HORIZONTAL_SPLIT\0"
+                                                 "VERTICAL_SPLIT\0"
+                                                 "LEFT_EYE\0"
+                                                 "RIGHT_EYE\0"
+                                                 "HORIZONTAL_INTERLACE\0"
+                                                 "VERTICAL_INTERLACE\0"
+                                                 "CHECKERBOARD");
+        ImGui::Spacing();
+
+        if (!stereoMode)
+            ImGui::BeginDisabled();
+
+        ImGui::SliderFloat("Screen Distance", &screenDistance, 0.1f, 10.0f, "%0.2f m");
+        ImGui::SliderFloat("Eye Separation", &eyeSeparation, 0.0f, 0.2f, "%0.2f m");
+        ImGui::Spacing();
+        ImGui::Checkbox("Preserve aspect ratio", &preserveAspect);
+
+        if (!stereoMode)
+            ImGui::EndDisabled();
 
         ImGui::EndPopup();
     }
