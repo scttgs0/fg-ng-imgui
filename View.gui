@@ -5,32 +5,198 @@
 static void doMenuViewDialogs() {
     if (ImGui::BeginPopup("ViewAdjustPosition"))
     {
+        static int horzDelta = 0;
+        static int vertDelta = 0;
+        static int forwardDelta = 0;
+
         ImGui::Text("Adjust View Position");
         ImGui::Separator();
+
+        ImGui::Text("Horizontal");  ImGui::SameLine();  ImGui::InputInt("m", &horzDelta);
+        ImGui::Text("Vertical  ");    ImGui::SameLine();  ImGui::InputInt("m", &vertDelta);
+        ImGui::Text("Fore/Aft  ");    ImGui::SameLine();  ImGui::InputInt("m", &forwardDelta);
+
+        ImGui::Separator();
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
+        ImGui::SameLine();
+        if (ImGui::Button("Reset")) {
+            horzDelta = vertDelta = forwardDelta = 0;
+        }
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("ViewLodRange"))
     {
-        ImGui::Text("Level of Detail Ranges");
+        static int lodDetail = 2;
+        static int lodRough = 10;
+        static int lodSparse = 30;
+
+        if (lodRough < lodDetail)
+            lodRough = lodDetail;
+        if (lodSparse < lodRough)
+            lodSparse = lodRough;
+
+        static int aiMode = 0;
+        static int rangeMode = 0;
+        static bool aiInMeters = false;
+        static int pixelHigh = 2;
+        static int pixelLow = 10;
+        static int pixelInterior = 20;
+
+        if ((pixelHigh*10) < pixelLow) {
+            pixelHigh = pixelLow/10;
+            if ((pixelHigh*10) < pixelLow)
+                pixelHigh++;
+        }
+
+        static int linearFeatures = 5;
+        static int vegetationFeatures = 6;
+        static int areaFeatures = 5;
+        static int coastlineFeatures = 3;
+        static int linearLOD[7] = {10};
+        static int areaLOD[7] = {50};
+
+        ImGui::Text("Level of Detail Settings");
         ImGui::Separator();
+
+        ImGui::SeparatorText("Scenery (Tiles, Buildings, Roads, Railways)");
+        ImGui::SliderInt("Detailed", &lodDetail, 0, 200, "%d km");
+        ImGui::SliderInt("Rough", &lodRough, 0, 200, "%d km");
+        ImGui::SliderInt("Sparse", &lodSparse, 0, 200, "%d km");
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("AI/MP Aircraft)");
+        ImGui::Combo("AI/MP Mode", &aiMode, "Specify Ranges\0Low Detail only\0High Detail only\0");
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::Checkbox("meters", &aiInMeters);
+
+        ImGui::SliderInt("Low Detail", &pixelLow, 0, 50, "> %d pixels");
+        ImGui::SliderInt("High Detail", &pixelHigh, 0, 150, "> %d0 pixels");
+        ImGui::Spacing();
+        ImGui::SliderInt("Interior Shown", &pixelInterior, 0, 150, "< %d0 m");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("World Scenery 3.0 (Experimental)");
+        ImGui::BulletText("WS3.0 uses 7 levels of detail, from \n0 (least detailed) to 6 (most detailed).");
+        ImGui::BulletText("You can control at which level features are\nrendered and at what range level 6 is used.");
+
+        ImGui::SeparatorText("Detail Range");
+        ImGui::SliderInt("Line Features", &linearFeatures, 0, 6, "%d minimum");
+        ImGui::SliderInt("Vegetation", &vegetationFeatures, 0, 6, "%d minimum");
+        ImGui::SliderInt("Area features", &areaFeatures, 0, 6, "%d minimum");
+        ImGui::SliderInt("Detailed coastline", &coastlineFeatures, 0, 6, "%d minimum");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::BeginTable("tblLOD", 3, ImGuiTableFlags_BordersV);
+        ImGui::TableSetupColumn("LOD Level");
+        ImGui::TableSetupColumn("Linear Feature Width");
+        ImGui::TableSetupColumn("Area Feature Width");
+        ImGui::TableHeadersRow();
+        for (int i=0; i<7; ++i)
+        {
+            char lbl[6];
+            sprintf(lbl, "##LOD %d", i);
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("LOD %d", i);
+            ImGui::TableNextColumn();
+            ImGui::SliderInt(lbl, &linearLOD[i], 1, 50, "%d m");
+            ImGui::TableNextColumn();
+            ImGui::SliderInt(lbl, &areaLOD[i], 0, 100, "%d00 m²");
+        }
+        ImGui::EndTable();
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("ViewHud"))
     {
+        static bool enable3D = true;
+        static bool enableTransparent = false;
+        static bool enableAA = false;
+
+        static int latFormat = 2;
+
+        static int alpha = 8;
+        static int clamp = 0;
+        static int brightness = 8;
+
+        static ImVec4 color {1.0f, 0.0f, 0.0f, 1.0f};
+
         ImGui::Text("HUD Configuration");
         ImGui::Separator();
+
+        ImGui::Checkbox("Enable 3D", &enable3D);
+        ImGui::Checkbox("Transparent", &enableTransparent);
+        ImGui::Checkbox("Anti-aliasing", &enableAA);
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Lat/Lon Format");
+        ImGui::RadioButton("DDD           (37.618890N 122.375000W)", &latFormat, 0);
+        ImGui::RadioButton("DMM           (37*37.133'N 122*22.500'W)", &latFormat, 1);
+        ImGui::RadioButton("DMS           (37*37'08.0\"N 122*22'30.0\"W)", &latFormat, 2);
+        ImGui::RadioButton("DDD Signed    (37.618890 -122.375000)", &latFormat, 3);
+        ImGui::RadioButton("DMM Signed    (37*37.133' -122*22.500')", &latFormat, 4);
+        ImGui::RadioButton("DMS Signed    (37*37'08.0\" -122*22'30.0\")", &latFormat, 5);
+        ImGui::RadioButton("DDD 0-padded  (51.477500N 000.461389W)", &latFormat, 6);
+        ImGui::RadioButton("DMM 0-padded  (51*28.650'N 000*27.683'W)", &latFormat, 7);
+        ImGui::RadioButton("DMS 0-padded  (51*28'39.0\"N 000*27'41.0\"W)", &latFormat, 8);
+        ImGui::RadioButton("Trinity House (51* 28'.650N 000* 27'.683W)", &latFormat, 9);
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::SliderInt("Alpha", &alpha, 0, 10, "%d");
+        ImGui::SliderInt("Clamp", &clamp, 0, 10, "%d");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::SliderInt("Brightness", &brightness, 0, 10, "%d");
+        ImGui::ColorEdit3("color", (float *)&color, ImGuiColorEditFlags_AlphaBar);
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("ViewFilterEffects"))
     {
-        ImGui::Text("Filter Settings");
+        static bool enableFilters = true;
+        static int filterType = 0;
+        static float brightness = 1.0f;
+        static float gamma = 0.0f;
+
+        ImGui::Text("ALS Filter Settings (experimental)");
         ImGui::Separator();
+
+        ImGui::Checkbox("Enable filters", &enableFilters);
+        ImGui::RadioButton("Normal", &filterType, 0);           ImGui::SameLine(0.0f, 10.0f);
+        ImGui::RadioButton("Night vision", &filterType, 1);     ImGui::SameLine(0.0f, 10.0f);
+        ImGui::RadioButton("Infrared vision", &filterType, 2);
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::SliderFloat("Brightness", &brightness, 0.4f, 2.0f, "%0.2f");
+        ImGui::SliderFloat("Gamma", &gamma, 0.0f, 0.8f, "%0.2f");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        if (ImGui::Button("Reset")) {
+            brightness = 1.0f;
+            gamma = 0.0f;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
 
         ImGui::EndPopup();
     }
