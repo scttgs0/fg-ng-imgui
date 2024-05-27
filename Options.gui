@@ -6,8 +6,168 @@ static void doMenuOptionsDialogs()
 {
     if (ImGui::BeginPopup("OptionsRendering"))
     {
+        static bool enableThrottleLimit = false;
+        static bool enableWideScreen = false;
+        static bool enableTextureCache = false;
+        static bool enablePointLights = false;
+        static bool enableTriLights = false;
+        static bool enableJetways = true;
+        static bool enablePhotoscenery = false;
+        static bool enableWireframe = false;
+        static bool enableCustom = false;
+        static bool enableWS3 = false;
+
+        static int maxObjects = 5;
+        static int evelationDelta = 0;
+
         ImGui::Text("Rendering Options");
         ImGui::Separator();
+
+        ImGui::Checkbox("Throttle frame rate", &enableThrottleLimit);
+        ImGui::Checkbox("Compensate for wide screens", &enableWideScreen);
+        ImGui::Checkbox("Texture Cache", &enableTextureCache);
+        ImGui::Checkbox("Runway lights as points", &enablePointLights);
+        ImGui::Checkbox("Directional lights as triangles", &enableTriLights);
+        ImGui::Checkbox("Animated jetways", &enableJetways);
+        ImGui::Checkbox("Satellite Photoscenery", &enablePhotoscenery);
+        ImGui::Checkbox("Wireframe", &enableWireframe);
+        ImGui::Spacing();
+        ImGui::SliderInt("Maximum number of aircraft / scenery tiles", &maxObjects, 1, 100, "%d00 objects");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        if (ImGui::Button("Advanced Options")) {
+            ImGui::OpenPopup("AdvancedOptions");
+        }
+        ImGui::SameLine();
+        ImGui::Checkbox("Custom", &enableCustom);
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Checkbox("WS3.0 (Experimental - requires OSG 3.6)", &enableWS3);
+        ImGui::SliderInt("Elevation delta below airports", &evelationDelta, 0, 20, "%d m");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("Save Custom");
+        ImGui::SameLine();
+        if (ImGui::Button("Close"))
+            ImGui::CloseCurrentPopup();
+        
+        if (ImGui::BeginPopup("AdvancedOptions"))
+        {
+            static int renderMode = 0;
+            static int terrainQuality = 3;
+            static int modelEffects = 1;
+            static int waterEffects = 0;
+            static int cloudDetail = 1;
+            static int windEffects = 1;
+            static int useOverlay = 1;
+            static int antialiasing = 2;
+            static int shadowQuality = 3;
+            static int pointLimit = 256;
+            static int spotLimit = 256;
+            static int pylonMode = 1;
+            static int roadMode = 1;
+            static int buildingMode = 1;
+            static int randomSceneryMode = 1;
+            static int AutogenMode = 1;
+            static int osmTreeMode = 1;
+            static int shadowMode = 1;
+            static int objectMode = 1;
+            static int cloudRange = 50;
+
+            static float cloudDensity = 1.0f;
+
+            static bool useShaders = true;
+            static bool dynamicLighting = true;
+            static bool lightLimit = false;
+            static bool useParticles = false;
+            static bool usePrecipitation = true;
+            static bool use3DCloud = true;
+
+            ImGui::BeginChild("ChildL", ImVec2(450, 525));
+                ImGui::SeparatorText("General");
+                ImGui::RadioButton("Low Specifications", &renderMode, 0);
+                ImGui::SameLine(0.0f, 10.0f);
+                ImGui::Checkbox("Use shaders", &useShaders);
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
+                ImGui::TextWrapped("The Low Specifications render mode provides low quality visuals "
+                    "with maximum compatibility. This setting is recommended for "
+                    "users with less powerful hardware or integrated video cards.");
+                ImGui::PopStyleColor();
+                ImGui::Spacing();
+                ImGui::RadioButton("Atmospheric Light Scattering (ALS)", &renderMode, 1);
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
+                ImGui::TextWrapped("Atmospheric Light Scattering uses a sophisticated physical "
+                    "atmospheric model and several other effects to give realistic "
+                    "rendering of large distances. It is recommended to run this "
+                    "configuration on relatively powerful hardware.");
+                ImGui::PopStyleColor();
+                ImGui::Spacing();
+
+                ImGui::Separator();
+                ImGui::TextColored(ImVec4(0.8f, 0.0f, 0.0f, 1.0f), "Some of these settings can only be changed when using ALS.");
+                ImGui::Spacing();
+
+                ImGui::Combo("Terrain Quality", &terrainQuality, "Low\0Medium\0High\0Ultra\0");
+                ImGui::Combo("Model Effects", &modelEffects, "Disabled\0Enabled\0");
+                ImGui::Combo("Water Effects", &waterEffects, "Disabled\0Low\0High\0");
+                ImGui::Combo("Clouds Detail", &cloudDetail, "Low\0High\0");
+                ImGui::Combo("Wind Effects", &windEffects, "Disabled\0Enabled\0");
+                ImGui::Combo("Overlay", &useOverlay, "Disabled\0Enabled\0");
+                ImGui::Combo("Anti-aliasing", &antialiasing, "Disabled\0MSAA 2x\0MSAA 4x\0MSAA 8x\0");
+            ImGui::EndChild();
+            ImGui::SameLine(0.0f, 10.0f);
+            ImGui::BeginChild("ChildR", ImVec2(500, 525));
+                ImGui::SeparatorText("Shadows and Lights");
+                ImGui::Combo("Shadow Quality", &shadowQuality, "Disabled\0Low\0Medium\0High\0Ultra\0");
+                ImGui::Checkbox("Dynamic lighting", &dynamicLighting);
+                ImGui::Checkbox("Limit the number of lights", &lightLimit);
+                if (!lightLimit)
+                    ImGui::BeginDisabled();
+                ImGui::SliderInt("Point light limit", &pointLimit, 16, 1024, "%d max");
+                ImGui::SliderInt("Spot light limit", &spotLimit, 16, 1024, "%d max");
+                if (!lightLimit)
+                    ImGui::EndDisabled();
+                ImGui::Spacing();
+
+                ImGui::SeparatorText("Scenery Layers");
+                ImGui::Combo("Pylons and power lines", &pylonMode, "Disabled\0Basic\0Detailed\0");
+                ImGui::Combo("Detailed Roads / Railways", &roadMode, "Disabled\0Enabled\0");
+                ImGui::Combo("Buildings", &buildingMode, "Disabled\0Randomly Generated\0OpenStreetMap\0");
+                ImGui::Combo("Random Scenery Objects", &randomSceneryMode, "Disabled\0Enabled\0");
+                ImGui::Combo("Autogenerated Vegetation", &AutogenMode, "Disabled\0"
+                                                                     "Ultra Low Density\0"
+                                                                     "Very Low Density\0"
+                                                                     "Low Density\0"
+                                                                     "Medium Density\0"
+                                                                     "High Density\0"
+                                                                     "Very High Density\0"
+                                                                     "Ultra High Density\0");
+                ImGui::Combo("OpenStreetMap Trees", &osmTreeMode, "Disabled\0Enabled\0");
+                ImGui::Combo("Vegetation Shadows", &shadowMode, "Disabled\0Enabled\0");
+                ImGui::Combo("Scenery Objects", &objectMode, "Disabled\0Enabled\0");
+                ImGui::TextColored(ImVec4(0.8f, 0.0f, 0.0f, 1.0f), "Warning: Pylons, Detailed Roads, Buildings use a lot of memory\n"
+                                                                    "and disk space, and are only available in limited areas.");
+                ImGui::Spacing();
+
+                ImGui::SeparatorText("Atmospheric Effects");
+                ImGui::Checkbox("Particles (smoke, dust, spray)", &useParticles);
+                ImGui::Checkbox("Precipitation", &usePrecipitation);
+                ImGui::Checkbox("3D clouds (required by Detailed Weather)", &use3DCloud);
+                ImGui::DragFloat("Cloud density", &cloudDensity, 0.05f, 0.0f, 1.0f, "%0.2f %%");
+                ImGui::SliderInt("Cloud visibility range", &cloudRange, 1, 150, "%d km");
+
+            ImGui::EndChild();
+            ImGui::Spacing();
+
+            ImGui::Separator();
+            if (ImGui::Button("Close"))
+                ImGui::CloseCurrentPopup();
+
+            ImGui::EndPopup();
+        }
 
         ImGui::EndPopup();
     }
