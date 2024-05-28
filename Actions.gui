@@ -54,4 +54,9 @@ static void doMenuAction(std::string& menu_action)
         ImGui::OpenPopup("LocationAirborne");
     if(menu_action == "LocationAirport")
         ImGui::OpenPopup("LocationAirport");
+
+    if(menu_action == "AutopilotSettings")
+        ImGui::OpenPopup("AutopilotSettings");
+    if(menu_action == "autopilotRouteManager")
+        ImGui::OpenPopup("autopilotRouteManager");
 }

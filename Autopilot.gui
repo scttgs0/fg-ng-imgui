@@ -2,4 +2,124 @@
 #include "imgui.h"
 
 
-static void doMenuAutopilotDialogs() {}
+static void doMenuAutopilotDialogs()
+{
+    if (ImGui::BeginPopup("AutopilotSettings"))
+    {
+        static bool isHeadingControl = false;
+        static bool isVelocityControl = false;
+        static bool isPitchControl = false;
+
+        static int headingControl = 1;
+        static int headingBug = 0;
+        static int headingTrue = 0;
+        static int velocityControl = 0;
+        static int pitchControl = 2;
+
+        static int pitchVerticalSpeed = 0;
+        static int pitchPitchHold = 0;
+        static int pitchAltitudeHold = 0;
+        static int pitchAGLHold = 0;
+
+        ImGui::Text("Autopilot Settings");
+        ImGui::Separator();
+
+        ImGui::BeginChild("ChildL", ImVec2(250, 170), true);
+            ImGui::Checkbox("Heading Control", &isHeadingControl);
+            ImGui::Spacing();
+
+            if (!isHeadingControl)
+                ImGui::BeginDisabled();
+
+            ImGui::Indent();
+            ImGui::RadioButton("Wings Level", &headingControl, 0);
+            ImGui::RadioButton("Heading Bug", &headingControl, 1);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("##headingbug", &headingBug);
+            ImGui::PopItemWidth();
+            ImGui::RadioButton("True Heading", &headingControl, 2);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("##headingtrue", &headingTrue);
+            ImGui::PopItemWidth();
+            ImGui::RadioButton("NAV1 CDI Course", &headingControl, 3);
+            ImGui::Unindent();
+            ImGui::Spacing();
+
+            if (!isHeadingControl)
+                ImGui::EndDisabled();
+
+            ImGui::Separator();
+            ImGui::Checkbox("Velocity Control", &isVelocityControl);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("##velocitycontrol", &velocityControl);
+            ImGui::PopItemWidth();
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("ChildR", ImVec2(250, 170), true);
+            ImGui::Checkbox("Pitch/Altitude Control", &isPitchControl);
+            ImGui::Spacing();
+
+            if (!isPitchControl)
+                ImGui::BeginDisabled();
+
+            ImGui::Indent();
+            ImGui::RadioButton("Vertical Speed", &pitchControl, 0);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("##verticalspeed", &pitchVerticalSpeed);
+            ImGui::PopItemWidth();
+            ImGui::RadioButton("Pitch Hold    ", &pitchControl, 1);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("##pitchhold", &pitchPitchHold);
+            ImGui::PopItemWidth();
+            ImGui::RadioButton("Altitude Hold ", &pitchControl, 2);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("##altitudehold", &pitchAltitudeHold);
+            ImGui::PopItemWidth();
+            ImGui::RadioButton("AGL Hold      ", &pitchControl, 3);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("##aglhold", &pitchAGLHold);
+            ImGui::PopItemWidth();
+            ImGui::RadioButton("NAV1 Glideslope", &pitchControl, 4);
+            ImGui::Unindent();
+
+            if (!isPitchControl)
+                ImGui::EndDisabled();
+
+        ImGui::EndChild();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("autopilotRouteManager"))
+    {
+        ImGui::Text("Route Manager");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("Clear List");
+        ImGui::SameLine();
+        ImGui::Button("Remove");
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::Button("Route");
+        ImGui::SameLine();
+        ImGui::Button("Jump To");
+        ImGui::SameLine();
+        ImGui::Button("Activate");
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::Button("Load...");
+        ImGui::SameLine();
+        ImGui::Button("Save...");
+
+        ImGui::EndPopup();
+    }
+}

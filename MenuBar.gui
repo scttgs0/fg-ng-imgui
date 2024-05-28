@@ -124,8 +124,10 @@ static void doMenuBar(std::string& menu_action)
 
         if (ImGui::BeginMenu("Autopilot"))
         {
-            if (ImGui::MenuItem("Settings...", NULL)) {}
-            if (ImGui::MenuItem("Route Manager...", NULL)) {}
+            if (ImGui::MenuItem("Settings...", NULL))
+                menu_action = "AutopilotSettings";
+            if (ImGui::MenuItem("Route Manager...", NULL))
+                menu_action = "autopilotRouteManager";
 
             ImGui::Separator();
 
