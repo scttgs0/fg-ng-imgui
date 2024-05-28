@@ -6,16 +6,273 @@ static void doMenuLocationDialogs()
 {
     if (ImGui::BeginPopup("LocationAirborne"))
     {
+        static int sourceType = 0;
+        static int sourceCarrier = 0;
+        static int sourceCarrierPos = 0;
+
+        static char sourceAirport[9];
+        static char sourceAirportRunway[5];
+        static char sourceVOR[5];
+        static char sourceNDB[5];
+        static char sourceFix[5];
+
+        static float sourcePositionLon = 0.0f;
+        static float sourcePositionLat = 0.0f;
+
+        static int relativeDistance = 0;
+        static int relativeAltitude = 0;
+        static int relativeAirspeed = 60;
+        static int relativeAzimuth = 0;
+        static int relativeGlideslope = 0;
+        static int relativeHeading = 0;
+
         ImGui::Text("Airborne Location");
         ImGui::Separator();
+
+        ImGui::BeginChild("ChildLT", ImVec2(160, 150), true);
+            ImGui::RadioButton("Airport", &sourceType, 0);
+            ImGui::RadioButton("Position", &sourceType, 1);
+            ImGui::RadioButton("VOR", &sourceType, 2);
+            ImGui::RadioButton("NDB", &sourceType, 3);
+            ImGui::RadioButton("Fix", &sourceType, 4);
+            ImGui::RadioButton("Aircraft Carrier", &sourceType, 5);
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("ChildRT", ImVec2(200, 150), true);
+            if (sourceType == 0) {
+                ImGui::PushItemWidth(50);
+                ImGui::InputText("Airport", sourceAirport, 8);
+                ImGui::InputText("Runway", sourceAirportRunway, 4);
+                ImGui::PopItemWidth();
+            }
+            else if (sourceType == 1) {
+                ImGui::PushItemWidth(100);
+                ImGui::InputFloat("Longitude", &sourcePositionLon);
+                ImGui::InputFloat("Latitude", &sourcePositionLat);
+                ImGui::PopItemWidth();
+            }
+            else if (sourceType == 2) {
+                ImGui::PushItemWidth(50);
+                ImGui::InputText("VOR", sourceVOR, 8);
+                ImGui::PopItemWidth();
+            }
+            else if (sourceType == 3) {
+                ImGui::PushItemWidth(50);
+                ImGui::InputText("VOR", sourceNDB, 8);
+                ImGui::PopItemWidth();
+            }
+            else if (sourceType == 4) {
+                ImGui::PushItemWidth(50);
+                ImGui::InputText("Fix", sourceNDB, 8);
+                ImGui::PopItemWidth();
+            }
+            else if (sourceType == 5) {
+                ImGui::PushItemWidth(100);
+                ImGui::Combo("Carrier", &sourceCarrier, "Nimitz\0Eisenhower\0");
+                ImGui::Combo("Position", &sourceCarrierPos, "FLOLS\0Abeam\0");
+                ImGui::PopItemWidth();
+            }
+        ImGui::EndChild();
+
+        ImGui::SeparatorText("Relative Position");
+        ImGui::PushItemWidth(120);
+        ImGui::InputInt("(nm) Distance", &relativeDistance);
+        ImGui::InputInt("(ft) Altitude", &relativeAltitude);
+        ImGui::InputInt("(kt) Airspeed", &relativeAirspeed);
+        ImGui::Separator();
+        ImGui::InputInt("(deg) Azimuth", &relativeAzimuth);
+        ImGui::InputInt("(deg) Glideslope", &relativeGlideslope);
+        ImGui::InputInt("(deg) Heading", &relativeHeading);
+        ImGui::PopItemWidth();
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("LocationAirport"))
     {
+        static char airportICAO[9];
+
+        static bool airportNearby = false;
+        static bool airportHelipad = false;
+
+        static bool chartNavData = false;
+        static bool chartParking = false;
+
+        static int item_current_idx = 6;
+        static int aircraftPosition = 0;
+        static int aircraftRunway = 7;
+        static int aircraftParking = 0;
+
         ImGui::Text("Airport Location");
         ImGui::Separator();
+
+        ImGui::BeginChild("ChildL", ImVec2(350, 600), true);
+            ImGui::Button("Search");
+            ImGui::SameLine();
+            ImGui::PushItemWidth(50);
+            ImGui::InputText("Airport", airportICAO, 8);
+            ImGui::PopItemWidth();
+            ImGui::SameLine(0.0f, 10.0f);
+            ImGui::Checkbox("Nearby", &airportNearby);
+            ImGui::SameLine();
+            ImGui::Checkbox("Helipad", &airportHelipad);
+            ImGui::Spacing();
+
+            if (ImGui::BeginListBox("##search_result", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
+            {
+                if (ImGui::Selectable("KBNG    Banning Municipal", (item_current_idx == 0)))
+                    item_current_idx = 0;
+                if (ImGui::Selectable("KBNL    Barnwell Co", (item_current_idx == 1)))
+                    item_current_idx = 1;
+                if (ImGui::Selectable("SKBN    BUENAVISTA", (item_current_idx == 2)))
+                    item_current_idx = 2;
+                if (ImGui::Selectable("KBNO    Burns Muni", (item_current_idx == 3)))
+                    item_current_idx = 3;
+                if (ImGui::Selectable("KBNW    BOONE MUNI", (item_current_idx == 4)))
+                    item_current_idx = 4;
+                if (ImGui::Selectable("YKBN    KOORALBYN", (item_current_idx == 5)))
+                    item_current_idx = 5;
+                if (ImGui::Selectable("KBNA    Nashville Intl", (item_current_idx == 6)))
+                    item_current_idx = 6;
+                ImGui::EndListBox();
+            }
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("METAR");
+            ImGui::TextWrapped("2024/05/27 23:53 KBNA 272353Z 29008KT 10SM SCT050 28/16 A2989 RMK A02 SLP113 TO2780161 10300 20272 53004");
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("Aircraft Position");
+            ImGui::RadioButton("Best Runway", &aircraftPosition, 0);
+            ImGui::RadioButton("Runway", &aircraftPosition, 1);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(100);
+            ImGui::Combo("##runway", &aircraftRunway, "02C\0""02L\0""02R\0""13\0""20C\0""20L\0""20R\0""31\0");
+            ImGui::PopItemWidth();
+            ImGui::RadioButton("Parking", &aircraftPosition, 2);
+            ImGui::SameLine();
+            ImGui::PushItemWidth(100);
+            ImGui::Combo("##parking", &aircraftParking, "Ramp\0P01\0P02\0P03\0P04\0P05\0P06\0P07\0P08\0");
+            ImGui::PopItemWidth();
+
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("ChildR", ImVec2(620, 600), true);
+            if (ImGui::BeginTabBar("AirfieldTabBar", ImGuiTabBarFlags_None))
+            {
+                if (ImGui::BeginTabItem("Airfield"))
+                {
+                    ImGui::BeginChild("AirfieldInfoL", ImVec2(270, 250), true);
+                        ImGui::LabelText("Name", "Nasville_Intl");
+                        ImGui::LabelText("ICAO", "KBNA");
+                        ImGui::LabelText("Lat/Lon", "36.124 -86.678");
+                        ImGui::LabelText("Elevation", "598 ft");
+                        ImGui::LabelText("Max. Runway", "11024 ft");
+                        ImGui::LabelText("Distance", "0.5 nm");
+                        ImGui::LabelText("Course", "293 deg");
+                    ImGui::EndChild();
+
+                    ImGui::SameLine(0.0f, 10.0f);
+
+                    ImGui::BeginChild("AirfieldInfoR", ImVec2(340, 250), true);
+                        ImGui::LabelText("ATIS", "135.100 135.675");
+                        ImGui::LabelText("APP", "120.600 127.175");
+                        ImGui::LabelText("CLD", "126.050");
+                        ImGui::LabelText("DEP", "118.400 119.350");
+                        ImGui::LabelText("FSS", "122.100 122.200 122.550");
+                        ImGui::LabelText("GND", "121.900");
+                        ImGui::LabelText("TWR", "118.600");
+                        ImGui::LabelText("UNICOM", "122.950");
+                    ImGui::EndChild();
+
+                    ImGui::SeparatorText("Runways");
+                    ImGui::Columns(3);
+                    {
+                        ImGui::Text("02C");
+                        ImGui::NextColumn();
+                        ImGui::Text("7996' 017°");
+                        ImGui::NextColumn();
+                        ImGui::Text("110.750 MHz'");
+                        ImGui::NextColumn();
+                    }
+                    {
+                        ImGui::Text("02L");
+                        ImGui::NextColumn();
+                        ImGui::Text("7998' 017°");
+                        ImGui::NextColumn();
+                        ImGui::Text("109.900 MHz'");
+                        ImGui::NextColumn();
+                    }
+                    {
+                        ImGui::Text("02R");
+                        ImGui::NextColumn();
+                        ImGui::Text("7996' 017°");
+                        ImGui::NextColumn();
+                        ImGui::Text("111.750 MHz'");
+                        ImGui::NextColumn();
+                    }
+                    {
+                        ImGui::Text("13");
+                        ImGui::NextColumn();
+                        ImGui::Text("11024' 113°");
+                        ImGui::NextColumn();
+                        ImGui::NextColumn();
+                    }
+                    {
+                        ImGui::Text("20C");
+                        ImGui::NextColumn();
+                        ImGui::Text("7996' 197°");
+                        ImGui::NextColumn();
+                        ImGui::NextColumn();
+                    }
+                    {
+                        ImGui::Text("02L");
+                        ImGui::NextColumn();
+                        ImGui::Text("7996' 197°");
+                        ImGui::NextColumn();
+                        ImGui::Text("109.350 MHz'");
+                        ImGui::NextColumn();
+                    }
+                    {
+                        ImGui::Text("02R");
+                        ImGui::NextColumn();
+                        ImGui::Text("7998' 197°");
+                        ImGui::NextColumn();
+                        ImGui::Text("111.300 MHz'");
+                        ImGui::NextColumn();
+                    }
+                    {
+                        ImGui::Text("31");
+                        ImGui::NextColumn();
+                        ImGui::Text("11024' 313°");
+                        ImGui::NextColumn();
+                        ImGui::Text("111.950 MHz'");
+                        ImGui::NextColumn();
+                    }
+
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Chart"))
+                {
+                    ImGui::SeparatorText("Airfield Chart");
+                    ImGui::Image(0, ImVec2(600.0f, 480.0f));
+                    ImGui::Spacing();
+
+                    ImGui::Checkbox("Nav data", &chartNavData);
+                    ImGui::Checkbox("Parking", &chartParking);
+
+                    ImGui::EndTabItem();
+                }
+                ImGui::EndTabBar();
+            }
+        ImGui::EndChild();
+
+        ImGui::Separator();
+        ImGui::Button("Go to Airport");
 
         ImGui::EndPopup();
     }
