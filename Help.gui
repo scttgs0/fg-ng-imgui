@@ -2,4 +2,881 @@
 #include "imgui.h"
 
 
-static void doMenuHelpDialogs() {}
+static void TextCentered(const char *text)
+{
+    auto contentWidth = ImGui::GetContentRegionAvail().x;
+    auto textWidth   = ImGui::CalcTextSize(text).x;
+
+    ImGui::SetCursorPosX((contentWidth - textWidth) * 0.5f);
+    ImGui::Text(text);
+}
+
+
+static void doMenuHelpDialogs()
+{
+    if (ImGui::BeginPopup("HelpSimKeys"))
+    {
+        ImGui::Text("Basic Keys");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginChild("BasicKeysL", ImVec2(350, 220), true);
+            ImGui::BeginTable("tableBasicKeyL", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Key");
+            ImGui::TableSetupColumn("Description");
+
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("?");
+                ImGui::TableNextColumn();
+                ImGui::Text("show/hide aircraft help dialog");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Esc");
+                ImGui::TableNextColumn();
+                ImGui::Text("quit FlightGear");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Shift-Esc");
+                ImGui::TableNextColumn();
+                ImGui::Text("reset FlightGear");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("a/A");
+                ImGui::TableNextColumn();
+                ImGui::Text("increase/decrease speed-up");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("c");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle 3D/2D cockpit");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-C");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle clickable panel hotspots");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("p");
+                ImGui::TableNextColumn();
+                ImGui::Text("pause/continue sim");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-R");
+                ImGui::TableNextColumn();
+                ImGui::Text("activate instant replay system");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("t/T");
+                ImGui::TableNextColumn();
+                ImGui::Text("adjust time of day forward/backward");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("v/V");
+                ImGui::TableNextColumn();
+                ImGui::Text("cycle views (forward/backward)");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-V");
+                ImGui::TableNextColumn();
+                ImGui::Text("select cockpit view");
+            }
+            ImGui::EndTable();
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("BasicKeysR", ImVec2(350, 220), true);
+            ImGui::BeginTable("tableBasicKeyR", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Key");
+            ImGui::TableSetupColumn("Description");
+
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("x/X");
+                ImGui::TableNextColumn();
+                ImGui::Text("zoom in/out");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-X");
+                ImGui::TableNextColumn();
+                ImGui::Text("reset zoom to default");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("z/Z");
+                ImGui::TableNextColumn();
+                ImGui::Text("increase/decrease visibility");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-Z");
+                ImGui::TableNextColumn();
+                ImGui::Text("reset visibility to default");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("'");
+                ImGui::TableNextColumn();
+                ImGui::Text("display ATC setting dialog");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("+");
+                ImGui::TableNextColumn();
+                ImGui::Text("ATC/instructor repeat last message");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("-");
+                ImGui::TableNextColumn();
+                ImGui::Text("open chat dialog");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("_");
+                ImGui::TableNextColumn();
+                ImGui::Text("compose chat message");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("F3");
+                ImGui::TableNextColumn();
+                ImGui::Text("capture screen");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("F10");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle menubar)");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Shift-F10");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle fullscreen");
+            }
+            ImGui::EndTable();
+        ImGui::EndChild();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("HelpDocs"))
+    {
+        ImGui::Text("Documentation Browser");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("README.introduction");
+        ImGui::Spacing();
+
+        ImGui::BeginChild("DocumentationL", ImVec2(400, 400), true);
+            ImGui::TextWrapped("\n"
+"Internals\n"
+"---------\n\n"
+"The core of FlightGear is the property system. This is a tree like internal\n"
+"representation of global variables. The property system is explained more\n"
+"in detail later on.\n\n"
+"FlightGear' way of doing things is breaking it up into small pieces. There is\n"
+"(for example) animation code that reacts on property changes. There is also a\n"
+"Flight Dynamics model (FDM) that (amongst other things) updates properties.\n"
+"There is a menu system that can display and alter properties. Then we have\n"
+"sound code that plays sound based on ... properties.\n\n"
+"Maybe you see a pattern evolve by now.\n\n"
+"All subsystems are almost self containing. Most of the time they only read the\n"
+"values of some properties, and sometimes they alter other properties. This is\n"
+"the basic way of communicating between subsystems.\n\n\n"
+"Property System\n"
+"---------------\n\n"
+"The property system is best described as an in-memory LDAP database which holds\n"
+"the state of global variables. The system has a tree like hierarchy (like a\n"
+"file system) and has a root node, sub nodes (like subdirectories) and end-nodes\n"
+"(variables).");
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("DocumentationR", ImVec2(250, 400), true);
+            ImGui::BeginListBox("##listbox_docs", ImVec2(-FLT_MIN, 18 * ImGui::GetTextLineHeightWithSpacing()));
+            ImGui::Selectable("README", false);
+            ImGui::Selectable("README.introduction", true);
+            ImGui::Selectable("README.fgfs", false);
+            ImGui::Selectable("README.xmlsyntax", false);
+            ImGui::Selectable("README.multiscreen", false);
+            ImGui::Selectable("README.properties", false);
+            ImGui::EndListBox();
+            ImGui::Spacing();
+            
+            ImGui::Button("Start", ImVec2(80, 20));
+            ImGui::Button("Stop", ImVec2(80, 20));
+        ImGui::EndChild();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    // if (ImGui::BeginPopup("HelpExternal"))
+    // {
+    //     ImGui::Text("Airborne Location");
+    //     ImGui::Separator();
+    //     ImGui::Spacing();
+
+    //     ImGui::EndPopup();
+    // }
+
+    if (ImGui::BeginPopup("HelpAircraftKeys"))
+    {
+        ImGui::Text("Robin DR400-Dauphin");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginTable("tableAircraftKeys", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+        ImGui::TableSetupColumn("Key");
+        ImGui::TableSetupColumn("Description");
+
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("d");
+            ImGui::TableNextColumn();
+            ImGui::Text("Open/Close canopy");
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("s");
+            ImGui::TableNextColumn();
+            ImGui::Text("Starter");
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("=");
+            ImGui::TableNextColumn();
+            ImGui::Text("Open/Close options dialog");
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("Ctrl-c");
+            ImGui::TableNextColumn();
+            ImGui::Text("Toggle panel hotspots and labels");
+        }
+        ImGui::EndTable();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Text("============== Engines Autostart =============\n"
+                           "1 - Open DR400-dauphin dialog (Robin DR400-dauphin > Options)\n"
+                           "2 - Click on Autostart button\n"
+                           "3 - Press \"s\" key\n\n"
+                           "================== Liveries ==================\n"
+                           "1 - Open DR400-dauphin dialog (Robin DR400-dauphin > Options)\n"
+                           "2 - Click on Liveries button\n"
+                           "3 - Select your livery\n\n"
+                           "============== Quick Procedures ==============\n"
+                           "=== Takeoff\n"
+                           ".. 1 flaps\n"
+                           ".. Full throttle\n"
+                           ".. Rotate at 100 km/h\n"
+                           "=== Climb\n"
+                           ".. 130 km/h then 150 km/h\n"
+                           "=== Cruise\n"
+                           ".. 2350 RPM to 2700 RPM (depending on altitude)\n"
+                           ".. VNE = 308 km/h\n"
+                           "=== Approach\n"
+                           ".. 1 flaps at 150 km/h (max 170 km/h)\n"
+                           ".. 2 flaps at 135 km/h (max 150 km/h) \n"
+                           ".. Final at 125 km/h \n\n");
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("HelpAircraftChecklists"))
+    {
+        static int checklistGroup = 0;
+        static int checklistChecklist = 0;
+
+        ImGui::Text("Aircraft Checklists");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Combo("Group", &checklistGroup, "Standard\0Custom\0");
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::Button("Toggle Marker");
+        ImGui::Combo("Checklist", &checklistChecklist, "Checks before engine start\0Engine shutdown\0");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginTable("tableList", 4, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+        ImGui::TableSetupColumn("A");
+        ImGui::TableSetupColumn("B");
+        ImGui::TableSetupColumn("C");
+        ImGui::TableSetupColumn("D");
+
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("Preflight check          ");
+            ImGui::TableNextColumn();
+            ImGui::Text("Complete");
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("Canopy");
+            ImGui::TableNextColumn();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Closed");
+            ImGui::TableNextColumn();
+            ImGui::Button("?");
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("Brakes");
+            ImGui::TableNextColumn();
+            ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Test and Set (Shift-B)");
+            ImGui::TableNextColumn();
+            ImGui::Button("?");
+            ImGui::TableNextColumn();
+            ImGui::Button(">");
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("Electric Master");
+            ImGui::TableNextColumn();
+            ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "On");
+            ImGui::TableNextColumn();
+            ImGui::Button("?");
+            ImGui::TableNextColumn();
+            ImGui::Button(">");
+        }
+        ImGui::EndTable();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("HelpCommonAircraftKeys"))
+    {
+        ImGui::Text("Common Aircraft keys");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginChild("PrimaryControls", ImVec2(400, 510), true);
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.4f, 0.8f, 1.0f));
+            ImGui::SeparatorText("Primary Controls");
+            ImGui::BeginTable("tableprimarycontrols", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Key");
+            ImGui::TableSetupColumn("Description");
+            // ImGui::TableHeadersRow();
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Enter    ");
+                ImGui::TableNextColumn();
+                ImGui::Text("rudder right");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("0/Insert");
+                ImGui::TableNextColumn();
+                ImGui::Text("rudder left");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("2/Down");
+                ImGui::TableNextColumn();
+                ImGui::Text("elevator up; AP altitude increase");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("8/Up");
+                ImGui::TableNextColumn();
+                ImGui::Text("elevator down or decrease AP altitude");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("4/Left");
+                ImGui::TableNextColumn();
+                ImGui::Text("aileron left; adj. AP heading");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("6/Right");
+                ImGui::TableNextColumn();
+                ImGui::Text("aileron right; adj. AP heading");
+            }
+            ImGui::EndTable();
+            ImGui::PopStyleColor();
+
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.6f, 0.0f, 1.0f));
+            ImGui::SeparatorText("Secondary Controls");
+            ImGui::BeginTable("tablesecondarycontrols", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Key");
+            ImGui::TableSetupColumn("Description");
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("3/PgDn   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("throttle decrease; AP auto-throttle");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("9/PgUp");
+                ImGui::TableNextColumn();
+                ImGui::Text("throttle increase; AP auto-throttle");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("1/End");
+                ImGui::TableNextColumn();
+                ImGui::Text("elevator trim up");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("7/Home");
+                ImGui::TableNextColumn();
+                ImGui::Text("elevator trim down");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("[ ]");
+                ImGui::TableNextColumn();
+                ImGui::Text("flaps up/down");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("m/M");
+                ImGui::TableNextColumn();
+                ImGui::Text("mixture richer/leaner");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("n/N");
+                ImGui::TableNextColumn();
+                ImGui::Text("propeller finer/coarser");
+            }
+            ImGui::EndTable();
+            ImGui::PopStyleColor();
+
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.8f, 0.6f, 1.0f));
+            ImGui::SeparatorText("Tertiary Controls");
+            ImGui::BeginTable("tabletertiarycontrols", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Key");
+            ImGui::TableSetupColumn("Description");
+
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("~/!/@/#/$");
+                ImGui::TableNextColumn();
+                ImGui::Text("select engine all/1/2/3/4");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("{ }");
+                ImGui::TableNextColumn();
+                ImGui::Text("decr/incr magneto on sel. eng.");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("s");
+                ImGui::TableNextColumn();
+                ImGui::Text("fire starter on selected eng.");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("b");
+                ImGui::TableNextColumn();
+                ImGui::Text("apply all brakes");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text(", .");
+                ImGui::TableNextColumn();
+                ImGui::Text("left/right brake (comma, period)");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("B");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle parking brake");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-B");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle speed brake");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("g/G");
+                ImGui::TableNextColumn();
+                ImGui::Text("gear up/down");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("j");
+                ImGui::TableNextColumn();
+                ImGui::Text("decrease spoilers");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("k");
+                ImGui::TableNextColumn();
+                ImGui::Text("increase spoilers");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("l");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle tail-wheel lock");
+            }
+            ImGui::EndTable();
+            ImGui::PopStyleColor();
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("MiscellaneousControls", ImVec2(400, 510), true);
+            ImGui::SeparatorText("Miscellaneous");
+            ImGui::BeginTable("tablemiscellaneous", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Key");
+            ImGui::TableSetupColumn("Description");
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("F12");
+                ImGui::TableNextColumn();
+                ImGui::Text("open radio settings dialog");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Space");
+                ImGui::TableNextColumn();
+                ImGui::Text("PTT - Push To Talk (via VoIP)");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("h");
+                ImGui::TableNextColumn();
+                ImGui::Text("cycle HUD (head up display)");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("H");
+                ImGui::TableNextColumn();
+                ImGui::Text("cycle HUD brightness");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("i/Shift-i");
+                ImGui::TableNextColumn();
+                ImGui::Text("normal/alternative HUD");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("P");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle 2D panel");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("S");
+                ImGui::TableNextColumn();
+                ImGui::Text("swap panels");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Shift-F5");
+                ImGui::TableNextColumn();
+                ImGui::Text("scroll 2D panel down");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Shift-F6");
+                ImGui::TableNextColumn();
+                ImGui::Text("scroll 2D panel up");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Shift-F7");
+                ImGui::TableNextColumn();
+                ImGui::Text("scroll 2D panel left");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Shift-F8");
+                ImGui::TableNextColumn();
+                ImGui::Text("scroll 2D panel right");
+            }
+            ImGui::EndTable();
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("Autopilot");
+            ImGui::BeginTable("tableautopilot", 2, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Key");
+            ImGui::TableSetupColumn("Description");
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("F11");
+                ImGui::TableNextColumn();
+                ImGui::Text("open autopilot dialog");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-A   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle altitude lock");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-G");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle glide slope lock");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-H");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle heading lock");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-N");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle NAV1 lock");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-P");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle pitch hold");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-S");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle auto-throttle");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-T");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle terrain lock");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Ctrl-W");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle wing leveler");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("F6");
+                ImGui::TableNextColumn();
+                ImGui::Text("toggle heading mode");
+            }
+            ImGui::EndTable();
+        ImGui::EndChild();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("HelpHighlighting"))
+    {
+        static bool isEnabled = false;
+
+        ImGui::Text("Highlighting");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Enable", &isEnabled);
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginListBox("##listbox_tutorials", ImVec2(250, 12 * ImGui::GetTextLineHeightWithSpacing()));
+        ImGui::Selectable("dummy = '' (string)", true);
+        ImGui::EndListBox();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("HelpTutorials"))
+    {
+        ImGui::Text("Select Tutorial");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Start Up");
+        ImGui::Spacing();
+
+        ImGui::BeginChild("TutorialL", ImVec2(400, 400), true);
+            ImGui::TextWrapped("Before you go flying, you'll need to learn how to start the engine.\n\n"
+                               "This tutorial will take you through the pre-start checklist and starting the Robin DR400 Dauphin.");
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("TutorialR", ImVec2(250, 400), true);
+            ImGui::BeginListBox("##listbox_tutorials", ImVec2(-FLT_MIN, 18 * ImGui::GetTextLineHeightWithSpacing()));
+            ImGui::Selectable("Start Up", true);
+            ImGui::Selectable("Taxiing", false);
+            ImGui::Selectable("Before Takeoff Checks", false);
+            ImGui::Selectable("Radio Tuning", false);
+            ImGui::Selectable("Setting the Altimeter", false);
+            ImGui::Selectable("Takeoff", false);
+            ImGui::EndListBox();
+            ImGui::Spacing();
+            
+            ImGui::Button("Start", ImVec2(80, 20));
+            ImGui::Button("Stop", ImVec2(80, 20));
+        ImGui::EndChild();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("HelpScenerySources"))
+    {
+        ImGui::Text("Scenery Sources");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginTable("table_screnery_sources", 4, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+        ImGui::TableSetupColumn("Directory");
+        ImGui::TableSetupColumn("Source");
+        ImGui::TableSetupColumn("License");
+        ImGui::TableSetupColumn("URL");
+        ImGui::TableHeadersRow();
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn(); 
+        ImGui::EndTable();
+        ImGui::Spacing();
+
+        ImGui::Text("        No scenery source attributions found        ");
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("HelpAbout"))
+    {
+        ImGui::Text("About FlightGear");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        TextCentered("          FlightGear Flight Simulator VX.X.X          ");
+        ImGui::Spacing();
+
+        TextCentered("(c) 1996-2024, FlightGear Contributors");
+        ImGui::Spacing();
+
+        ImGui::TextWrapped("FlightGear is free and open source software, licensed "
+                           "under the GNU General Public License Version 2.");
+        ImGui::Spacing();
+        ImGui::TextWrapped("Get new versions, add-ons, forum, wiki and more "
+                           "from the web-site at http://www.flightgear.org/.");
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Version Information");
+        TextCentered("FlightGear Version: 2020.4.0 ");
+        TextCentered("SimGear Version: 2020.4.0    ");
+        TextCentered("OpenSceneGraph Version: 3.7.0");
+        TextCentered("Build Id: 0                  ");
+        TextCentered("Build Number: 0              ");
+        TextCentered("Revision: 0                  ");
+
+        ImGui::SeparatorText("Graphics/OpenGL Information");
+        TextCentered("OpenGL Vendor: 0             ");
+        TextCentered("OpenGL Renderer: 0           ");
+        TextCentered("OpenGL Version: 0            ");
+        TextCentered("GLSL Version: 0              ");
+        TextCentered("Max Texture Size: 0          ");
+        TextCentered("Depth Buffer Bits: 0         ");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("Copy to Clipboard");
+
+        ImGui::EndPopup();
+    }
+}

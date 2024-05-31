@@ -2,4 +2,51 @@
 #include "imgui.h"
 
 
-static void doMenuEnvironmentDialogs() {}
+static void doMenuEnvironmentDialogs()
+{
+    if (ImGui::BeginPopup("EnvironmentSettings"))
+    {
+        ImGui::Text("Environment Settings");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EnvironmentTime"))
+    {
+        ImGui::Text("Time Settings");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EnvironmentWeather"))
+    {
+        ImGui::Text("Weather Settings");
+        ImGui::Separator();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EnvironmentVolcanoes"))
+    {
+        static bool isVolcanic = false;
+
+        static int nearbyVolcanoes = 0;
+
+        ImGui::Text("Nearby Volcanic Activity");
+        ImGui::Separator();
+
+        ImGui::Checkbox("Enable Volcanic Activity", &isVolcanic);
+
+        if (!isVolcanic)
+            ImGui::BeginDisabled();
+
+        ImGui::Combo("##nearby", &nearbyVolcanoes, "Volcano 0\0""Volcano 1\0""Volcano 2\0");
+
+        if (!isVolcanic)
+            ImGui::EndDisabled();
+
+        ImGui::EndPopup();
+    }
+}

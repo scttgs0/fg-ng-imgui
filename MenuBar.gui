@@ -23,28 +23,28 @@ static void doMenuBar(std::string& menu_action)
 
             if (ImGui::MenuItem("Video Stop", NULL, false)) {}
 
-            if (ImGui::MenuItem("Video Control...", NULL))
+            if (ImGui::MenuItem("Video Control", NULL))
                 menu_action = "FileVideoControl";
 
             ImGui::Separator();
 
             if (ImGui::BeginMenu("Configuration")) {
-                if (ImGui::MenuItem("Flight Recorder...", NULL))
+                if (ImGui::MenuItem("Flight Recorder", NULL))
                     menu_action = "FileFlightRecorder";
-                if (ImGui::MenuItem("Time Mode...", NULL))
+                if (ImGui::MenuItem("Time Mode", NULL))
                     menu_action = "FileTimeMode";
-                if (ImGui::MenuItem("Sound...", NULL))
+                if (ImGui::MenuItem("Sound", NULL))
                     menu_action = "FileSoundConfiguration";
-                if (ImGui::MenuItem("Mouse...", NULL))
+                if (ImGui::MenuItem("Mouse", NULL))
                     menu_action = "FileMouseConfiguration";
-                if (ImGui::MenuItem("Joystick...", NULL))
+                if (ImGui::MenuItem("Joystick", NULL))
                     menu_action = "FileJoystickConfiguration";
-                if (ImGui::MenuItem("Scenery Download...", NULL))
+                if (ImGui::MenuItem("Scenery Download", NULL))
                     menu_action = "FileSceneryDownload";
                 ImGui::EndMenu();
             }
 
-            if (ImGui::MenuItem("View Errors...", NULL))
+            if (ImGui::MenuItem("View Errors", NULL))
                 menu_action = "FileViewErrors";
 
             ImGui::Separator();
@@ -62,18 +62,18 @@ static void doMenuBar(std::string& menu_action)
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("View Position...", NULL))
+            if (ImGui::MenuItem("View Position", NULL))
                 menu_action = "ViewAdjustPosition";
-            if (ImGui::MenuItem("LOD Range...", NULL))
+            if (ImGui::MenuItem("LOD Range", NULL))
                 menu_action = "ViewLodRange";
-            if (ImGui::MenuItem("HUD...", NULL))
+            if (ImGui::MenuItem("HUD", NULL))
                 menu_action = "ViewHud";
-            if (ImGui::MenuItem("Filter Effects...", NULL))
+            if (ImGui::MenuItem("Filter Effects", NULL))
                 menu_action = "ViewFilterEffects";
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Replay...", "Ctrl-R"))
+            if (ImGui::MenuItem("Replay", "Ctrl-R"))
                 menu_action = "ViewReplay";
 
             ImGui::Separator();
@@ -91,17 +91,17 @@ static void doMenuBar(std::string& menu_action)
 
         if (ImGui::BeginMenu("Options"))
         {
-            if (ImGui::MenuItem("Rendering...", NULL))
+            if (ImGui::MenuItem("Rendering", NULL))
                 menu_action = "OptionsRendering";
-            if (ImGui::MenuItem("Orbital Rendering...", NULL))
+            if (ImGui::MenuItem("Orbital Rendering", NULL))
                 menu_action = "OptionsOrbitalRendering";
-            if (ImGui::MenuItem("View...", NULL))
+            if (ImGui::MenuItem("View", NULL))
                 menu_action = "OptionsView";
-            if (ImGui::MenuItem("Cockpit...", NULL))
+            if (ImGui::MenuItem("Cockpit", NULL))
                 menu_action = "OptionsCockpit";
-            if (ImGui::MenuItem("Stereoscopic...", NULL))
+            if (ImGui::MenuItem("Stereoscopic", NULL))
                 menu_action = "OptionsStereoscopic";
-            if (ImGui::MenuItem("Virtual Reality...", NULL))
+            if (ImGui::MenuItem("Virtual Reality", NULL))
                 menu_action = "OptionsVirtualReality";
 
             ImGui::EndMenu();
@@ -109,9 +109,9 @@ static void doMenuBar(std::string& menu_action)
 
         if (ImGui::BeginMenu("Location"))
         {
-            if (ImGui::MenuItem("Position in Air...", NULL))
+            if (ImGui::MenuItem("Position in Air", NULL))
                 menu_action = "LocationAirborne";
-            if (ImGui::MenuItem("Airport...", NULL))
+            if (ImGui::MenuItem("Airport", NULL))
                 menu_action = "LocationAirport";
 
             ImGui::Separator();
@@ -124,9 +124,9 @@ static void doMenuBar(std::string& menu_action)
 
         if (ImGui::BeginMenu("Autopilot"))
         {
-            if (ImGui::MenuItem("Settings...", NULL))
+            if (ImGui::MenuItem("Settings", NULL))
                 menu_action = "AutopilotSettings";
-            if (ImGui::MenuItem("Route Manager...", NULL))
+            if (ImGui::MenuItem("Route Manager", NULL))
                 menu_action = "autopilotRouteManager";
 
             ImGui::Separator();
@@ -138,10 +138,14 @@ static void doMenuBar(std::string& menu_action)
 
         if (ImGui::BeginMenu("Environment"))
         {
-            if (ImGui::MenuItem("Settings...", NULL)) {}
-            if (ImGui::MenuItem("Time...", NULL)) {}
-            if (ImGui::MenuItem("Weather...", NULL)) {}
-            if (ImGui::MenuItem("Volcanoes...", NULL)) {}
+            if (ImGui::MenuItem("Settings", NULL))
+                menu_action = "EnvironmentSettings";
+            if (ImGui::MenuItem("Time", NULL))
+                menu_action = "EnvironmentTime";
+            if (ImGui::MenuItem("Weather", NULL))
+                menu_action = "EnvironmentWeather";
+            if (ImGui::MenuItem("Volcanoes", NULL))
+                menu_action = "EnvironmentVolcanoes";
             ImGui::EndMenu();
         }
 
@@ -154,10 +158,10 @@ static void doMenuBar(std::string& menu_action)
                 ImGui::EndMenu();
             }
 
-            if (ImGui::MenuItem("Radio...", NULL)) {}
-            if (ImGui::MenuItem("GPS...", NULL)) {}
-            if (ImGui::MenuItem("Instrument Settings...", NULL)) {}
-            if (ImGui::MenuItem("Lights...", NULL)) {}
+            if (ImGui::MenuItem("Radio", NULL)) {}
+            if (ImGui::MenuItem("GPS", NULL)) {}
+            if (ImGui::MenuItem("Instrument Settings", NULL)) {}
+            if (ImGui::MenuItem("Lights", NULL)) {}
 
             ImGui::Separator();
 
@@ -170,37 +174,45 @@ static void doMenuBar(std::string& menu_action)
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Fuel and Payload...", NULL)) {}
-            if (ImGui::MenuItem("Stopwatch...", NULL)) {}
+            if (ImGui::MenuItem("Fuel and Payload", NULL)) {}
+            if (ImGui::MenuItem("Stopwatch", NULL)) {}
 
             ImGui::EndMenu();
         }
 
         if (ImGui::BeginMenu("AI"))
         {
-            if (ImGui::MenuItem("Traffic and Scenarios...", NULL)) {}
-            if (ImGui::MenuItem("Air Traffic Control...", NULL)) {}
-            if (ImGui::MenuItem("Wingman...", NULL)) {}
-            if (ImGui::MenuItem("Tanker...", NULL)) {}
-            if (ImGui::MenuItem("Jetway...", NULL)) {}
-            if (ImGui::MenuItem("Objects...", NULL)) {}
+            if (ImGui::MenuItem("Traffic and Scenarios", NULL)) {}
+            if (ImGui::MenuItem("Air Traffic Control", NULL)) {}
+            if (ImGui::MenuItem("Wingman", NULL)) {}
+            if (ImGui::MenuItem("Tanker", NULL)) {}
+            if (ImGui::MenuItem("Jetway", NULL)) {}
+            if (ImGui::MenuItem("Objects", NULL)) {}
 
             ImGui::EndMenu();
         }
 
         if (ImGui::BeginMenu("Multiplayer"))
         {
-            if (ImGui::MenuItem("Settings...", NULL)) {}
-            if (ImGui::MenuItem("FGCom Settings...", NULL)) {}
-            if (ImGui::MenuItem("Lag Settings...", NULL)) {}
+            if (ImGui::MenuItem("Settings", NULL)) {}
+            if (ImGui::MenuItem("FGCom Settings", NULL)) {}
+            if (ImGui::MenuItem("Lag Settings", NULL)) {}
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Chat...", NULL)) {}
+            if (ImGui::MenuItem("Chat", NULL)) {}
             if (ImGui::MenuItem("Chat Menu", NULL)) {}
             if (ImGui::MenuItem("Pilot List", NULL)) {}
-            if (ImGui::MenuItem("Carrier...", NULL)) {}
-            if (ImGui::MenuItem("Swift Connection...", NULL)) {}
+            if (ImGui::MenuItem("Carrier", NULL)) {}
+            if (ImGui::MenuItem("Swift Connection", NULL)) {}
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Services"))
+        {
+            if (ImGui::MenuItem("Ground", NULL)) {}
+            if (ImGui::MenuItem("Map", NULL)) {}
 
             ImGui::EndMenu();
         }
@@ -221,7 +233,7 @@ static void doMenuBar(std::string& menu_action)
             }
 
             if (ImGui::BeginMenu("Nasal")) {
-                if (ImGui::MenuItem("Console...", NULL)) {}
+                if (ImGui::MenuItem("Console", NULL)) {}
                 if (ImGui::MenuItem("REPL Interpreter", NULL)) {}
                 if (ImGui::MenuItem("Test", NULL)) {}
                 ImGui::EndMenu();
@@ -275,35 +287,38 @@ static void doMenuBar(std::string& menu_action)
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Services"))
-        {
-            if (ImGui::MenuItem("Ground...", NULL)) {}
-            if (ImGui::MenuItem("Map...", NULL)) {}
-
-            ImGui::EndMenu();
-        }
-
         if (ImGui::BeginMenu("Help"))
         {
-            if (ImGui::MenuItem("Simulator Keys", NULL)) {}
-            if (ImGui::MenuItem("Documentation", NULL)) {}
-            if (ImGui::MenuItem("Help (external)", NULL)) {}
+            if (ImGui::MenuItem("Simulator Keys", NULL))
+                menu_action = "HelpSimKeys";
+            if (ImGui::MenuItem("Documentation", NULL))
+                menu_action = "HelpDocs";
+            if (ImGui::MenuItem("Help (external)", NULL))
+                menu_action = "HelpExternal";
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Aircraft Help", "?")) {}
-            if (ImGui::MenuItem("Aircraft Checklists", NULL)) {}
-            if (ImGui::MenuItem("Common Aircraft Keys", NULL)) {}
+            if (ImGui::MenuItem("Aircraft Help", "?"))
+                menu_action = "HelpAircraftKeys";
+            if (ImGui::MenuItem("Aircraft Checklists", NULL))
+                menu_action = "HelpAircraftChecklists";
+            if (ImGui::MenuItem("Common Aircraft Keys", NULL))
+                menu_action = "HelpCommonAircraftKeys";
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Highlighting", NULL)) {}
-            if (ImGui::MenuItem("Tutorials", NULL)) {}
-            if (ImGui::MenuItem("Scenery Sources", NULL)) {}
+            if (ImGui::MenuItem("Highlighting", NULL))
+                menu_action = "HelpHighlighting";
+            if (ImGui::MenuItem("Tutorials", NULL))
+                menu_action = "HelpTutorials";
+            if (ImGui::MenuItem("Scenery Sources", NULL))
+                menu_action = "HelpScenerySources";
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("About...", NULL)) {}
+            if (ImGui::MenuItem("About", NULL))
+                menu_action = "HelpAbout";
+
             ImGui::EndMenu();
         }
 

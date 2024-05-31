@@ -59,4 +59,34 @@ static void doMenuAction(std::string& menu_action)
         ImGui::OpenPopup("AutopilotSettings");
     if(menu_action == "autopilotRouteManager")
         ImGui::OpenPopup("autopilotRouteManager");
+
+    if(menu_action == "EnvironmentSettings")
+        ImGui::OpenPopup("EnvironmentSettings");
+    if(menu_action == "EnvironmentTime")
+        ImGui::OpenPopup("EnvironmentTime");
+    if(menu_action == "EnvironmentWeather")
+        ImGui::OpenPopup("EnvironmentWeather");
+    if(menu_action == "EnvironmentVolcanoes")
+        ImGui::OpenPopup("EnvironmentVolcanoes");
+
+    if (menu_action == "HelpSimKeys")
+        ImGui::OpenPopup("HelpSimKeys");
+    if (menu_action == "HelpDocs")
+        ImGui::OpenPopup("HelpDocs");
+    // if (menu_action == "HelpExternal")
+        // ImGui::OpenPopup("HelpExternal");
+    if (menu_action == "HelpAircraftKeys")
+        ImGui::OpenPopup("HelpAircraftKeys");
+    if (menu_action == "HelpAircraftChecklists")
+        ImGui::OpenPopup("HelpAircraftChecklists");
+    if (menu_action == "HelpCommonAircraftKeys")
+        ImGui::OpenPopup("HelpCommonAircraftKeys");
+    if (menu_action == "HelpHighlighting")
+        ImGui::OpenPopup("HelpHighlighting");
+    if (menu_action == "HelpTutorials")
+        ImGui::OpenPopup("HelpTutorials");
+    if (menu_action == "HelpScenerySources")
+        ImGui::OpenPopup("HelpScenerySources");
+    if (menu_action == "HelpAbout")
+        ImGui::OpenPopup("HelpAbout");
 }
