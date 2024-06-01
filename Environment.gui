@@ -4,26 +4,530 @@
 
 static void doMenuEnvironmentDialogs()
 {
+    static bool isClimateUpdates = true;
+    static bool isMaxSnowLevel = true;
+
+    static int snowLine = 0;
+    static int iceCover = 0;
+    static int season = 0;
+    static int aurora = 0;
+
+    static float snowThickness = 0.0f;
+    static float dustCover = 0.0f;
+    static float wetness = 0.0f;
+    static float vegetation = 0.0f;
+
+    static const char* iceCoverDesc[3] = {"none", "thin", "thick"};
+
     if (ImGui::BeginPopup("EnvironmentSettings"))
     {
         ImGui::Text("Environment Settings");
         ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Ground conditions");
+        ImGui::Checkbox("Climate updates environment", &isClimateUpdates);
+        ImGui::Checkbox("Set maximum snow level from weather", &isMaxSnowLevel);
+        ImGui::Spacing();
+
+        ImGui::SliderInt("Snow line", &snowLine, -425, 7500, "%d m");
+        ImGui::SliderFloat("Snow thickness", &snowThickness, 0.0f, 0.6f, "%0.1f");
+        ImGui::SliderInt("Ice cover", &iceCover, 0, 2, iceCoverDesc[iceCover]);
+        ImGui::SliderFloat("Dust cover", &dustCover, 0.0f, 0.7f, "%0.1f");
+        ImGui::SliderFloat("Wetness", &wetness, 0.0f, 0.7f, "%0.1f");
+        ImGui::SliderFloat("Vegetation", &vegetation, 0.0f, 0.7f, "%0.1f");
+        ImGui::SliderInt("Season (experimental)", &season, 0, 2, "%d");
+        ImGui::SliderInt("Aurora Borealis", &aurora, 0, 1, aurora == 0 ? "weak" : "strong");
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("EnvironmentTime"))
     {
+        static char dateYear[] {"2024"};
+        static int dateMonth = 5;
+        static char dateDay[] {"31"};
+        static int simulatorRate = 1;
+        static int timeWarp = 1;
+
         ImGui::Text("Time Settings");
         ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginChild("timeL", ImVec2(270, 230), true);
+            ImGui::BeginTable("table_date", 3);
+            ImGui::TableSetupColumn("Year");
+            ImGui::TableSetupColumn("Month");
+            ImGui::TableSetupColumn("Day");
+            ImGui::TableHeadersRow();
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::InputText("##year", dateYear, 5);
+                ImGui::TableNextColumn();
+                ImGui::Combo("##month", &dateMonth, "Jan\0Feb\0Mar\0Apr\0May\0Jun\0Jul\0Aug\0Sep\0Oct\0Nov\0Dec\0");
+                ImGui::TableNextColumn();
+                ImGui::InputText("##day", dateDay, 3);
+            }
+
+            ImGui::EndTable();
+        ImGui::Spacing();
+        ImGui::Indent();
+        ImGui::Text("UTC    00:00:00Z");
+        ImGui::Text("Local  00:00:00   America/Chicago");
+        ImGui::Unindent();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Spacing();
+        ImGui::Indent();
+        ImGui::PushItemWidth(80);
+        ImGui::InputInt("Simulator Rate", &simulatorRate);
+        ImGui::PopItemWidth();
+        ImGui::PushItemWidth(80);
+        ImGui::InputInt("Time Warp", &timeWarp);
+        ImGui::PopItemWidth();
+        ImGui::Unindent();
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("timeR", ImVec2(160, 230), true);
+            ImGui::SeparatorText("Time Presets");
+            ImGui::Spacing();
+            ImGui::Indent();
+            ImGui::Button("Clock Time", ImVec2(100,0));
+            ImGui::Button("Dawn", ImVec2(100,0));
+            ImGui::Button("Morning", ImVec2(100,0));
+            ImGui::Button("Noon", ImVec2(100,0));
+            ImGui::Button("Afternoon", ImVec2(100,0));
+            ImGui::Button("Dusk", ImVec2(100,0));
+            ImGui::Button("Evening", ImVec2(100,0));
+            ImGui::Button("Night", ImVec2(100,0));
+            ImGui::Unindent();
+        ImGui::EndChild();
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("EnvironmentWeather"))
     {
-        ImGui::Text("Weather Settings");
+        static int weatherEngine = 1;
+        static int weatherConditions = 0;
+
+        ImGui::Text("Weather Conditions");
         ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Select Weather Engine");
+
+        ImGui::RadioButton("Basic Weather   ", &weatherEngine, 0);
+        if (weatherEngine != 0)
+            ImGui::BeginDisabled();
+        ImGui::SameLine(0.0f, 200.0f);
+        if (ImGui::Button("Configure##basic")) {
+            ImGui::OpenPopup("BasicConfig");
+        }
+        if (weatherEngine != 0)
+            ImGui::EndDisabled();
+        ImGui::TextWrapped("Simple and fast weather engine that interprets METAR data directly or a "
+					       "set of manually defined parameters. Recommended for use with Multiplayer.");
+
+        ImGui::RadioButton("Detailed Weather", &weatherEngine, 1);
+        if (weatherEngine != 1)
+            ImGui::BeginDisabled();
+        ImGui::SameLine(0.0f, 200.0f);
+        if (ImGui::Button("Configure##detail")) {
+            ImGui::OpenPopup("DetailedConfig");
+        }
+        if (weatherEngine != 1)
+            ImGui::EndDisabled();
+        ImGui::TextWrapped("Advanced weather engine that gives more detailed and realistic results based on METAR "
+					"data and a set of predefined parameters. Click on 'Apply' to run the engine, as the engine "
+					"does not automatically load upon startup.");
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Combo("Weather Conditions", &weatherConditions, "Live data\0Manual input\0");
+        if (weatherConditions == 0)
+            ImGui::TextWrapped("Fetch live weather data for your nearest airport from noaa.gov. "
+                            "You need a working internet connection. "
+                            "Weather is generated automatically, once a valid METAR is received.");
+        if (weatherConditions == 1)
+            ImGui::TextWrapped("Enter your favorite METAR weather. A valid METAR syntax is required.");
+        ImGui::Spacing();
+
+        if (weatherConditions == 0)
+            ImGui::BeginDisabled();
+        ImGui::TextWrapped("2024/05/27 23:53 KBNA 272353Z 29008KT 10SM SCT050 28/16 A2989 RMK A02 SLP113 TO2780161 10300 20272 53004");
+        if (weatherConditions == 0)
+            ImGui::EndDisabled();
+
+        if (ImGui::Button("METAR Description")) {
+            ImGui::OpenPopup("MetarDescription");
+        }
+
+        // ================================================
+
+        if (ImGui::BeginPopup("MetarDescription"))
+        {
+            ImGui::Text("METAR Description");
+            ImGui::Separator();
+            ImGui::Spacing();
+
+            ImGui::BeginTable("table_metar_description", 3);
+            ImGui::TableSetupColumn("#element");
+            ImGui::TableSetupColumn("#description");
+            {
+                static const char* metarElements[] = {
+                    "Airport-id",
+                    "Report Time",
+                    "Visibility",
+                    "Wind",
+                    "Temperature",
+                    "Dewpoint",
+                    "Pressure",
+                    "Sky Conditions"
+                };
+                static const char* metarDescriptions[] = {
+                    "KBNA",
+                    "2024/05/27 23:53 UTC",
+                    "10 Statue Miles",
+                    "from 290 @ 8 knots",
+                    "28 Celsius",
+                    "16 Celsius",
+                    "29.89 in.Hg",
+                    "Scattered clouds at 5000 feet"
+                };
+
+                for (int i = 0; i < 8; ++i)
+                {
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text(metarElements[i]);
+                    ImGui::TableNextColumn();
+                    ImGui::Text(metarDescriptions[i]);
+                }
+            }
+
+            ImGui::EndTable();
+
+            ImGui::EndPopup();
+        }
+
+        // ================================================
+
+        if (ImGui::BeginPopup("BasicConfig"))
+        {
+            static char bwclAltitude[][6] = { "-9999", "-9999", "-9999", "-9999", "0"};
+            static char bwclThickness[][6] = { "0", "0", "0", "0", "65"};
+
+            static char bwwaAltitude[][6] = { "30000", "24000", "18000", "10000", "5000"};
+            static char bwwaDirection[][6] = { "35", "35", "35", "30", "25"};
+            static char bwwaKnots[][6] = { "13", "13", "13", "12", "4"};
+            static char bwwaVisibility[][6] = { "16", "16", "16", "16", "10"};
+            static char bwwaTemperature[][6] = { "-39", "-27", "-15", "0", "10"};
+            static char bwwaDewPoint[][6] = { "-39", "-27", "-15", "0", "10"};
+
+            static char bwswAltitude[][6] = { "500", "0"};
+            static char bwswDirection[][6] = { "5", "0"};
+            static char bwswKnots[][6] = { "0", "0"};
+            static char bwswVisibility[][6] = { "16", "16"};
+            static char bwswTemperature[][6] = { "19", "20"};
+            static char bwswDewPoint[][6] = { "16", "16"};
+
+            static int bwclCoverage[] = {0, 0, 0, 0, 0};
+
+            static int bwwaTurbulence[] = {0, 0, 0, 0, 0};
+
+            static int bwswTurbulence[] = {0, 0, 0, 0, 0};
+
+            static float bwPrecipRain = 0.0f;
+            static float bwPrecipSnow = 0.0f;
+            static float bwPrecipQNH = 29.98f;
+
+            ImGui::Text("Basic Troposphere Weather Conditions");
+            ImGui::Separator();
+            ImGui::Spacing();
+
+            ImGui::BeginChild("basicWeathL", ImVec2(350, 270), true);
+                ImGui::SeparatorText("Cloud Layers (All Altitudes ft-AMSL)");
+                ImGui::BeginTable("table_bw_cloud_layers", 3);
+                ImGui::TableSetupColumn("Altitude (ft)");
+                ImGui::TableSetupColumn("Coverage");
+                ImGui::TableSetupColumn("Thickness (ft)");
+                ImGui::TableHeadersRow();
+                for (int i = 0; i < 5; ++i)
+                {
+                    char name0[20];
+                    sprintf(name0, "##bwcl_altitude%d", i);
+                    char name1[20];
+                    sprintf(name1, "##bwcl_coverage%d", i);
+                    char name2[20];
+                    sprintf(name2, "##bwcl_thinkness%d", i);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name0, bwclAltitude[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::Combo(name1, &bwclCoverage[i], "clear\0few\0scattered\0broken\0overcast\0cirrus\0");
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name2, bwclThickness[i], 6);
+                }
+
+                ImGui::EndTable();
+
+                ImGui::SeparatorText("Precipitation");
+                ImGui::SliderFloat("Rain", &bwPrecipRain, 0.0f, 1.0f);
+                ImGui::SliderFloat("Snow", &bwPrecipSnow, 0.0f, 1.0f);
+                ImGui::InputFloat("QNH (inHg)", &bwPrecipQNH);
+            ImGui::EndChild();
+
+            ImGui::SameLine(0.0f, 10.0f);
+
+            ImGui::BeginChild("basicWeathR", ImVec2(550, 270), true);
+                ImGui::SeparatorText("Winds Aloft (All Altitudes ft-AMSL)");
+                ImGui::BeginTable("table_bw_winds_aloft", 7); //, ImGuiTableFlags_SizingFixedFit);
+                ImGui::TableSetupColumn("Altitude");
+                ImGui::TableSetupColumn("Dir");
+                ImGui::TableSetupColumn("Knots");
+                ImGui::TableSetupColumn("Vis (sm)");
+                ImGui::TableSetupColumn("Temp (C)");
+                ImGui::TableSetupColumn("Dew Pt (C)");
+                ImGui::TableSetupColumn("Turbulence");
+                ImGui::TableHeadersRow();
+                for (int i = 0; i < 5; ++i)
+                {
+                    char name0[20];
+                    sprintf(name0, "##bwwa_altitude%d", i);
+                    char name1[20];
+                    sprintf(name1, "##bwwa_dir%d", i);
+                    char name2[20];
+                    sprintf(name2, "##bwwa_knots%d", i);
+                    char name3[20];
+                    sprintf(name3, "##bwwa_visibility%d", i);
+                    char name4[20];
+                    sprintf(name4, "##bwwa_temp%d", i);
+                    char name5[20];
+                    sprintf(name5, "##bwwa_dewpoint%d", i);
+                    char name6[20];
+                    sprintf(name6, "##bwwa_turbulence%d", i);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name0, bwwaAltitude[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name1, bwwaDirection[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name2, bwwaKnots[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name3, bwwaVisibility[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name4, bwwaTemperature[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name5, bwwaDewPoint[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::Combo(name6, &bwwaTurbulence[i], "none\0light\0moderate\0severe\0");
+                }
+                ImGui::EndTable();
+
+                ImGui::SeparatorText("Surface Winds (All Altitudes ft-AGL)");
+                ImGui::BeginTable("table_bw_winds_aloft", 7); //, ImGuiTableFlags_SizingFixedFit);
+                ImGui::TableSetupColumn("Altitude");
+                ImGui::TableSetupColumn("Dir");
+                ImGui::TableSetupColumn("Knots");
+                ImGui::TableSetupColumn("Vis (sm)");
+                ImGui::TableSetupColumn("Temp (C)");
+                ImGui::TableSetupColumn("Dew Pt (C)");
+                ImGui::TableSetupColumn("Turbulence");
+                ImGui::TableHeadersRow();
+                for (int i = 0; i < 2; ++i)
+                {
+                    char name0[20];
+                    sprintf(name0, "##bwsw_altitude%d", i);
+                    char name1[20];
+                    sprintf(name1, "##bwsw_dir%d", i);
+                    char name2[20];
+                    sprintf(name2, "##bwsw_knots%d", i);
+                    char name3[20];
+                    sprintf(name3, "##bwsw_visibility%d", i);
+                    char name4[20];
+                    sprintf(name4, "##bwsw_temp%d", i);
+                    char name5[20];
+                    sprintf(name5, "##bwsw_dewpoint%d", i);
+                    char name6[20];
+                    sprintf(name6, "##bwsw_turbulence%d", i);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name0, bwswAltitude[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name1, bwswDirection[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name2, bwswKnots[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name3, bwswVisibility[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name4, bwswTemperature[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::InputText(name5, bwswDewPoint[i], 6);
+                    ImGui::TableNextColumn();
+                    ImGui::Combo(name6, &bwswTurbulence[i], "none\0light\0moderate\0severe\0");
+                }
+                ImGui::EndTable();
+
+            ImGui::EndChild();
+
+            ImGui::EndPopup();
+        }
+
+        // ================================================
+
+        if (ImGui::BeginPopup("DetailedConfig"))
+        {
+            static int awTileMode = 3;
+            static int awWindModel = 0;
+            static int fogProperties = 0;
+            static int maxVisibility = 250;
+
+            static char awAltitudeOffset[6] {"500"};
+            static char awTempOffset[6] {"0"};
+            static char awWind[6] {"0"};
+            static char awKnots[6] {"0"};
+
+            static bool isDebug = false;
+            static bool isTerrain = true;
+            static bool isPresampling = true;
+            static bool isGenThermals = true;
+            static bool isRealisticVis = true;
+            static bool isCloudShadow = false;
+
+            static float awGustFrequency = 0.0f;
+            static float awGustFactor = 0.0f;
+            static float convectiveCond = 0.0f;
+            static float turbulence = 0.0f;
+            static float groundHaze = 0.1f;
+            static float population = 0.0f;
+            static float airmass = 0.5f;
+            static float cloudPatterns = 0.0f;
+
+            ImGui::Text("Advanced Weather Configuration");
+            ImGui::Separator();
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("General Settings");
+            ImGui::Combo("Tile Selection Mode", &awTileMode, "single tile\0repeat tile\0realistic\0METAR\0");
+            ImGui::InputText("Altitude Offset (ft)", awAltitudeOffset, 6);
+            ImGui::InputText("Temperature Offset (C)", awTempOffset, 6);
+            ImGui::Checkbox("Terrain Effects", &isTerrain);
+            ImGui::SameLine(0.0f, 30.0f);
+            ImGui::Checkbox("Terrain Presampling", &isPresampling);
+            ImGui::Checkbox("Debug Output", &isDebug);
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("Wind Settings");
+            ImGui::PushItemWidth(60);
+            ImGui::InputText("Wind", awWind, 6);
+            ImGui::SameLine();
+            ImGui::InputText("knots", awKnots, 6);
+            ImGui::PopItemWidth();
+            ImGui::SliderFloat("Gust Frequency", &awGustFrequency, 0.0f, 1.0f, "%0.1f Hz");
+            ImGui::SliderFloat("Gust Factor", &awGustFactor, 0.0f, 1.5f, "%0.1f");
+            ImGui::SliderFloat("Gust Direction", &awGustFactor, 0.0f, 45.0f, "%0.1f degrees");
+            ImGui::Combo("Wind Model", &awWindModel, "constant\0constant in tile\0aloft interpolated\0aloft waypoints\0");
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("Thermic and Visibility Settings");
+            ImGui::Checkbox("Generate Thermals", &isGenThermals);
+            ImGui::SameLine(0.0f, 30.0f);
+            ImGui::Checkbox("Realistic Visibility", &isRealisticVis);
+            ImGui::Checkbox("Cloud Shadows", &isCloudShadow);
+            ImGui::SliderFloat("Convective Conditions", &convectiveCond, 0.0f, 1.5f, "%0.1f");
+            ImGui::SliderFloat("Turbulence", &turbulence, 0.0f, 1.5f, "%0.1f");
+            ImGui::SliderFloat("Ground Haze", &groundHaze, 0.1f, 1.0f, "%0.1f");
+            ImGui::SliderFloat("Air Pollution", &population, 0.0f, 1.0f, "%0.1f");
+            ImGui::SliderInt("Fog Properties", &fogProperties, 0, 12, "%d");
+            ImGui::SliderInt("Max. Visibility", &maxVisibility, 20, 250, "%d");
+            ImGui::Spacing();
+
+            ImGui::SeparatorText("Weather Pattern Scales");
+            ImGui::SliderFloat("Airmass", &airmass, 0.5f, 2.0f, "%0.1f");
+            ImGui::SliderFloat("Cloud Patterns", &cloudPatterns, 0.0f, 1.0f, "%0.1f");
+            ImGui::Spacing();
+
+            ImGui::Separator();
+            if (ImGui::Button("Wind Configuration")) {
+                ImGui::OpenPopup("AdvWindConfig");
+            }
+
+            // ================================================
+
+            if (ImGui::BeginPopup("AdvWindConfig"))
+            {
+                static float awWindConfigLat = 41.77f;
+                static float awWindConfigLon = -87.74f;
+
+                static char awwaRow0[][4] = { "260", "262", "264", "265", "269", "273", "274", "273", "272"};
+                static char awwaRow1[][3] = { "8", "11", "16", "24", "35", "45", "50", "56", "65"};
+
+                ImGui::Text("Wind Configuration");
+                ImGui::Separator();
+                ImGui::Spacing();
+
+                ImGui::SeparatorText("Specify Aloft Wind Layers");
+                ImGui::PushItemWidth(80);
+                ImGui::InputFloat("Lat", &awWindConfigLat);
+                ImGui::SameLine(0.0f, 50.0f);
+                ImGui::InputFloat("Lon", &awWindConfigLon);
+                ImGui::PopItemWidth();
+
+                ImGui::BeginTable("table_aw_winds_aloft", 10); //, ImGuiTableFlags_SizingFixedFit);
+                ImGui::TableSetupColumn("##type");
+                ImGui::TableSetupColumn("0    ");
+                ImGui::TableSetupColumn("FL50 ");
+                ImGui::TableSetupColumn("FL100");
+                ImGui::TableSetupColumn("FL180");
+                ImGui::TableSetupColumn("FL240");
+                ImGui::TableSetupColumn("FL300");
+                ImGui::TableSetupColumn("FL340");
+                ImGui::TableSetupColumn("FL390");
+                ImGui::TableSetupColumn("FL450");
+                ImGui::TableHeadersRow();
+
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Direction");
+
+                for (int i = 0; i < 9; ++i) {
+                    char name[32];
+                    sprintf(name, "##awaw_flightlevel_row0_%d", i);
+                    ImGui::TableNextColumn();
+                    ImGui::PushItemWidth(40);
+                    ImGui::InputText(name, awwaRow0[i], 4);
+                    ImGui::PopItemWidth();
+                }
+
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Speed (kt)");
+
+                for (int i = 0; i < 9; ++i) {
+                    char name[32];
+                    sprintf(name, "##awaw_flightlevel_row1_%d", i);
+                    ImGui::TableNextColumn();
+                    ImGui::PushItemWidth(40);
+                    ImGui::InputText(name, awwaRow1[i], 3);
+                    ImGui::PopItemWidth();
+                }
+
+                ImGui::EndTable();
+
+                ImGui::EndPopup();
+            }
+
+            ImGui::EndPopup();
+        }
 
         ImGui::EndPopup();
     }
@@ -36,6 +540,7 @@ static void doMenuEnvironmentDialogs()
 
         ImGui::Text("Nearby Volcanic Activity");
         ImGui::Separator();
+        ImGui::Spacing();
 
         ImGui::Checkbox("Enable Volcanic Activity", &isVolcanic);
 
