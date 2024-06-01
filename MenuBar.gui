@@ -219,14 +219,6 @@ static void doMenuBar(std::string& menu_action)
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Services"))
-        {
-            if (ImGui::MenuItem("Ground", NULL)) {}
-            if (ImGui::MenuItem("Map", NULL)) {}
-
-            ImGui::EndMenu();
-        }
-
         if (ImGui::BeginMenu("Debug"))
         {
             if (ImGui::BeginMenu("Reload")) {
@@ -284,6 +276,21 @@ static void doMenuBar(std::string& menu_action)
             if (ImGui::BeginMenu("FG1000")) {
                 if (ImGui::MenuItem("Primary Flight Display", NULL)) {}
                 if (ImGui::MenuItem("Multi-function Display", NULL)) {}
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Addons"))
+        {
+            if (ImGui::BeginMenu("GS"))
+            {
+                if (ImGui::MenuItem("Main", NULL))
+                    menu_action = "Addon_GS_Main";
+                if (ImGui::MenuItem("Map", NULL))
+                    menu_action = "Addon_GS_Map";
+
                 ImGui::EndMenu();
             }
 

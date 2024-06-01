@@ -88,6 +88,11 @@ static void doMenuAction(std::string& menu_action)
     if(menu_action == "MultiplayerSwiftConnection")
         ImGui::OpenPopup("MultiplayerSwiftConnection");
 
+    if(menu_action == "Addon_GS_Main")
+        ImGui::OpenPopup("AddonGroundServicesMain");
+    if(menu_action == "Addon_GS_Map")
+        ImGui::OpenPopup("AddonGroundServicesMap");
+
     if (menu_action == "HelpSimKeys")
         ImGui::OpenPopup("HelpSimKeys");
     if (menu_action == "HelpDocs")
