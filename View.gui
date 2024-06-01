@@ -17,9 +17,6 @@ static void doMenuViewDialogs() {
         ImGui::Text("Fore/Aft  ");    ImGui::SameLine();  ImGui::InputInt("m", &forwardDelta);
 
         ImGui::Separator();
-        if (ImGui::Button("Close"))
-            ImGui::CloseCurrentPopup();
-        ImGui::SameLine();
         if (ImGui::Button("Reset")) {
             horzDelta = vertDelta = forwardDelta = 0;
         }
@@ -161,10 +158,6 @@ static void doMenuViewDialogs() {
         ImGui::ColorEdit3("color", (float *)&color, ImGuiColorEditFlags_AlphaBar);
         ImGui::Spacing();
 
-        ImGui::Separator();
-        if (ImGui::Button("Close"))
-            ImGui::CloseCurrentPopup();
-
         ImGui::EndPopup();
     }
 
@@ -194,9 +187,6 @@ static void doMenuViewDialogs() {
             brightness = 1.0f;
             gamma = 0.0f;
         }
-        ImGui::SameLine();
-        if (ImGui::Button("Close"))
-            ImGui::CloseCurrentPopup();
 
         ImGui::EndPopup();
     }

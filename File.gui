@@ -340,9 +340,6 @@ static void doMenuFileDialogs()
         ImGui::Button("Copy to Clipboard");
         ImGui::SameLine(0.0f, 20.0f);
 
-        if (ImGui::Button("Close"))
-            ImGui::CloseCurrentPopup();
-
         ImGui::EndPopup();
     }
 

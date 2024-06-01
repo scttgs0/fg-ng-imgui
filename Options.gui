@@ -50,9 +50,6 @@ static void doMenuOptionsDialogs()
 
         ImGui::Separator();
         ImGui::Button("Save Custom");
-        ImGui::SameLine();
-        if (ImGui::Button("Close"))
-            ImGui::CloseCurrentPopup();
 
         if (ImGui::BeginPopup("AdvancedOptions"))
         {
@@ -163,11 +160,6 @@ static void doMenuOptionsDialogs()
                 ImGui::SliderInt("Cloud visibility range", &cloudRange, 1, 150, "%d km");
 
             ImGui::EndChild();
-            ImGui::Spacing();
-
-            ImGui::Separator();
-            if (ImGui::Button("Close"))
-                ImGui::CloseCurrentPopup();
 
             ImGui::EndPopup();
         }
@@ -216,10 +208,6 @@ static void doMenuOptionsDialogs()
         ImGui::SliderFloat("Relative dust density", &dustDensity, 0.0f, 1.0f, "%0.1f");
         ImGui::SliderFloat("Cloudcover", &cloudCover, 0.5f, 2.0f, "%0.1f");
         ImGui::Spacing();
-
-        ImGui::Separator();
-        if (ImGui::Button("Close"))
-            ImGui::CloseCurrentPopup();
 
         ImGui::EndPopup();
     }
