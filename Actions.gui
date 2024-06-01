@@ -69,6 +69,25 @@ static void doMenuAction(std::string& menu_action)
     if(menu_action == "EnvironmentVolcanoes")
         ImGui::OpenPopup("EnvironmentVolcanoes");
 
+    if(menu_action == "MultiplayerSettings")
+        ImGui::OpenPopup("MultiplayerSettings");
+    if(menu_action == "MultiplayerFGCom")
+        ImGui::OpenPopup("MultiplayerFGCom");
+    if(menu_action == "MultiplayerLag")
+        ImGui::OpenPopup("MultiplayerLag");
+    if(menu_action == "MultiplayerServerStatus")
+        ImGui::OpenPopup("MultiplayerServerStatus");
+    if(menu_action == "MultiplayerChat")
+        ImGui::OpenPopup("MultiplayerChat");
+    if(menu_action == "MultiplayerChatMenu")
+        ImGui::OpenPopup("MultiplayerChatMenu");
+    if(menu_action == "MultiplayerPilotList")
+        ImGui::OpenPopup("MultiplayerPilotList");
+    if(menu_action == "MultiplayerCarrier")
+        ImGui::OpenPopup("MultiplayerCarrier");
+    if(menu_action == "MultiplayerSwiftConnection")
+        ImGui::OpenPopup("MultiplayerSwiftConnection");
+
     if (menu_action == "HelpSimKeys")
         ImGui::OpenPopup("HelpSimKeys");
     if (menu_action == "HelpDocs")

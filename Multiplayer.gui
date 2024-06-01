@@ -2,4 +2,444 @@
 #include "imgui.h"
 
 
-static void doMenuMultiplayerDialogs() {}
+static void doMenuMultiplayerDialogs()
+{
+    if (ImGui::BeginPopup("MultiplayerSettings"))
+    {
+        static bool isHideReplay = true;
+        static bool isAITraffic = true;
+        static bool isAiScenarios = true;
+        static bool isAlwaysLatch = false;
+        static bool isPlayerCollisions = false;
+        static bool isEmesaryOnly = false;
+        static bool isReportProblems = false;
+
+        static char myCallsign[12] { "FG-5698" };
+        static char receivePort[5] { "5000" };
+
+        static int serverID = 0;
+
+        ImGui::Text("Multiplayer Settings");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Options");
+        ImGui::Checkbox("Hide replay sessions over MP", &isHideReplay);
+        ImGui::Checkbox("Show AI Traffic", &isAITraffic);
+        ImGui::Checkbox("Enable AI scenarios", &isAiScenarios);
+        ImGui::Checkbox("Always latch MP and AI carrier", &isAlwaysLatch);
+        ImGui::Checkbox("Enable player collisions", &isPlayerCollisions);
+        ImGui::Checkbox("Emesary only multiplayer mode", &isEmesaryOnly);
+        ImGui::Checkbox("Report problems with other pilots' models", &isReportProblems);
+        ImGui::Spacing();
+
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Connection");
+        ImGui::PushItemWidth(350.0f);
+        ImGui::Combo("Server", &serverID, "myserver87.flightgear.org - London, UK\0");
+        ImGui::PopItemWidth();
+        ImGui::PushItemWidth(100.0f);
+        ImGui::InputText("Callsign", myCallsign, sizeof(myCallsign));
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0.0f, 150.0f);
+        ImGui::PushItemWidth(40.0f);
+        ImGui::InputText("Port", receivePort, 5, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::PopItemWidth();
+        ImGui::PushItemWidth(350.0f);
+        ImGui::LabelText("Status", "Not connected");
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("Connect", ImVec2(120.0f, 0.0f));
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::Button("Disconnect", ImVec2(120.0f, 0.0f));
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Button("Server Status", ImVec2(120.0f, 0.0f));
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerFGCom"))
+    {
+        static bool isEnabled = false;
+        static bool isDebug = false;
+        static bool isEchoTest = false;
+        static bool isPTTTest = false;
+
+        static float speakerVolume = 0.8f;
+        static float silenceThreshold = -35.0f;
+
+        static int serverID = 0;
+
+        ImGui::Text("FGCom Settings");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Options");
+        ImGui::Checkbox("Enable", &isEnabled);
+        ImGui::Checkbox("Debug Messages", &isDebug);
+        ImGui::Checkbox("Echo Test", &isEchoTest);
+        ImGui::Checkbox("PTT Test", &isPTTTest);
+        ImGui::Spacing();
+
+        ImGui::SliderFloat("Speaker volume", &speakerVolume, 0.0f, 1.0f, "%0.2f");
+        ImGui::SliderFloat("Silence threshold", &silenceThreshold, -60.0f, 0.0f, "%3.0f dB");
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Connection");
+        ImGui::PushItemWidth(350.0f);
+        ImGui::Combo("Server", &serverID, "fgcom.ddns.net - Lincoln, UK\0");
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerLag"))
+    {
+        static bool isEnabled = false;
+        static bool isCloseMP = false;
+        static bool isSpectatorMode = false;
+
+        static float lagAdjustment = 0.0f;
+        static float spectatorMode = 0.0f;
+
+        static int closeDistance = 3;
+        static char clockOffset[2] { "0" };
+        static char maxSimTime[2] { "1" };
+
+        ImGui::Text("Lag Correction Settings");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Enable", &isEnabled);
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SliderFloat("Lag adjustment", &lagAdjustment, 0.1f, 0.15f, "%0.3f sec");
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Apply to close MP", &isCloseMP);
+        ImGui::SameLine(0.0f, 50.0f);
+        if (!isCloseMP)
+            ImGui::BeginDisabled();
+        ImGui::SliderInt("##apply_to_close", &closeDistance, 0, 15, "%d nm");
+        if (!isCloseMP)
+            ImGui::EndDisabled();
+
+        ImGui::Checkbox("Spectator mode   ", &isSpectatorMode);
+        ImGui::SameLine(0.0f, 50.0f);
+        if (!isSpectatorMode)
+            ImGui::BeginDisabled();
+        ImGui::SliderFloat("##spectator_mode", &spectatorMode, 0.0f, 1.0f, "%0.1f sec");
+        if (!isSpectatorMode)
+            ImGui::EndDisabled();
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(40.0f);
+        ImGui::InputText("Clock offset", clockOffset, 2, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::InputText("Max sim time /frame", maxSimTime, 2, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("Help");
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerChat"))
+    {
+        static char chatBuffer[256] { "" };
+
+        ImGui::Text("Multiplayer Chat");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(300.0f);
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "[N245ER] joined");
+        ImGui::TextColored(ImVec4(0.3f, 0.9f, 0.3f, 1.0f), "[N245ER] Hey everyone.");
+        ImGui::TextColored(ImVec4(0.6f, 0.3f, 0.9f, 1.0f), "[FG-5829] Welcome @N245ER");
+        ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "KSFO Ground, FG-5829, request taxi instructions \nfor departure.");
+        ImGui::TextWrapped("\n\n\n\n\n\n\n\n\n");
+        ImGui::InputText("##mp_chat_input", chatBuffer, sizeof(chatBuffer));
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::Button("Send");
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerChatMenu"))   // refer to: ShowExampleAppSimpleOverlay
+    {
+        ImGui::Text("Settings");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerPilotList"))
+    {
+        static bool ignore_1 = false;
+        static bool ignore_2 = false;
+        static bool ignore_3 = false;
+
+        ImGui::Text("Pilots: 4");
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::Button("IM");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginTable("table_pilot_list", 12, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+        ImGui::TableSetupColumn("view");
+        ImGui::TableSetupColumn("chat");
+        ImGui::TableSetupColumn("callsign");
+        ImGui::TableSetupColumn("model");
+        ImGui::TableSetupColumn("dist-nm");
+        ImGui::TableSetupColumn("alt-ft");
+        ImGui::TableSetupColumn("brg");
+        ImGui::TableSetupColumn("ign");
+        ImGui::TableSetupColumn("code");
+        ImGui::TableSetupColumn("ver");
+        ImGui::TableSetupColumn("airport");
+        ImGui::TableSetupColumn("set");
+        ImGui::TableHeadersRow();
+        {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Button("  me  ");
+                ImGui::TableNextColumn();
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
+                ImGui::TableNextColumn();
+                ImGui::Text("N245ER");
+                ImGui::TableNextColumn();
+                ImGui::Text("Tampico TB9");
+                ImGui::TableNextColumn();
+                ImGui::Text("-----");
+                ImGui::TableNextColumn();
+                ImGui::Text("-----");
+                ImGui::TableNextColumn();
+                ImGui::Text("---");
+                ImGui::TableNextColumn();
+                ImGui::TableNextColumn();
+                ImGui::Text("1200");
+                ImGui::TableNextColumn();
+                ImGui::Text("2");
+                ImGui::TableNextColumn();
+                ImGui::Text("KSFO");
+                ImGui::TableNextColumn();
+                ImGui::Text("----");
+                ImGui::PopStyleColor();
+        }
+        {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Button(" view ");
+                ImGui::TableNextColumn();
+                ImGui::Button(" chat ");
+                ImGui::TableNextColumn();
+                ImGui::Text("FG-5829");
+                ImGui::TableNextColumn();
+                ImGui::Text("C172P");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 24.2 +");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 2876 +");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 38");
+                ImGui::TableNextColumn();
+                ImGui::Checkbox("##ignore_1", &ignore_1);
+                ImGui::TableNextColumn();
+                ImGui::Text("1200");
+                ImGui::TableNextColumn();
+                ImGui::Text("2");
+                ImGui::TableNextColumn();
+                ImGui::Text("----");
+                ImGui::TableNextColumn();
+                ImGui::Text("----");
+        }
+        {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Button(" view ");
+                ImGui::TableNextColumn();
+                ImGui::Button(" chat ");
+                ImGui::TableNextColumn();
+                ImGui::Text("D-Nobbi");
+                ImGui::TableNextColumn();
+                ImGui::Text("Citation-II");
+                ImGui::TableNextColumn();
+                ImGui::Text("517.9 -");
+                ImGui::TableNextColumn();
+                ImGui::Text("10202");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 46");
+                ImGui::TableNextColumn();
+                ImGui::Checkbox("##ignore_2", &ignore_2);
+                ImGui::TableNextColumn();
+                ImGui::Text("1200");
+                ImGui::TableNextColumn();
+                ImGui::Text("2");
+                ImGui::TableNextColumn();
+                ImGui::Text("----");
+                ImGui::TableNextColumn();
+                ImGui::Text("----");
+        }
+        {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Button(" view ");
+                ImGui::TableNextColumn();
+                ImGui::Button(" chat ");
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.6f, 0.2f, 1.0f));
+                ImGui::TableNextColumn();
+                ImGui::Text("PAA1590");
+                ImGui::TableNextColumn();
+                ImGui::Text("MD-82");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 73.4");
+                ImGui::TableNextColumn();
+                ImGui::Text("37419 -");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 48");
+                ImGui::TableNextColumn();
+                ImGui::Checkbox("##ignore_3", &ignore_3);
+                ImGui::TableNextColumn();
+                ImGui::Text("0517");
+                ImGui::TableNextColumn();
+                ImGui::Text("2");
+                ImGui::TableNextColumn();
+                ImGui::Text("----");
+                ImGui::TableNextColumn();
+                ImGui::Text("----");
+                ImGui::PopStyleColor();
+        }
+        ImGui::EndTable();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerCarrier"))
+    {
+        static bool mpcarrier_nimitz = true;
+
+        ImGui::Text("MP-Carriers Online");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Nimitz (MP-Nimitz)", &mpcarrier_nimitz);
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerSwiftConnection"))
+    {
+        static char swiftAddress[16] { "127.0.0.1" };
+        static char swiftPort[6] { "45003" };
+
+        ImGui::Text("Swift Connection Settings");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(100.0f);
+        ImGui::InputText("Address", swiftAddress, 16, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::PopItemWidth();
+        ImGui::PushItemWidth(60.0f);
+        ImGui::InputText("Port", swiftPort, 6, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::PopItemWidth();
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Button("Start", ImVec2(100.0f, 0.0f));
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::Button("Stop", ImVec2(100.0f, 0.0f));
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::Button("Apply", ImVec2(100.0f, 0.0f));
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("MultiplayerServerStatus"))
+    {
+        ImGui::Text("Multiplayer Server Status");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginTable("table_server_status", 5, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+        ImGui::TableSetupColumn("Status");
+        ImGui::TableSetupColumn("Address");
+        ImGui::TableSetupColumn("Location");
+        ImGui::TableSetupColumn("Version");
+        ImGui::TableSetupColumn("Clients");
+        ImGui::TableHeadersRow();
+        {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Up");
+                ImGui::TableNextColumn();
+                ImGui::Text("mpserver01.flightgear.org");
+                ImGui::TableNextColumn();
+                ImGui::Text("Essen, Germany");
+                ImGui::TableNextColumn();
+                ImGui::Text("0.13.9");
+                ImGui::TableNextColumn();
+                ImGui::Text("42:43");
+                ImGui::PopStyleColor();
+        }
+        {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Up");
+                ImGui::TableNextColumn();
+                ImGui::Text("mpserver03.flightgear.org");
+                ImGui::TableNextColumn();
+                ImGui::Text("Hamburg, Germany");
+                ImGui::TableNextColumn();
+                ImGui::Text("0.13.5");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 1:42");
+                ImGui::PopStyleColor();
+        }
+        {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.3f, 0.3f, 1.0f));
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Down");
+                ImGui::TableNextColumn();
+                ImGui::Text("mpserver16.flightgear.org");
+                ImGui::TableNextColumn();
+                ImGui::Text("Dallas, TX, USA");
+                ImGui::TableNextColumn();
+                ImGui::Text("---");
+                ImGui::TableNextColumn();
+                ImGui::Text("---");
+                ImGui::PopStyleColor();
+        }
+        {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Up");
+                ImGui::TableNextColumn();
+                ImGui::Text("mpserver87.flightgear.org");
+                ImGui::TableNextColumn();
+                ImGui::Text("Paris, France");
+                ImGui::TableNextColumn();
+                ImGui::Text("0.13.9");
+                ImGui::TableNextColumn();
+                ImGui::Text(" 0:42");
+                ImGui::PopStyleColor();
+        }
+        ImGui::EndTable();
+
+        ImGui::EndPopup();
+    }
+}

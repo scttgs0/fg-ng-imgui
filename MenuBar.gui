@@ -194,17 +194,27 @@ static void doMenuBar(std::string& menu_action)
 
         if (ImGui::BeginMenu("Multiplayer"))
         {
-            if (ImGui::MenuItem("Settings", NULL)) {}
-            if (ImGui::MenuItem("FGCom Settings", NULL)) {}
-            if (ImGui::MenuItem("Lag Settings", NULL)) {}
+            if (ImGui::MenuItem("Settings", NULL))
+                menu_action = "MultiplayerSettings";
+            if (ImGui::MenuItem("FGCom Settings", NULL))
+                menu_action = "MultiplayerFGCom";
+            if (ImGui::MenuItem("Swift Connection", NULL))
+                menu_action = "MultiplayerSwiftConnection";
+            if (ImGui::MenuItem("Lag Settings", NULL))
+                menu_action = "MultiplayerLag";
+            if (ImGui::MenuItem("Server Status", NULL))
+                menu_action = "MultiplayerServerStatus";
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Chat", NULL)) {}
-            if (ImGui::MenuItem("Chat Menu", NULL)) {}
-            if (ImGui::MenuItem("Pilot List", NULL)) {}
-            if (ImGui::MenuItem("Carrier", NULL)) {}
-            if (ImGui::MenuItem("Swift Connection", NULL)) {}
+            if (ImGui::MenuItem("Chat", NULL))
+                menu_action = "MultiplayerChat";
+            if (ImGui::MenuItem("Chat Menu", NULL))
+                menu_action = "MultiplayerChatMenu";
+            if (ImGui::MenuItem("Pilot List", NULL))
+                menu_action = "MultiplayerPilotList";
+            if (ImGui::MenuItem("Carrier", NULL))
+                menu_action = "MultiplayerCarrier";
 
             ImGui::EndMenu();
         }
