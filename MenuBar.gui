@@ -258,24 +258,32 @@ static void doMenuBar(std::string& menu_action)
                 if (ImGui::MenuItem("System Performance", NULL)) {}
                 ImGui::EndMenu();
             }
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Property Tree", NULL)) {}
-
             ImGui::Separator();
-
             if (ImGui::MenuItem("Save Video Configuration", NULL)) {}
+
             if (ImGui::MenuItem("Print Scene Info", NULL)) {}
             if (ImGui::MenuItem("Logging", NULL)) {}
             if (ImGui::MenuItem("Cycle GUI Style", NULL)) {}
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Local Weather", NULL)) {}
             if (ImGui::BeginMenu("FG1000")) {
                 if (ImGui::MenuItem("Primary Flight Display", NULL)) {}
                 if (ImGui::MenuItem("Multi-function Display", NULL)) {}
+                ImGui::EndMenu();
+            }
+            ImGui::Separator();
+
+            if (ImGui::BeginMenu("Translate")) {
+                if (ImGui::MenuItem("Languages", NULL))
+                    menu_action = "TranslateLanguage";
+                if (ImGui::MenuItem("PUI -> ImGui", NULL))
+                    menu_action = "TranslatePUI2ImGui";
+                if (ImGui::MenuItem("Nasal -> Lua", NULL))
+                    menu_action = "TranslateNasal2Lua";
                 ImGui::EndMenu();
             }
 

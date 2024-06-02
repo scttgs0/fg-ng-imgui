@@ -1,0 +1,93 @@
+
+#include <string>
+
+#include "imgui.h"
+
+#define EXTERNAL_PAYLOAD_TYPE "FILES"
+
+
+static bool ends_with(const std::string& str, const std::string& suffix)
+{
+    return str.size() >= suffix.size() && str.compare(str.size()-suffix.size(), suffix.size(), suffix) == 0;
+}
+
+static void doTranslatePUI2ImGui()
+{
+    if (ImGui::BeginPopup("TranslatePUI2ImGui"))
+    {
+        static bool p_open = NULL;
+        static char buff[512] { "" };
+
+        ImGui::Text("Translate PUI -> ImGui");
+        if (buff[0]) {
+            ImGui::SameLine(440.0f, 0.0f);
+            ImGui::Button(" Save ");
+            ImGui::SameLine(0.0f, 10.0f);
+            if (ImGui::Button("Reset")) {
+                buff[0] = '\0';
+            }
+        }
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginChild("trans_pui_L", ImVec2(420, 420), true);
+        if (buff[0]) {
+            ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
+            ImGui::BeginChild("dynamic_form", ImVec2(160, 60), true);
+            {
+                ImGui::Text("Exit FlightGear?");
+                ImGui::Separator();
+
+                ImGui::Button("  Exit  ");
+                ImGui::SameLine(0.0f, 20.0f);
+                ImGui::Button(" Close ");
+
+                ImGui::EndChild();
+            }
+            ImGui::PopStyleColor();
+        }
+        else {
+            ImGui::Button("Drop file here...", ImVec2(400, 400));
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(EXTERNAL_PAYLOAD_TYPE))
+                {
+                    // static std::string input { (const char*)payload->Data };
+                    // if (!ends_with(input, ".xml"))
+                    //     ImGui::SetMouseCursor(ImGuiMouseCursor_NotAllowed);
+                    // else
+                    sprintf(buff, "File was dropped! '%s'\n", (const char*)payload->Data);
+                }
+            }
+        }
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("trans_pui_R", ImVec2(420, 420), true);
+        if (buff[0]) {
+            ImGui::PushItemWidth(400.0f);
+            ImGui::TextWrapped("ImGui::SetNextWindowSize(ImVec2(160, 60));\n"
+                                "if (ImGui::BeginPopup(\"FileExit\"))\n"
+                                "{\n"
+                                "    ImGui::Text(\"Exit FlightGear?\");\n"
+                                "    ImGui::Separator();\n"
+                                "\n"
+                                "    ImGui::Button(\"  Exit  \");\n"
+                                "    ImGui::SameLine(0.0f, 20.0f);\n"
+                                "    if (ImGui::Button(\" Close \"))\n"
+                                "        ImGui::CloseCurrentPopup();\n"
+                                "\n"
+                                "    ImGui::EndPopup();\n"
+                                "}\n");
+            ImGui::PopItemWidth();
+        }
+        ImGui::EndChild();
+
+        if (buff[0])
+            ImGui::Text(buff);
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+}

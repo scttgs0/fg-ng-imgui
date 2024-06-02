@@ -410,6 +410,19 @@ static void FramePresent(ImGui_ImplVulkanH_Window* wd)
 #include "Services.gui"
 #include "Help.gui"
 
+static const char* newExternalData = nullptr;
+static size_t newExternalDataLength = 0;
+#define EXTERNAL_PAYLOAD_TYPE "FILES"
+
+static void DropCallback(GLFWwindow*, int count, const char** paths)
+{
+    if (count > 0)
+    {
+        newExternalData = strdup(paths[0]);
+        newExternalDataLength = strlen(newExternalData) + 1;
+    }
+}
+
 //-----------------------------
 
 // Main code
@@ -445,6 +458,8 @@ int main(int, char**)
     glfwGetFramebufferSize(window, &w, &h);
     ImGui_ImplVulkanH_Window* wd = &g_MainWindowData;
     SetupVulkanWindow(wd, surface, w, h);
+
+    glfwSetDropCallback(window, DropCallback);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -527,6 +542,26 @@ int main(int, char**)
         ImGui::NewFrame();
 
         //-----------------------------
+
+        // Handle external payloads
+        {
+            const ImGuiPayload* payload = ImGui::GetDragDropPayload();
+            bool userIsDraggingExternalData = payload != nullptr && payload->IsDataType(EXTERNAL_PAYLOAD_TYPE);
+
+            if ((userIsDraggingExternalData || newExternalData != nullptr) && ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceExtern))
+            {
+                if (newExternalData)
+                {
+                    ImGui::SetDragDropPayload(EXTERNAL_PAYLOAD_TYPE, newExternalData, newExternalDataLength, ImGuiCond_Once);
+                    free((void*)newExternalData);
+                    newExternalData = nullptr;
+                    newExternalDataLength = 0;
+                }
+
+                ImGui::Text("Dragging file '%s'", ImGui::GetDragDropPayload()->Data); // (You might choose to keep newExternalData allocated instead, this is just an example)
+                ImGui::EndDragDropSource();
+            }
+        }
 
         std::string menu_action = "";
 

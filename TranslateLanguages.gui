@@ -1,0 +1,58 @@
+
+#include <string>
+
+#include "imgui.h"
+
+#define EXTERNAL_PAYLOAD_TYPE "FILES"
+
+
+static void doTranslateLanguages()
+{
+    if (ImGui::BeginPopup("TranslateLanguage"))
+    {
+        static char buff[512] { "" };
+
+        ImGui::Text("Translate Language");
+        if (buff[0]) {
+            ImGui::SameLine(440.0f, 0.0f);
+            ImGui::Button(" Save ");
+            ImGui::SameLine(0.0f, 10.0f);
+            if (ImGui::Button("Reset")) {
+                buff[0] = '\0';
+            }
+        }
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::BeginChild("trans_pui_L", ImVec2(420, 420), true);
+        ImGui::Button("Drop file here...", ImVec2(400, 400));
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(EXTERNAL_PAYLOAD_TYPE))
+            {
+                // static std::string input { (const char*)payload->Data };
+                // if (!ends_with(input, ".xml"))
+                //     ImGui::SetMouseCursor(ImGuiMouseCursor_NotAllowed);
+                // else
+                sprintf(buff, "File was dropped! '%s'\n", (const char*)payload->Data);
+            }
+        }
+        ImGui::EndChild();
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        ImGui::BeginChild("trans_pui_R", ImVec2(420, 420), true);
+        if (buff[0]) {
+            ImGui::PushItemWidth(400.0f);
+            ImGui::TextWrapped("Output...\n");
+            ImGui::PopItemWidth();
+        }
+        ImGui::EndChild();
+
+        if (buff[0])
+            ImGui::Text(buff);
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+}

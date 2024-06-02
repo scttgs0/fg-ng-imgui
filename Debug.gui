@@ -1,5 +1,14 @@
 
 #include "imgui.h"
 
+#include "TranslateLanguages.gui"
+#include "TranslatePUI2ImGui.gui"
+#include "TranslateNasal2Lua.gui"
 
-static void doMenuDebugDialogs() {}
+
+static void doMenuDebugDialogs()
+{
+    doTranslateLanguages();
+    doTranslatePUI2ImGui();
+    doTranslateNasal2Lua();
+}

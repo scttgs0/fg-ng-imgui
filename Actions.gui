@@ -1,5 +1,6 @@
 
 #include <string>
+
 #include "imgui.h"
 
 
@@ -87,6 +88,13 @@ static void doMenuAction(std::string& menu_action)
         ImGui::OpenPopup("MultiplayerCarrier");
     if(menu_action == "MultiplayerSwiftConnection")
         ImGui::OpenPopup("MultiplayerSwiftConnection");
+
+    if(menu_action == "TranslateLanguage")
+        ImGui::OpenPopup("TranslateLanguage");
+    if(menu_action == "TranslatePUI2ImGui")
+        ImGui::OpenPopup("TranslatePUI2ImGui");
+    if(menu_action == "TranslateNasal2Lua")
+        ImGui::OpenPopup("TranslateNasal2Lua");
 
     if(menu_action == "Addon_GS_Main")
         ImGui::OpenPopup("AddonGroundServicesMain");
