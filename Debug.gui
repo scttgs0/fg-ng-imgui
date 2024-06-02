@@ -4,6 +4,7 @@
 #include "TranslateLanguages.gui"
 #include "TranslatePUI2ImGui.gui"
 #include "TranslateNasal2Lua.gui"
+#include "TranslateXml2Yaml.gui"
 
 
 static void doMenuDebugDialogs()
@@ -11,4 +12,5 @@ static void doMenuDebugDialogs()
     doTranslateLanguages();
     doTranslatePUI2ImGui();
     doTranslateNasal2Lua();
+    doTranslateXml2Yaml();
 }

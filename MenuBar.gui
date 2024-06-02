@@ -284,6 +284,8 @@ static void doMenuBar(std::string& menu_action)
                     menu_action = "TranslatePUI2ImGui";
                 if (ImGui::MenuItem("Nasal -> Lua", NULL))
                     menu_action = "TranslateNasal2Lua";
+                if (ImGui::MenuItem("XML -> YAML", NULL))
+                    menu_action = "TranslateXml2Yaml";
                 ImGui::EndMenu();
             }
 

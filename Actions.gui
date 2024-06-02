@@ -95,6 +95,8 @@ static void doMenuAction(std::string& menu_action)
         ImGui::OpenPopup("TranslatePUI2ImGui");
     if(menu_action == "TranslateNasal2Lua")
         ImGui::OpenPopup("TranslateNasal2Lua");
+    if(menu_action == "TranslateXml2Yaml")
+        ImGui::OpenPopup("TranslateXml2Yaml");
 
     if(menu_action == "Addon_GS_Main")
         ImGui::OpenPopup("AddonGroundServicesMain");
