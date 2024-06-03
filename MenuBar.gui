@@ -152,30 +152,41 @@ static void doMenuBar(std::string& menu_action)
         if (ImGui::BeginMenu("Equipment"))
         {
             if (ImGui::BeginMenu("Open Map")) {
-                if (ImGui::MenuItem("Standard", "Ctrl-M")) {}
-                if (ImGui::MenuItem("Canvas", NULL)) {}
+                if (ImGui::MenuItem("Standard", "Ctrl-M"))
+                    menu_action = "EquipmentMap";
+                if (ImGui::MenuItem("Canvas", NULL))
+                    menu_action = "EquipmentMapCanvas";
                 if (ImGui::MenuItem("Browser", NULL)) {}
                 ImGui::EndMenu();
             }
 
-            if (ImGui::MenuItem("Radio", NULL)) {}
-            if (ImGui::MenuItem("GPS", NULL)) {}
-            if (ImGui::MenuItem("Instrument Settings", NULL)) {}
-            if (ImGui::MenuItem("Lights", NULL)) {}
+            if (ImGui::MenuItem("Radio", NULL))
+                menu_action = "EquipmentRadio";
+            if (ImGui::MenuItem("GPS", NULL))
+                menu_action = "EquipmentGPS";
+            if (ImGui::MenuItem("Instrument Settings", NULL))
+                menu_action = "EquipmentInstruments";
+            if (ImGui::MenuItem("Lights", NULL))
+                menu_action = "EquipmentLights";
 
             ImGui::Separator();
 
             if (ImGui::BeginMenu("Failures")) {
-                if (ImGui::MenuItem("Random", NULL)) {}
-                if (ImGui::MenuItem("System", NULL)) {}
-                if (ImGui::MenuItem("Instrument", NULL)) {}
+                if (ImGui::MenuItem("Random", NULL))
+                    menu_action = "EquipmentFailureRandom";
+                if (ImGui::MenuItem("System", NULL))
+                    menu_action = "EquipmentFailureSystem";
+                if (ImGui::MenuItem("Instrument", NULL))
+                    menu_action = "EquipmentFailureInstruments";
                 ImGui::EndMenu();
             }
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Fuel and Payload", NULL)) {}
-            if (ImGui::MenuItem("Stopwatch", NULL)) {}
+            if (ImGui::MenuItem("Fuel and Payload", NULL))
+                menu_action = "EquipmentFuelPayload";
+            if (ImGui::MenuItem("Stopwatch", NULL))
+                menu_action = "EquipmentStopwatch";
 
             ImGui::EndMenu();
         }
@@ -241,17 +252,24 @@ static void doMenuBar(std::string& menu_action)
             }
 
             if (ImGui::BeginMenu("Nasal")) {
-                if (ImGui::MenuItem("Console", NULL)) {}
-                if (ImGui::MenuItem("REPL Interpreter", NULL)) {}
-                if (ImGui::MenuItem("Test", NULL)) {}
+                if (ImGui::MenuItem("Console", NULL))
+                    menu_action = "DebugNasalConsole";
+                if (ImGui::MenuItem("REPL Interpreter", NULL))
+                    menu_action = "DebugNasalREPL";
+                if (ImGui::MenuItem("Test", NULL))
+                    menu_action = "DebugNasalTest";
                 ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Development")) {
-                if (ImGui::MenuItem("Keys", NULL)) {}
-                if (ImGui::MenuItem("Extensions", NULL)) {}
-                if (ImGui::MenuItem("Test", NULL)) {}
-                if (ImGui::MenuItem("Display Tutorial Marker", NULL)) {}
+                if (ImGui::MenuItem("Keys", NULL))
+                    menu_action = "DebugDevKeys";
+                if (ImGui::MenuItem("Extensions", NULL))
+                    menu_action = "DebugDevExtensions";
+                if (ImGui::MenuItem("Test", NULL))
+                    menu_action = "DebugDevTest";
+                if (ImGui::MenuItem("Display Tutorial Marker", NULL))
+                    menu_action = "DebugDevTutorialMarker";
                 if (ImGui::MenuItem("Dump Scenegraph", NULL)) {}
                 if (ImGui::MenuItem("Select Rendering Buffers", NULL)) {}
                 if (ImGui::MenuItem("Show Rendering Buffers", NULL)) {}
@@ -261,24 +279,30 @@ static void doMenuBar(std::string& menu_action)
             if (ImGui::BeginMenu("Statistics")) {
                 if (ImGui::MenuItem("Cycle On-Screen", NULL)) {}
                 if (ImGui::MenuItem("Rendering", NULL)) {}
-                if (ImGui::MenuItem("System Performance", NULL)) {}
+                if (ImGui::MenuItem("System Performance", NULL))
+                    menu_action = "DebugStatPerformance";
                 ImGui::EndMenu();
             }
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Property Tree", NULL)) {}
+            if (ImGui::MenuItem("Property Tree", NULL))
+                    menu_action = "DebugProperties";
             ImGui::Separator();
             if (ImGui::MenuItem("Save Video Configuration", NULL)) {}
 
             if (ImGui::MenuItem("Print Scene Info", NULL)) {}
-            if (ImGui::MenuItem("Logging", NULL)) {}
+            if (ImGui::MenuItem("Logging", NULL))
+                    menu_action = "DebugLogging";
             if (ImGui::MenuItem("Cycle GUI Style", NULL)) {}
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Local Weather", NULL)) {}
+            if (ImGui::MenuItem("Local Weather", NULL))
+                    menu_action = "DebugLocalWeather";
             if (ImGui::BeginMenu("FG1000")) {
-                if (ImGui::MenuItem("Primary Flight Display", NULL)) {}
-                if (ImGui::MenuItem("Multi-function Display", NULL)) {}
+                if (ImGui::MenuItem("Primary Flight Display", NULL))
+                    menu_action = "DebugFG1000PFD";
+                if (ImGui::MenuItem("Multi-function Display", NULL))
+                    menu_action = "DebugFG1000MFD";
                 ImGui::EndMenu();
             }
             ImGui::Separator();

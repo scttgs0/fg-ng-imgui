@@ -70,6 +70,29 @@ static void doMenuAction(std::string& menu_action)
     if(menu_action == "EnvironmentVolcanoes")
         ImGui::OpenPopup("EnvironmentVolcanoes");
 
+    if(menu_action == "EquipmentMap")
+        ImGui::OpenPopup("EquipmentMap");
+    if(menu_action == "EquipmentMapCanvas")
+        ImGui::OpenPopup("EquipmentMapCanvas");
+    if(menu_action == "EquipmentRadio")
+        ImGui::OpenPopup("EquipmentRadio");
+    if(menu_action == "EquipmentGPS")
+        ImGui::OpenPopup("EquipmentGPS");
+    if(menu_action == "EquipmentInstruments")
+        ImGui::OpenPopup("EquipmentInstruments");
+    if(menu_action == "EquipmentLights")
+        ImGui::OpenPopup("EquipmentLights");
+    if(menu_action == "EquipmentFailureRandom")
+        ImGui::OpenPopup("EquipmentFailureRandom");
+    if(menu_action == "EquipmentFailureSystem")
+        ImGui::OpenPopup("EquipmentFailureSystem");
+    if(menu_action == "EquipmentFailureInstruments")
+        ImGui::OpenPopup("EquipmentFailureInstruments");
+    if(menu_action == "EquipmentFuelPayload")
+        ImGui::OpenPopup("EquipmentFuelPayload");
+    if(menu_action == "EquipmentStopwatch")
+        ImGui::OpenPopup("EquipmentStopwatch");
+
     if(menu_action == "AITrafficScenarios")
         ImGui::OpenPopup("AITrafficScenarios");
     if(menu_action == "AIAirTrafficControl")
@@ -102,6 +125,32 @@ static void doMenuAction(std::string& menu_action)
     if(menu_action == "MultiplayerSwiftConnection")
         ImGui::OpenPopup("MultiplayerSwiftConnection");
 
+    if(menu_action == "DebugNasalConsole")
+        ImGui::OpenPopup("DebugNasalConsole");
+    if(menu_action == "DebugNasalREPL")
+        ImGui::OpenPopup("DebugNasalREPL");
+    if(menu_action == "DebugNasalTest")
+        ImGui::OpenPopup("DebugNasalTest");
+    if(menu_action == "DebugDevKeys")
+        ImGui::OpenPopup("DebugDevKeys");
+    if(menu_action == "DebugDevExtensions")
+        ImGui::OpenPopup("DebugDevExtensions");
+    if(menu_action == "DebugDevTest")
+        ImGui::OpenPopup("DebugDevTest");
+    if(menu_action == "DebugDevTutorialMarker")
+        ImGui::OpenPopup("DebugDevTutorialMarker");
+    if(menu_action == "DebugStatPerformance")
+        ImGui::OpenPopup("DebugStatPerformance");
+    if(menu_action == "DebugProperties")
+        ImGui::OpenPopup("DebugProperties");
+    if(menu_action == "DebugLogging")
+        ImGui::OpenPopup("DebugLogging");
+    if(menu_action == "DebugLocalWeather")
+        ImGui::OpenPopup("DebugLocalWeather");
+    if(menu_action == "DebugFG1000PFD")
+        ImGui::OpenPopup("DebugFG1000PFD");
+    if(menu_action == "DebugFG1000MFD")
+        ImGui::OpenPopup("DebugFG1000MFD");
     if(menu_action == "TranslateLanguage")
         ImGui::OpenPopup("TranslateLanguage");
     if(menu_action == "TranslatePUI2ImGui")

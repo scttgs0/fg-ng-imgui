@@ -13,4 +13,121 @@ static void doMenuDebugDialogs()
     doTranslatePUI2ImGui();
     doTranslateNasal2Lua();
     doTranslateXml2Yaml();
+
+    if (ImGui::BeginPopup("DebugNasalConsole"))
+    {
+        ImGui::Text("DebugNasalConsole");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugNasalREPL"))
+    {
+        ImGui::Text("DebugNasalREPL");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugNasalTest"))
+    {
+        ImGui::Text("DebugNasalTest");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugDevKeys"))
+    {
+        ImGui::Text("DebugDevKeys");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugDevExtensions"))
+    {
+        ImGui::Text("DebugDevExtensions");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugDevTest"))
+    {
+        ImGui::Text("DebugDevTest");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugDevTutorialMarker"))
+    {
+        ImGui::Text("DebugDevTutorialMarker");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugStatPerformance"))
+    {
+        ImGui::Text("DebugStatPerformance");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugProperties"))
+    {
+        ImGui::Text("DebugProperties");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugLogging"))
+    {
+        ImGui::Text("DebugLogging");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugLocalWeather"))
+    {
+        ImGui::Text("DebugLocalWeather");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugFG1000PFD"))
+    {
+        ImGui::Text("DebugFG1000PFD");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("DebugFG1000MFD"))
+    {
+        ImGui::Text("DebugFG1000MFD");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
 }

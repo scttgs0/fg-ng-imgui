@@ -2,4 +2,104 @@
 #include "imgui.h"
 
 
-static void doMenuEquipmentDialogs() {}
+static void doMenuEquipmentDialogs()
+{
+    if (ImGui::BeginPopup("EquipmentMap"))
+    {
+        ImGui::Text("EquipmentMap");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentMapCanvas"))
+    {
+        ImGui::Text("EquipmentMapCanvas");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentRadio"))
+    {
+        ImGui::Text("EquipmentRadio");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentGPS"))
+    {
+        ImGui::Text("EquipmentGPS");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentInstruments"))
+    {
+        ImGui::Text("EquipmentInstruments");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentLights"))
+    {
+        ImGui::Text("EquipmentLights");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentFailureRandom"))
+    {
+        ImGui::Text("EquipmentFailureRandom");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentFailureSystem"))
+    {
+        ImGui::Text("EquipmentFailureSystem");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentFailureInstruments"))
+    {
+        ImGui::Text("EquipmentFailureInstruments");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentFuelPayload"))
+    {
+        ImGui::Text("EquipmentFuelPayload");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopup("EquipmentStopwatch"))
+    {
+        ImGui::Text("EquipmentStopwatch");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::EndPopup();
+    }
+}
