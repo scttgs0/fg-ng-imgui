@@ -70,6 +70,19 @@ static void doMenuAction(std::string& menu_action)
     if(menu_action == "EnvironmentVolcanoes")
         ImGui::OpenPopup("EnvironmentVolcanoes");
 
+    if(menu_action == "AITrafficScenarios")
+        ImGui::OpenPopup("AITrafficScenarios");
+    if(menu_action == "AIAirTrafficControl")
+        ImGui::OpenPopup("AIAirTrafficControl");
+    if(menu_action == "AIWingman")
+        ImGui::OpenPopup("AIWingman");
+    if(menu_action == "AITanker")
+        ImGui::OpenPopup("AITanker");
+    if(menu_action == "AIJetway")
+        ImGui::OpenPopup("AIJetway");
+    if(menu_action == "AIObjects")
+        ImGui::OpenPopup("AIObjects");
+
     if(menu_action == "MultiplayerSettings")
         ImGui::OpenPopup("MultiplayerSettings");
     if(menu_action == "MultiplayerFGCom")

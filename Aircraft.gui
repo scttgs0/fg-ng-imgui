@@ -2,4 +2,7 @@
 #include "imgui.h"
 
 
-static void doMenuAircraftDialogs() {}
+static void doMenuAircraftDialogs()
+{
+    
+}

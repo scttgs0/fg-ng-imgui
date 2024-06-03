@@ -182,12 +182,18 @@ static void doMenuBar(std::string& menu_action)
 
         if (ImGui::BeginMenu("AI"))
         {
-            if (ImGui::MenuItem("Traffic and Scenarios", NULL)) {}
-            if (ImGui::MenuItem("Air Traffic Control", NULL)) {}
-            if (ImGui::MenuItem("Wingman", NULL)) {}
-            if (ImGui::MenuItem("Tanker", NULL)) {}
-            if (ImGui::MenuItem("Jetway", NULL)) {}
-            if (ImGui::MenuItem("Objects", NULL)) {}
+            if (ImGui::MenuItem("Traffic and Scenarios", NULL))
+                menu_action = "AITrafficScenarios";
+            if (ImGui::MenuItem("Air Traffic Control", NULL))
+                menu_action = "AIAirTrafficControl";
+            if (ImGui::MenuItem("Wingman", NULL))
+                menu_action = "AIWingman";
+            if (ImGui::MenuItem("Tanker", NULL))
+                menu_action = "AITanker";
+            if (ImGui::MenuItem("Jetway", NULL))
+                menu_action = "AIJetway";
+            if (ImGui::MenuItem("Objects", NULL))
+                menu_action = "AIObjects";
 
             ImGui::EndMenu();
         }
