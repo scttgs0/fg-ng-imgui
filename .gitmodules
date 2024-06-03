@@ -4,3 +4,6 @@
 [submodule "3rdparty/tinygltf"]
 	path = 3rdparty/tinygltf
 	url = https://github.com/syoyo/tinygltf.git
+[submodule "3rdparty/yaml-cpp"]
+	path = 3rdparty/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
