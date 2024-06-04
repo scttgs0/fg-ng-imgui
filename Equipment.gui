@@ -2,32 +2,378 @@
 #include "imgui.h"
 
 
+static void ShowWindowMap(bool *p_show)
+{
+    if (!(*p_show))
+        return;
+
+    if (ImGui::Begin("EquipmentMap", p_show))
+    {
+        static float uv0_x = 0.0f;
+        static float uv0_y = 0.0f;
+        static float uv1_x = 1.0f;
+        static float uv1_y = 1.0f;
+
+        ImGui::Text("Map");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        if (ImGui::BeginChild("equip_mapL", ImVec2(150, 400), true)) {
+            static bool isHeliports = true;
+            static bool isFixes = false;
+            static bool isNavaids = true;
+            static bool isLandmarks = false;
+            static bool isTraffic = false;
+            static bool isData = true;
+            static bool isAircraft = true;
+            static bool isHistory = true;
+            static bool isMagnetic = true;
+            static bool isCenter = true;
+            static bool isRotateView = false;
+            static bool isTransparent = false;
+            static bool isPanKeys = false;
+
+            ImGui::SeparatorText("Display");
+            ImGui::Checkbox("Heliports", &isHeliports);
+            ImGui::Checkbox("Fixes", &isFixes);
+            ImGui::Checkbox("Navaids", &isNavaids);
+            ImGui::Checkbox("Landmarks", &isLandmarks);
+            ImGui::Checkbox("Traffic", &isTraffic);
+            ImGui::Checkbox("Data", &isData);
+            ImGui::Checkbox("Aircraft", &isAircraft);
+            ImGui::Checkbox("Flight History", &isHistory);
+            ImGui::Text("   ");
+
+            ImGui::Checkbox("Magnetic Hdgs", &isMagnetic);
+            ImGui::Checkbox("Center on Acft", &isCenter);
+            ImGui::Checkbox("Aircraft Hdg Up", &isRotateView);
+            ImGui::Checkbox("Transparent", &isTransparent);
+            ImGui::Checkbox("Pan with keys", &isPanKeys);
+
+            ImGui::EndChild();
+        }
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        if (ImGui::BeginChild("equip_mapR", ImVec2(520, 400), true)) {
+            ImGui::Image(0, ImVec2(500.0f, 380.0f), ImVec2(uv0_x, uv0_y), ImVec2(uv1_x, uv1_y));
+
+            ImGui::EndChild();
+        }
+
+        ImGui::Separator();
+        if (ImGui::Button("Close"))
+            *p_show = false;
+        ImGui::SameLine(170.0f, 0.0f);
+        if (ImGui::Button("-")) {
+            if (uv1_x - uv0_x < 4.0f) {
+                uv0_x -= 0.2f;
+                uv0_y -= 0.2f;
+                uv1_x += 0.2f;
+                uv1_y += 0.2f;
+            }
+        }
+        ImGui::SameLine(0.0f, 4.0f);
+        if (ImGui::Button("+")) {
+            if (uv1_x - uv0_x > 0.4f) {
+                uv0_x += 0.2f;
+                uv0_y += 0.2f;
+                uv1_x -= 0.2f;
+                uv1_y -= 0.2f;
+            }
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
+static void ShowWindowMapCanvas(bool *p_show) {
+    if (!(*p_show))
+        return;
+
+    if (ImGui::Begin("EquipmentMapCanvas", p_show))
+    {
+        static float uv0_x = 0.0f;
+        static float uv0_y = 0.0f;
+        static float uv1_x = 1.0f;
+        static float uv1_y = 1.0f;
+
+        ImGui::Text("Map (Canvas)");
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        if (ImGui::BeginChild("equip_map_canvasL", ImVec2(150, 550), true)) {
+            static bool isAirports = true;
+            static bool isFixes = false;
+            static bool isVOR = true;
+            static bool isDME = true;
+            static bool isNDB = true;
+            static bool isRoute = true;
+            static bool isWaypoint = true;
+            static bool isAPS = true;
+            static bool isTraffic = false;
+            static bool isData = false;
+            static bool isHistory = true;
+            static bool isWeather = false;
+            static bool isOSM = false;
+            static bool isVFRChart = false;
+            static bool isOpenAIP = false;
+            static bool isSTAMEN = false;
+            static bool isMagnetic = true;
+            static bool isCenter = true;
+            static bool isRotateView = false;
+            static bool isTransparent = false;
+
+            ImGui::SeparatorText("Display");
+            ImGui::Checkbox("Airports", &isAirports);
+            ImGui::Checkbox("Fixes", &isFixes);
+            ImGui::Checkbox("VOR", &isVOR);
+            ImGui::Checkbox("DME", &isDME);
+            ImGui::Checkbox("NDB", &isNDB);
+            ImGui::Checkbox("Route", &isRoute);
+            ImGui::Checkbox("Waypoint", &isWaypoint);
+            ImGui::Checkbox("APS", &isAPS);
+            ImGui::Checkbox("Traffic", &isTraffic);
+            ImGui::Checkbox("Data", &isData);
+            ImGui::Checkbox("Flight History", &isHistory);
+            ImGui::Checkbox("Weather", &isWeather);
+            ImGui::Text("   ");
+
+            ImGui::Checkbox("OSM", &isOSM);
+            ImGui::Checkbox("VFRChart", &isVFRChart);
+            ImGui::Checkbox("OpenAIP", &isOpenAIP);
+            ImGui::Checkbox("STAMEN", &isSTAMEN);
+            ImGui::Text("   ");
+
+            ImGui::Checkbox("Magnetic Hdgs", &isMagnetic);
+            ImGui::Checkbox("Center on Acft", &isCenter);
+            ImGui::Checkbox("Aircraft Hdg Up", &isRotateView);
+            ImGui::Checkbox("Transparent", &isTransparent);
+
+            ImGui::EndChild();
+        }
+
+        ImGui::SameLine(0.0f, 10.0f);
+
+        if (ImGui::BeginChild("equip_map_canvasR", ImVec2(550, 550), true)) {
+            ImGui::Image(0, ImVec2(530.0f, 530.0f), ImVec2(uv0_x, uv0_y), ImVec2(uv1_x, uv1_y));
+
+            ImGui::EndChild();
+        }
+
+        ImGui::Separator();
+        if (ImGui::Button("Close"))
+            *p_show = false;
+        ImGui::SameLine(170.0f, 0.0f);
+        if (ImGui::Button("-")) {
+            if (uv1_x - uv0_x < 4.0f) {
+                uv0_x -= 0.2f;
+                uv0_y -= 0.2f;
+                uv1_x += 0.2f;
+                uv1_y += 0.2f;
+            }
+        }
+        ImGui::SameLine(0.0f, 4.0f);
+        if (ImGui::Button("+")) {
+            if (uv1_x - uv0_x > 0.4f) {
+                uv0_x += 0.2f;
+                uv0_y += 0.2f;
+                uv1_x -= 0.2f;
+                uv1_y -= 0.2f;
+            }
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
 static void doMenuEquipmentDialogs()
 {
-    if (ImGui::BeginPopup("EquipmentMap"))
-    {
-        ImGui::Text("EquipmentMap");
-        ImGui::Separator();
-        ImGui::Spacing();
-
-        ImGui::EndPopup();
-    }
-
-    if (ImGui::BeginPopup("EquipmentMapCanvas"))
-    {
-        ImGui::Text("EquipmentMapCanvas");
-        ImGui::Separator();
-        ImGui::Spacing();
-
-        ImGui::EndPopup();
-    }
-
     if (ImGui::BeginPopup("EquipmentRadio"))
     {
-        ImGui::Text("EquipmentRadio");
+        static char selectedFreq[][8] { "135.200", "128.300", "112.000", "112.400", "392", "112"};
+        static char standbyFreq[][8] { "119.300", "121.900", "108.500", "113.600", "335", ""};
+        static char radials[][8] { "", "", "284", "326", "0", ""};
+        static char tacanFreq[8] { "109.250" };
+
+        static bool isAtisSpeech = false;
+
+        static int atisSpeed = 1;
+        static int atisPitch = 1;
+        static int tacan[4] { 0, 0, 0, 0 };
+        static int transponder[4] { 1, 2, 0, 0 };
+        static int transponderMode { 0 };
+
+        ImGui::Text("Radio Frequencies");
         ImGui::Separator();
         ImGui::Spacing();
 
+        ImGui::BeginTable("table_radio_frequencies", 5);
+            ImGui::TableSetupColumn("label");
+            ImGui::TableSetupColumn("selected");
+            ImGui::TableSetupColumn("toggle");
+            ImGui::TableSetupColumn("standby");
+            ImGui::TableSetupColumn("radial");
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("       ");
+                ImGui::TableNextColumn();
+                ImGui::Text("Selected       ");
+                ImGui::TableNextColumn();
+                ImGui::Text("       ");
+                ImGui::TableNextColumn();
+                ImGui::Text("Standby        ");
+                ImGui::TableNextColumn();
+                ImGui::Text("Radial");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("COM1");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("Mhz##selectedFreq0", selectedFreq[0], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Button("<->");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("MHz##StandbyFreq0", standbyFreq[0], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("COM2");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("Mhz##selectedFreq1", selectedFreq[1], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Button("<->");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("MHz##StandbyFreq1", standbyFreq[1], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("NAV1");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("Mhz##selectedFreq2", selectedFreq[2], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Button("<->");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("MHz##StandbyFreq2", standbyFreq[2], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("deg##Radial2", radials[2], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("NAV2");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("Mhz##selectedFreq3", selectedFreq[3], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Button("<->");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("MHz##StandbyFreq3", standbyFreq[3], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("deg##Radial3", radials[3], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("ADF");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("Khz##selectedFreq4", selectedFreq[4], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Button("<->");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("KHz##StandbyFreq4", standbyFreq[4], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("deg##Radial4", radials[4], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("DME");
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(60.0f);
+                ImGui::InputText("Mhz    ##selectedFreq5", selectedFreq[5], 8, ImGuiInputTextFlags_CharsDecimal);
+                ImGui::PopItemWidth();
+            }
+        ImGui::EndTable();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("ATIS Speech");
+        ImGui::Checkbox("Enabled", &isAtisSpeech);
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::PushItemWidth(70.0f);
+        ImGui::InputInt("Speed", &atisSpeed);
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::InputInt("Pitch", &atisPitch);
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("TACAN");
+        ImGui::PushItemWidth(40.0f);
+        ImGui::Combo("##tacan0", &tacan[0], "0\0""1\0""2\0""3\0""4\0""5\0""6\0""7\0""8\0""9\0");
+        ImGui::SameLine(0.0f, 4.0f);
+        ImGui::Combo("##tacan1", &tacan[1], "0\0""1\0""2\0""3\0""4\0""5\0""6\0""7\0""8\0""9\0");
+        ImGui::SameLine(0.0f, 4.0f);
+        ImGui::Combo("##tacan2", &tacan[2], "0\0""1\0""2\0""3\0""4\0""5\0""6\0""7\0""8\0""9\0");
+        ImGui::SameLine(0.0f, 4.0f);
+        ImGui::Combo("##tacan3", &tacan[3], "X\0Y\0");
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::PushItemWidth(60.0f);
+        ImGui::InputText("Mhz##tacanFreq", tacanFreq, 8, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Transponder");
+        ImGui::PushItemWidth(40.0f);
+        ImGui::Combo("##transponder0", &transponder[0], "0\0""1\0""2\0""3\0""4\0""5\0""6\0""7\0");
+        ImGui::SameLine(0.0f, 4.0f);
+        ImGui::Combo("##transponder1", &transponder[1], "0\0""1\0""2\0""3\0""4\0""5\0""6\0""7\0");
+        ImGui::SameLine(0.0f, 4.0f);
+        ImGui::Combo("##transponder2", &transponder[2], "0\0""1\0""2\0""3\0""4\0""5\0""6\0""7\0");
+        ImGui::SameLine(0.0f, 4.0f);
+        ImGui::Combo("##transponder3", &transponder[3], "0\0""1\0""2\0""3\0""4\0""5\0""6\0""7\0");
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::PushItemWidth(90.0f);
+        ImGui::Combo("Mode", &transponderMode, "Off\0Standby\0On\0Altitude\0Test\0");
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Button("Ident");
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("ATC Services");
         ImGui::EndPopup();
     }
 
@@ -51,43 +397,318 @@ static void doMenuEquipmentDialogs()
 
     if (ImGui::BeginPopup("EquipmentLights"))
     {
-        ImGui::Text("EquipmentLights");
+        static bool isBeacon = false;
+        static bool isStrobe = false;
+        static bool isNavigation = false;
+        static bool isTaxi = false;
+        static bool isLanding = false;
+        static bool isLogo = false;
+        static bool isFormation = false;
+
+        static int panelFade = 0;
+        static int instrumentFade = 0;
+        static int domeFade = 0;
+
+        ImGui::Text("Default Light Switches");
         ImGui::Separator();
         ImGui::Spacing();
+
+        ImGui::Checkbox("Beacon", &isBeacon);
+        ImGui::Checkbox("Strobe", &isStrobe);
+        ImGui::Checkbox("Navigation", &isNavigation);
+        ImGui::Checkbox("Taxi", &isTaxi);
+        ImGui::Checkbox("Landing", &isLanding);
+        ImGui::Checkbox("Logo", &isLogo);
+        ImGui::Checkbox("Formation", &isFormation);
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(120.0f);
+        ImGui::SliderInt("Panel", &panelFade, 0, 100, "%d %%");
+        ImGui::SliderInt("Instruments", &instrumentFade, 0, 100, "%d %%");
+        ImGui::SliderInt("Dome", &domeFade, 0, 100, "%d %%");
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        if (ImGui::Button("Lights Off")) {
+            isBeacon = false;
+            isStrobe = false;
+            isNavigation = false;
+            isTaxi = false;
+            isLanding = false;
+            isLogo = false;
+            isFormation = false;
+        }
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("EquipmentFailureRandom"))
     {
-        ImGui::Text("EquipmentFailureRandom");
+        static int mtbf = 0;
+        static int mcbf = 0;
+
+        static bool isDisplayMessages = true;
+
+        ImGui::Text("Random Failures (all systems and instruments)                         ");
         ImGui::Separator();
         ImGui::Spacing();
+
+        ImGui::Columns(2);
+        ImGui::SeparatorText("Mean Time Between Failures");
+        ImGui::RadioButton("None", &mtbf, 0);
+        ImGui::RadioButton("10 minutes", &mtbf, 10);
+        ImGui::RadioButton("30 minutes", &mtbf, 30);
+        ImGui::RadioButton("1 hour", &mtbf, 60);
+        ImGui::RadioButton("6 hours", &mtbf, 360);
+        ImGui::RadioButton("24 hours", &mtbf, 1440);
+
+        ImGui::NextColumn();
+        ImGui::SeparatorText("Mean Cycles Between Failures");
+        ImGui::RadioButton("None", &mcbf, 0);
+        ImGui::RadioButton("5", &mcbf, 5);
+        ImGui::RadioButton("10", &mcbf, 10);
+        ImGui::RadioButton("20", &mcbf, 20);
+        ImGui::RadioButton("50", &mcbf, 50);
+        ImGui::RadioButton("100", &mcbf, 100);
+        ImGui::RadioButton("200", &mcbf, 200);
+        ImGui::RadioButton("500", &mcbf, 500);
+
+        ImGui::Columns(1);
+        ImGui::Checkbox("Display failure messages", &isDisplayMessages);
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("EquipmentFailureSystem"))
     {
-        ImGui::Text("EquipmentFailureSystem");
+        static bool isVacuum = true;
+        static bool isStatic = true;
+        static bool isPitot = true;
+        static bool isElectrical = true;
+        static bool isAileron = true;
+        static bool isElevator = true;
+        static bool isRudder = true;
+
+        static bool isGear = true;
+        static bool isFlaps = true;
+        static bool isSpeedbrake = true;
+
+        static bool isEngine = true;
+
+        static int mtbfVacuum = 0;
+        static int mtbfStatic = 0;
+        static int mtbfPitot = 0;
+        static int mtbfElectrical = 0;
+        static int mtbfAileron = 0;
+        static int mtbfElevator = 0;
+        static int mtbfRudder = 0;
+        static int mcbfGear = 0;
+        static int mcbfFlaps = 0;
+        static int mcbfSpeedbrake = 0;
+        static int mtbfEngine1 = 0;
+
+        ImGui::Text("System Failures");
         ImGui::Separator();
         ImGui::Spacing();
+
+        ImGui::Text("Uncheck a system to fail it, or set the Mean Time/Cycles Between Failures.                   ");
+        ImGui::Spacing();
+
+        ImGui::Columns(3);
+        ImGui::LabelText("MTBF", "System");
+        ImGui::Checkbox("Vacuum    ", &isVacuum);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##vacuum", &mtbfVacuum);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Static    ", &isStatic);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##static", &mtbfStatic);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Pitot     ", &isPitot);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##pitot", &mtbfPitot);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Electrical", &isElectrical);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##electrical", &mtbfElectrical);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Aileron   ", &isAileron);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##aileron", &mtbfAileron);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Elevator  ", &isElevator);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##elevator", &mtbfElevator);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Rudder    ", &isRudder);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##rudder", &mtbfRudder);
+        ImGui::PopItemWidth();
+
+        ImGui::NextColumn();
+        ImGui::LabelText("MCBF", "System");
+        ImGui::Checkbox("Gear      ", &isGear);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##gear", &mcbfGear);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Flaps     ", &isFlaps);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##flaps", &mcbfFlaps);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Speedbrake", &isSpeedbrake);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##speedbrake", &mcbfSpeedbrake);
+        ImGui::PopItemWidth();
+
+        ImGui::NextColumn();
+        ImGui::LabelText("MTBF", "Engine");
+        ImGui::Checkbox("Engine 1  ", &isEngine);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##engine1", &mtbfEngine1);
+        ImGui::PopItemWidth();
+
+        ImGui::Columns(1);
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("EquipmentFailureInstruments"))
     {
-        ImGui::Text("EquipmentFailureInstruments");
+        static bool isNav1CDI = true;
+        static bool isNav1GS = true;
+        static bool isDME = true;
+        static bool isAirspeed = true;
+        static bool isAltimeter = true;
+        static bool isSlipSkid = true;
+        static bool isVSI = true;
+
+        static bool isNav2CDI = true;
+        static bool isNav2GS = true;
+        static bool isADF = true;
+        static bool isAltitude = true;
+        static bool isTurnCoord = true;
+        static bool isHeading = true;
+        static bool isCompass = true;
+
+        static int mtbfNav1CDI = 0;
+        static int mtbfNav1GS = 0;
+        static int mtbfDME = 0;
+        static int mtbfAirspeed = 0;
+        static int mtbfAltimeter = 0;
+        static int mtbfSlipSkid = 0;
+        static int mtbfVSI = 0;
+
+        static int mtbfNav2CDI = 0;
+        static int mcbfNav2GS = 0;
+        static int mcbfADF = 0;
+        static int mcbfAltitude = 0;
+        static int mcbfTurnCoord = 0;
+        static int mcbfHeading = 0;
+        static int mcbfCompass = 0;
+
+        ImGui::Text("Instrument Failures");
         ImGui::Separator();
         ImGui::Spacing();
+
+        ImGui::Text("Uncheck an instrument to fail it, or set the Mean Time Between Failures.");
+        ImGui::Spacing();
+
+        ImGui::Columns(2);
+        ImGui::LabelText("MTBF", "Instrument");
+        ImGui::Checkbox("NAV1 CDI  ", &isNav1CDI);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##nav1_cdi", &mtbfNav1CDI);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("NAV1 GS   ", &isNav1GS);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##nav1_gs", &mtbfNav1GS);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("DME       ", &isDME);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##dme", &mtbfDME);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Airspeed  ", &isAirspeed);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##airspeed", &mtbfAirspeed);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Altimeter ", &isAltimeter);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##altimeter", &mtbfAltimeter);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Slip/Skid ", &isSlipSkid);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##slip_skid", &mtbfSlipSkid);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("VSI       ", &isVSI);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##vsi", &mtbfVSI);
+        ImGui::PopItemWidth();
+
+        ImGui::NextColumn();
+        ImGui::LabelText("MTBF", "Instrument");
+        ImGui::Checkbox("NAV2 CDI  ", &isNav2CDI);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##nav2_cdi", &mtbfNav2CDI);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("NAV2 GS   ", &isNav2GS);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##nav2_gs", &mcbfNav2GS);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("ADF       ", &isADF);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##adf", &mcbfADF);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Altitude  ", &isAltitude);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##altitude", &mcbfAltitude);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Turn Coord", &isTurnCoord);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##turncoord", &mcbfTurnCoord);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Heading   ", &isHeading);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##heading", &mcbfHeading);
+        ImGui::PopItemWidth();
+        ImGui::Checkbox("Compass   ", &isCompass);
+        ImGui::SameLine(0.0f, 40.0f);
+        ImGui::PushItemWidth(80.0f);
+        ImGui::InputInt("##compass", &mcbfCompass);
+        ImGui::PopItemWidth();
+
+        ImGui::Columns(1);
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("EquipmentFuelPayload"))
     {
-        ImGui::Text("EquipmentFuelPayload");
+        ImGui::Text("Fuel and Payload Settings");
         ImGui::Separator();
         ImGui::Spacing();
 
@@ -96,9 +717,14 @@ static void doMenuEquipmentDialogs()
 
     if (ImGui::BeginPopup("EquipmentStopwatch"))
     {
-        ImGui::Text("EquipmentStopwatch");
-        ImGui::Separator();
         ImGui::Spacing();
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "      0:00:00.0      ");
+        ImGui::Spacing();
+        ImGui::Button("Start");
+        ImGui::SameLine(0.0f, 4.0f);
+        ImGui::Button("Stop");
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::Button("Reset");
 
         ImGui::EndPopup();
     }

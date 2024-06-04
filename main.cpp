@@ -564,9 +564,18 @@ int main(int, char**)
         }
 
         std::string menu_action = "";
-
         doMenuBar(menu_action);
         doMenuAction(menu_action);
+
+        static bool showWindowMap = false;
+        if (menu_action == "EquipmentMap")
+            showWindowMap = true;
+        ShowWindowMap(&showWindowMap);
+
+        static bool showWindowMapCanvas = false;
+        if (menu_action == "EquipmentMapCanvas")
+            showWindowMapCanvas = true;
+        ShowWindowMapCanvas(&showWindowMapCanvas);
 
         doMenuFileDialogs();
         doMenuViewDialogs();
