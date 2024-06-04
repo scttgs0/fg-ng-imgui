@@ -71,23 +71,23 @@ static void doMenuEnvironmentDialogs()
             }
 
             ImGui::EndTable();
-        ImGui::Spacing();
-        ImGui::Indent();
-        ImGui::Text("UTC    00:00:00Z");
-        ImGui::Text("Local  00:00:00   America/Chicago");
-        ImGui::Unindent();
-        ImGui::Spacing();
+            ImGui::Spacing();
+            ImGui::Indent();
+            ImGui::Text("UTC    00:00:00Z");
+            ImGui::Text("Local  00:00:00   America/Chicago");
+            ImGui::Unindent();
+            ImGui::Spacing();
 
-        ImGui::Separator();
-        ImGui::Spacing();
-        ImGui::Indent();
-        ImGui::PushItemWidth(80);
-        ImGui::InputInt("Simulator Rate", &simulatorRate);
-        ImGui::PopItemWidth();
-        ImGui::PushItemWidth(80);
-        ImGui::InputInt("Time Warp", &timeWarp);
-        ImGui::PopItemWidth();
-        ImGui::Unindent();
+            ImGui::Separator();
+            ImGui::Spacing();
+            ImGui::Indent();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("Simulator Rate", &simulatorRate);
+            ImGui::PopItemWidth();
+            ImGui::PushItemWidth(80);
+            ImGui::InputInt("Time Warp", &timeWarp);
+            ImGui::PopItemWidth();
+            ImGui::Unindent();
         ImGui::EndChild();
 
         ImGui::SameLine(0.0f, 10.0f);

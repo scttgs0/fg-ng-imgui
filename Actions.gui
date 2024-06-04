@@ -6,163 +6,159 @@
 
 static void doMenuAction(std::string& menu_action)
 {
-    if(menu_action == "FileScreenshotFolder")
+    if (menu_action == "FileScreenshotFolder")
         ImGui::OpenPopup("FileScreenshotFolder");
-    if(menu_action == "FileVideoControl")
+    if (menu_action == "FileVideoControl")
         ImGui::OpenPopup("FileVideoControl");
-    if(menu_action == "FileFlightRecorder")
+    if (menu_action == "FileFlightRecorder")
         ImGui::OpenPopup("FileFlightRecorder");
-    if(menu_action == "FileTimeMode")
+    if (menu_action == "FileTimeMode")
         ImGui::OpenPopup("FileTimeMode");
-    if(menu_action == "FileSoundConfiguration")
+    if (menu_action == "FileSoundConfiguration")
         ImGui::OpenPopup("FileSoundConfiguration");
-    if(menu_action == "FileMouseConfiguration")
+    if (menu_action == "FileMouseConfiguration")
         ImGui::OpenPopup("FileMouseConfiguration");
-    if(menu_action == "FileJoystickConfiguration")
+    if (menu_action == "FileJoystickConfiguration")
         ImGui::OpenPopup("FileJoystickConfiguration");
-    if(menu_action == "FileSceneryDownload")
+    if (menu_action == "FileSceneryDownload")
         ImGui::OpenPopup("FileSceneryDownload");
-    if(menu_action == "FileViewErrors")
+    if (menu_action == "FileViewErrors")
         ImGui::OpenPopup("FileViewErrors");
-    if(menu_action == "FileExit")
+    if (menu_action == "FileExit")
         ImGui::OpenPopup("FileExit");
 
-    if(menu_action == "ViewAdjustPosition")
+    if (menu_action == "ViewAdjustPosition")
         ImGui::OpenPopup("ViewAdjustPosition");
-    if(menu_action == "ViewLodRange")
+    if (menu_action == "ViewLodRange")
         ImGui::OpenPopup("ViewLodRange");
-    if(menu_action == "ViewHud")
+    if (menu_action == "ViewHud")
         ImGui::OpenPopup("ViewHud");
-    if(menu_action == "ViewFilterEffects")
+    if (menu_action == "ViewFilterEffects")
         ImGui::OpenPopup("ViewFilterEffects");
-    if(menu_action == "ViewReplay")
+    if (menu_action == "ViewReplay")
         ImGui::OpenPopup("ViewReplay");
 
-    if(menu_action == "OptionsRendering")
+    if (menu_action == "OptionsRendering")
         ImGui::OpenPopup("OptionsRendering");
-    if(menu_action == "OptionsOrbitalRendering")
+    if (menu_action == "OptionsOrbitalRendering")
         ImGui::OpenPopup("OptionsOrbitalRendering");
-    if(menu_action == "OptionsView")
+    if (menu_action == "OptionsView")
         ImGui::OpenPopup("OptionsView");
-    if(menu_action == "OptionsCockpit")
+    if (menu_action == "OptionsCockpit")
         ImGui::OpenPopup("OptionsCockpit");
-    if(menu_action == "OptionsStereoscopic")
+    if (menu_action == "OptionsStereoscopic")
         ImGui::OpenPopup("OptionsStereoscopic");
-    if(menu_action == "OptionsVirtualReality")
+    if (menu_action == "OptionsVirtualReality")
         ImGui::OpenPopup("OptionsVirtualReality");
 
-    if(menu_action == "LocationAirborne")
+    if (menu_action == "LocationAirborne")
         ImGui::OpenPopup("LocationAirborne");
-    if(menu_action == "LocationAirport")
+    if (menu_action == "LocationAirport")
         ImGui::OpenPopup("LocationAirport");
 
-    if(menu_action == "AutopilotSettings")
+    if (menu_action == "AutopilotSettings")
         ImGui::OpenPopup("AutopilotSettings");
-    if(menu_action == "autopilotRouteManager")
+    if (menu_action == "autopilotRouteManager")
         ImGui::OpenPopup("autopilotRouteManager");
 
-    if(menu_action == "EnvironmentSettings")
+    if (menu_action == "EnvironmentSettings")
         ImGui::OpenPopup("EnvironmentSettings");
-    if(menu_action == "EnvironmentTime")
+    if (menu_action == "EnvironmentTime")
         ImGui::OpenPopup("EnvironmentTime");
-    if(menu_action == "EnvironmentWeather")
+    if (menu_action == "EnvironmentWeather")
         ImGui::OpenPopup("EnvironmentWeather");
-    if(menu_action == "EnvironmentVolcanoes")
+    if (menu_action == "EnvironmentVolcanoes")
         ImGui::OpenPopup("EnvironmentVolcanoes");
 
-    if(menu_action == "EquipmentMap")
-        ImGui::OpenPopup("EquipmentMap");
-    if(menu_action == "EquipmentMapCanvas")
-        ImGui::OpenPopup("EquipmentMapCanvas");
-    if(menu_action == "EquipmentRadio")
+    if (menu_action == "EquipmentRadio")
         ImGui::OpenPopup("EquipmentRadio");
-    if(menu_action == "EquipmentGPS")
+    if (menu_action == "EquipmentGPS")
         ImGui::OpenPopup("EquipmentGPS");
-    if(menu_action == "EquipmentInstruments")
+    if (menu_action == "EquipmentInstruments")
         ImGui::OpenPopup("EquipmentInstruments");
-    if(menu_action == "EquipmentLights")
+    if (menu_action == "EquipmentLights")
         ImGui::OpenPopup("EquipmentLights");
-    if(menu_action == "EquipmentFailureRandom")
+    if (menu_action == "EquipmentFailureRandom")
         ImGui::OpenPopup("EquipmentFailureRandom");
-    if(menu_action == "EquipmentFailureSystem")
+    if (menu_action == "EquipmentFailureSystem")
         ImGui::OpenPopup("EquipmentFailureSystem");
-    if(menu_action == "EquipmentFailureInstruments")
+    if (menu_action == "EquipmentFailureInstruments")
         ImGui::OpenPopup("EquipmentFailureInstruments");
-    if(menu_action == "EquipmentFuelPayload")
+    if (menu_action == "EquipmentFuelPayload")
         ImGui::OpenPopup("EquipmentFuelPayload");
-    if(menu_action == "EquipmentStopwatch")
+    if (menu_action == "EquipmentStopwatch")
         ImGui::OpenPopup("EquipmentStopwatch");
 
-    if(menu_action == "AITrafficScenarios")
+    if (menu_action == "AITrafficScenarios")
         ImGui::OpenPopup("AITrafficScenarios");
-    if(menu_action == "AIAirTrafficControl")
+    if (menu_action == "AIAirTrafficControl")
         ImGui::OpenPopup("AIAirTrafficControl");
-    if(menu_action == "AIWingman")
+    if (menu_action == "AIWingman")
         ImGui::OpenPopup("AIWingman");
-    if(menu_action == "AITanker")
+    if (menu_action == "AITanker")
         ImGui::OpenPopup("AITanker");
-    if(menu_action == "AIJetway")
+    if (menu_action == "AIJetway")
         ImGui::OpenPopup("AIJetway");
-    if(menu_action == "AIObjects")
+    if (menu_action == "AIObjects")
         ImGui::OpenPopup("AIObjects");
 
-    if(menu_action == "MultiplayerSettings")
+    if (menu_action == "MultiplayerSettings")
         ImGui::OpenPopup("MultiplayerSettings");
-    if(menu_action == "MultiplayerFGCom")
+    if (menu_action == "MultiplayerFGCom")
         ImGui::OpenPopup("MultiplayerFGCom");
-    if(menu_action == "MultiplayerLag")
+    if (menu_action == "MultiplayerLag")
         ImGui::OpenPopup("MultiplayerLag");
-    if(menu_action == "MultiplayerServerStatus")
+    if (menu_action == "MultiplayerServerStatus")
         ImGui::OpenPopup("MultiplayerServerStatus");
-    if(menu_action == "MultiplayerChat")
+    if (menu_action == "MultiplayerChat")
         ImGui::OpenPopup("MultiplayerChat");
-    if(menu_action == "MultiplayerChatMenu")
+    if (menu_action == "MultiplayerChatMenu")
         ImGui::OpenPopup("MultiplayerChatMenu");
-    if(menu_action == "MultiplayerPilotList")
+    if (menu_action == "MultiplayerPilotList")
         ImGui::OpenPopup("MultiplayerPilotList");
-    if(menu_action == "MultiplayerCarrier")
+    if (menu_action == "MultiplayerCarrier")
         ImGui::OpenPopup("MultiplayerCarrier");
-    if(menu_action == "MultiplayerSwiftConnection")
+    if (menu_action == "MultiplayerSwiftConnection")
         ImGui::OpenPopup("MultiplayerSwiftConnection");
 
-    if(menu_action == "DebugNasalConsole")
+    if (menu_action == "DebugNasalConsole")
         ImGui::OpenPopup("DebugNasalConsole");
-    if(menu_action == "DebugNasalREPL")
+    if (menu_action == "DebugNasalREPL")
         ImGui::OpenPopup("DebugNasalREPL");
-    if(menu_action == "DebugNasalTest")
+    if (menu_action == "DebugNasalTest")
         ImGui::OpenPopup("DebugNasalTest");
-    if(menu_action == "DebugDevKeys")
+    if (menu_action == "DebugDevKeys")
         ImGui::OpenPopup("DebugDevKeys");
-    if(menu_action == "DebugDevExtensions")
+    if (menu_action == "DebugDevExtensions")
         ImGui::OpenPopup("DebugDevExtensions");
-    if(menu_action == "DebugDevTest")
+    if (menu_action == "DebugDevTest")
         ImGui::OpenPopup("DebugDevTest");
-    if(menu_action == "DebugDevTutorialMarker")
+    if (menu_action == "DebugDevTutorialMarker")
         ImGui::OpenPopup("DebugDevTutorialMarker");
-    if(menu_action == "DebugStatPerformance")
+    if (menu_action == "DebugStatPerformance")
         ImGui::OpenPopup("DebugStatPerformance");
-    if(menu_action == "DebugProperties")
+    if (menu_action == "DebugProperties")
         ImGui::OpenPopup("DebugProperties");
-    if(menu_action == "DebugLogging")
+    if (menu_action == "DebugLogging")
         ImGui::OpenPopup("DebugLogging");
-    if(menu_action == "DebugLocalWeather")
+    if (menu_action == "DebugLocalWeather")
         ImGui::OpenPopup("DebugLocalWeather");
-    if(menu_action == "DebugFG1000PFD")
+    if (menu_action == "DebugFG1000PFD")
         ImGui::OpenPopup("DebugFG1000PFD");
-    if(menu_action == "DebugFG1000MFD")
+    if (menu_action == "DebugFG1000MFD")
         ImGui::OpenPopup("DebugFG1000MFD");
-    if(menu_action == "TranslateLanguage")
+    if (menu_action == "TranslateLanguage")
         ImGui::OpenPopup("TranslateLanguage");
-    if(menu_action == "TranslatePUI2ImGui")
+    if (menu_action == "TranslatePUI2ImGui")
         ImGui::OpenPopup("TranslatePUI2ImGui");
-    if(menu_action == "TranslateNasal2Lua")
+    if (menu_action == "TranslateNasal2Lua")
         ImGui::OpenPopup("TranslateNasal2Lua");
-    if(menu_action == "TranslateXml2Yaml")
+    if (menu_action == "TranslateXml2Yaml")
         ImGui::OpenPopup("TranslateXml2Yaml");
 
-    if(menu_action == "Addon_GS_Main")
+    if (menu_action == "Addon_GS_Main")
         ImGui::OpenPopup("AddonGroundServicesMain");
-    if(menu_action == "Addon_GS_Map")
+    if (menu_action == "Addon_GS_Map")
         ImGui::OpenPopup("AddonGroundServicesMap");
 
     if (menu_action == "HelpSimKeys")
