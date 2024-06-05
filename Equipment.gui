@@ -379,18 +379,182 @@ static void doMenuEquipmentDialogs()
 
     if (ImGui::BeginPopup("EquipmentGPS"))
     {
-        ImGui::Text("EquipmentGPS");
+        static int mode = 0;
+        static int target = 0;
+
+        static char searchTerm[256] { "" };
+
+        ImGui::Text("GPS Settings                                                                                                                      ");
         ImGui::Separator();
         ImGui::Spacing();
+
+        if (ImGui::BeginTabBar("MyTabBar", 0))
+        {
+            if (ImGui::BeginTabItem("LEG"))
+            {
+                ImGui::Columns(3);
+                ImGui::LabelText("Mode", "LEG");
+                ImGui::LabelText("Longitude","-122.357");
+                ImGui::LabelText("Groundspeed","0 knots");
+                ImGui::LabelText("Odometer","0.0 nm");
+                ImGui::LabelText("Ident","");
+                ImGui::LabelText("Longitude","0.000");
+                ImGui::LabelText("Bearing","-9999");
+                ImGui::LabelText("Leg Course","68");
+
+                ImGui::NextColumn();
+                ImGui::LabelText("Current Route Wp","-1");
+                ImGui::LabelText("Latitude","37.614");
+                ImGui::LabelText("Track","347 degrees");
+                ImGui::LabelText("RAIM","1.0");
+                ImGui::LabelText("Name","");
+                ImGui::LabelText("Latitude","0.000");
+                ImGui::LabelText("Distance","-1.0 nm");
+                ImGui::LabelText("Leg Distance","-1.0 nm");
+
+                ImGui::NextColumn();
+                ImGui::LabelText("Xtrack","0.00 nm");
+                ImGui::LabelText("Altitude","1 ft");
+                ImGui::LabelText("VS","0 fpm");
+                ImGui::LabelText("    ","");
+                ImGui::LabelText("    ","");
+                ImGui::LabelText("Altitude","0 ft");
+                ImGui::LabelText("TTW","");
+                ImGui::LabelText("    ","");
+
+                ImGui::Columns(1);
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("DTO"))
+            {
+                ImGui::Columns(3);
+                ImGui::LabelText("Mode", "DTO");
+                ImGui::LabelText("Longitude","-122.357");
+                ImGui::LabelText("Groundspeed","0 knots");
+                ImGui::LabelText("Odometer","0.0 nm");
+                ImGui::LabelText("Ident","ZVISHAVANEZWWPT");
+                ImGui::LabelText("Longitude","30.033");
+                ImGui::LabelText("Bearing","92");
+                ImGui::LabelText("    ","");
+
+                ImGui::NextColumn();
+                ImGui::LabelText("Desired Course","91.8 degrees");
+                ImGui::LabelText("Latitude","37.614");
+                ImGui::LabelText("Track","4 degrees");
+                ImGui::LabelText("RAIM","1.0");
+                ImGui::LabelText("Name","");
+                ImGui::LabelText("Latitude","-20.333");
+                ImGui::LabelText("Distance","7438.0 nm");
+                ImGui::LabelText("    ","");
+
+                ImGui::NextColumn();
+                ImGui::LabelText("Xtrack","0.00 nm");
+                ImGui::LabelText("Altitude","1 ft");
+                ImGui::LabelText("VS","0 fpm");
+                ImGui::LabelText("    ","");
+                ImGui::LabelText("    ","");
+                ImGui::LabelText("Altitude","0 ft");
+                ImGui::LabelText("TTW","");
+                ImGui::LabelText("    ","");
+
+                ImGui::Columns(1);
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("OBS"))
+            {
+                ImGui::Columns(3);
+                ImGui::LabelText("Mode", "OBS");
+                ImGui::LabelText("Longitude","-122.357");
+                ImGui::LabelText("Groundspeed","0 knots");
+                ImGui::LabelText("Odometer","0.0 nm");
+                ImGui::LabelText("Ident","ZVISHAVANEZWWPT");
+                ImGui::LabelText("Longitude","30.033");
+                ImGui::LabelText("Bearing","49");
+                ImGui::LabelText("TO","");
+
+                ImGui::NextColumn();
+                ImGui::LabelText("Desired Course","0.0 degrees");
+                ImGui::LabelText("Latitude","37.614");
+                ImGui::LabelText("Track","347 degrees");
+                ImGui::LabelText("RAIM","1.0");
+                ImGui::LabelText("Name","");
+                ImGui::LabelText("Latitude","-20.333");
+                ImGui::LabelText("Distance","9338.1 nm");
+                ImGui::LabelText("Leg Distance","-1.0 nm");
+
+                ImGui::NextColumn();
+                ImGui::LabelText("Xtrack","1302.6 nm");
+                ImGui::LabelText("Altitude","1 ft");
+                ImGui::LabelText("VS","0 fpm");
+                ImGui::LabelText("    ","");
+                ImGui::LabelText("    ","");
+                ImGui::LabelText("Altitude","-9999 ft");
+                ImGui::LabelText("TTW","");
+                ImGui::LabelText("    ","");
+
+                ImGui::Columns(1);
+                ImGui::EndTabItem();
+            }
+
+            ImGui::EndTabBar();
+
+        }
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Columns(2);
+        ImGui::Combo("Type", &target, "Airport\0Fix\0");
+        ImGui::InputText("Search", searchTerm, sizeof(searchTerm));
+        ImGui::Spacing();
+        ImGui::Button("Search");
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::Button("Search Names");
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Button("Nearest");
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Button("Activate Waypoint");
+
+        ImGui::NextColumn();
+        ImGui::PushItemWidth(120.0f);
+        ImGui::LabelText("Ident","KMEM");
+        ImGui::LabelText("Name","MEMPHIS INTL");
+        ImGui::LabelText("Longitude","-89.976");
+        ImGui::LabelText("Latitude","35.046");
+        ImGui::LabelText("Bearing","73");
+        ImGui::LabelText("Distance","1569.6 nm");
+        ImGui::LabelText("Altitude","341 ft");
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::Button("Previous", ImVec2(100.0f, 0.0f));
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::Button("Next", ImVec2(100.0f, 0.0f));
+
+        ImGui::Columns(1);
 
         ImGui::EndPopup();
     }
 
     if (ImGui::BeginPopup("EquipmentInstruments"))
     {
-        ImGui::Text("EquipmentInstruments");
+        static char qnhValue[8] { "1013.2" };
+        static char pressureValue[8] { "29.92" };
+        static char compassVariation[8] { "4" };
+
+        ImGui::Text("Instrument Settings");
         ImGui::Separator();
         ImGui::Spacing();
+
+        ImGui::PushItemWidth(60.0f);
+        ImGui::InputText("QNH", qnhValue, 8, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::InputText("Altimeter", pressureValue, 8, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::InputText("Compass Variation", compassVariation, 8, ImGuiInputTextFlags_CharsDecimal);
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::LabelText("Magnetic Variation", "-4.3 degrees");
 
         ImGui::EndPopup();
     }
@@ -708,8 +872,106 @@ static void doMenuEquipmentDialogs()
 
     if (ImGui::BeginPopup("EquipmentFuelPayload"))
     {
+        static bool isTank0 = false;
+        static bool isTank1 = false;
+        static bool isTank2 = false;
+
+        static int tank0 = 49;
+        static int tank1 = 76;
+        static int tank2 = 49;
+
+        static int pilotWeight = 165;
+        static int copilotWeight = 154;
+        static int leftPassengerWeight = 0;
+        static int rightPassengerWeight = 0;
+        static int luggageWeight = 11;
+
         ImGui::Text("Fuel and Payload Settings");
         ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Fuel Tanks");
+        ImGui::BeginTable("table_fueltanks", 5);
+            ImGui::TableSetupColumn("tank");
+            ImGui::TableSetupColumn("quantity");
+            ImGui::TableSetupColumn("weight");
+            ImGui::TableSetupColumn("volume");
+            ImGui::TableSetupColumn("capacity");
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("Tank  ");
+                ImGui::TableNextColumn();
+                ImGui::Text("      ");
+                ImGui::TableNextColumn();
+                ImGui::Text("Pounds");
+                ImGui::TableNextColumn();
+                ImGui::Text("Gallons");
+                ImGui::TableNextColumn();
+                ImGui::Text("Capacity");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Checkbox("1##tank0", &isTank0);
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(100.0f);
+                ImGui::SliderInt(" ##tank0Value", &tank0, 0, 100);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Text("39.0");
+                ImGui::TableNextColumn();
+                ImGui::Text("5.1");
+                ImGui::TableNextColumn();
+                ImGui::Text("49 %%");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Checkbox("2##tank1", &isTank1);
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(100.0f);
+                ImGui::SliderInt(" ##tank1Value", &tank1, 0, 100);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Text("132.3");
+                ImGui::TableNextColumn();
+                ImGui::Text("22.0");
+                ImGui::TableNextColumn();
+                ImGui::Text("76 %%");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Checkbox("3##tank2", &isTank2);
+                ImGui::TableNextColumn();
+                ImGui::PushItemWidth(100.0f);
+                ImGui::SliderInt(" ##tank2Value", &tank2, 0, 100);
+                ImGui::PopItemWidth();
+                ImGui::TableNextColumn();
+                ImGui::Text("30.9");
+                ImGui::TableNextColumn();
+                ImGui::Text("5.1");
+                ImGui::TableNextColumn();
+                ImGui::Text("49 %%");
+            }
+        ImGui::EndTable();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Payload");
+        ImGui::PushItemWidth(100.0f);
+        ImGui::SliderInt("Pilot##pilotWeight", &pilotWeight, 90, 300, "%d libs");
+        ImGui::SliderInt("Copilot##copilotWeight", &copilotWeight, 90, 300, "%d libs");
+        ImGui::SliderInt("LeftPassenger##pass1Weight", &leftPassengerWeight, 90, 300, "%d libs");
+        ImGui::SliderInt("RightPassenger##pass2Weight", &rightPassengerWeight, 90, 300, "%d libs");
+        ImGui::SliderInt("Luggage##luggageWeight", &luggageWeight, 90, 300, "%d libs");
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("Weight and Balance");
+        ImGui::LabelText("Gross Weight", "1892 lbs");
+        ImGui::LabelText("Max Takeoff Weight", "2204 lbs");
+        ImGui::LabelText("Center of Gravity", "-54.21 m");
         ImGui::Spacing();
 
         ImGui::EndPopup();
