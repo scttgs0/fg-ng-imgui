@@ -2,7 +2,7 @@
 #include "imgui.h"
 
 
-static void doMenuFileDialogs()
+static void doMenuFileDialogs(bool &showReplayDialog, bool &showLagDialog)
 {
     if (ImGui::BeginPopup("FileScreenshotFolder"))
     {
@@ -39,9 +39,11 @@ static void doMenuFileDialogs()
         //ImGui::Separator();
 
         ImGui::SeparatorText("Settings");
+        ImGui::PushItemWidth(100.0f);
         ImGui::InputFloat("Quality (-1 or 0..1)", &f_quality);
         ImGui::InputFloat("Speed (-1 or 0..1)", &f_speed);
         ImGui::InputInt("Bitrate", &i_bitRate);
+        ImGui::PopItemWidth();
 
         ImGui::EndPopup();
     }
@@ -67,7 +69,7 @@ static void doMenuFileDialogs()
         if(ImGui::Button("Replay recording from file...", ImVec2(250, 20)))
             ImGui::CloseCurrentPopup();
         if(ImGui::Button("Show Replay dialog", ImVec2(250, 20)))
-            ImGui::CloseCurrentPopup();
+            showReplayDialog = true;
         if(ImGui::Button("Save recording to file...", ImVec2(250, 20)))
             ImGui::CloseCurrentPopup();
         ImGui::Checkbox("Maintain recovery snapshot", &b_snapshot);
@@ -101,7 +103,8 @@ static void doMenuFileDialogs()
 
         ImGui::RadioButton("Actual Time", &timeMode, 0);
         ImGui::SameLine();
-        ImGui::Button("Settings");
+        if (ImGui::Button("Settings"))
+            showLagDialog = true;
         ImGui::RadioButton("Fixed Time", &timeMode, 1);
         ImGui::SameLine();
         ImGui::InputText("##Date-Time", fixedDateTime, 20);

@@ -577,7 +577,18 @@ int main(int, char**)
             showWindowMapCanvas = true;
         ShowWindowMapCanvas(&showWindowMapCanvas);
 
-        doMenuFileDialogs();
+        static bool showReplayDialog = false;
+        static bool showLagDialog = false;
+        doMenuFileDialogs(showReplayDialog, showLagDialog);
+        if (showReplayDialog) {
+            showReplayDialog = false;
+            ImGui::OpenPopup("ViewReplay");
+        }
+        if (showLagDialog) {
+            showLagDialog = false;
+            ImGui::OpenPopup("MultiplayerLag");
+        }
+
         doMenuViewDialogs();
         doMenuOptionsDialogs();
         doMenuLocationDialogs();
