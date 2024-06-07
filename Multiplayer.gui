@@ -56,7 +56,88 @@ static void doMenuMultiplayerDialogs()
         ImGui::SameLine(0.0f, 10.0f);
         ImGui::Button("Disconnect", ImVec2(120.0f, 0.0f));
         ImGui::SameLine(0.0f, 30.0f);
-        ImGui::Button("Server Status", ImVec2(120.0f, 0.0f));
+        if (ImGui::Button("Server Status", ImVec2(120.0f, 0.0f)))
+            ImGui::OpenPopup("MultiplayerServerStatus");
+
+        // =====================================
+
+        if (ImGui::BeginPopup("MultiplayerServerStatus"))
+        {
+            ImGui::Text("Multiplayer Server Status");
+            ImGui::Separator();
+            ImGui::Spacing();
+
+            ImGui::BeginTable("table_server_status", 5, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+            ImGui::TableSetupColumn("Status");
+            ImGui::TableSetupColumn("Address");
+            ImGui::TableSetupColumn("Location");
+            ImGui::TableSetupColumn("Version");
+            ImGui::TableSetupColumn("Clients");
+            ImGui::TableHeadersRow();
+            {
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Up");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("mpserver01.flightgear.org");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Essen, Germany");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("0.13.9");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("42:43");
+                    ImGui::PopStyleColor();
+            }
+            {
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Up");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("mpserver03.flightgear.org");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Hamburg, Germany");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("0.13.5");
+                    ImGui::TableNextColumn();
+                    ImGui::Text(" 1:42");
+                    ImGui::PopStyleColor();
+            }
+            {
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.3f, 0.3f, 1.0f));
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Down");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("mpserver16.flightgear.org");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Dallas, TX, USA");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("---");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("---");
+                    ImGui::PopStyleColor();
+            }
+            {
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Up");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("mpserver87.flightgear.org");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Paris, France");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("0.13.9");
+                    ImGui::TableNextColumn();
+                    ImGui::Text(" 0:42");
+                    ImGui::PopStyleColor();
+            }
+            ImGui::EndTable();
+
+            ImGui::EndPopup();
+        }
 
         ImGui::EndPopup();
     }
@@ -361,84 +442,6 @@ static void doMenuMultiplayerDialogs()
         ImGui::Button("Stop", ImVec2(100.0f, 0.0f));
         ImGui::SameLine(0.0f, 50.0f);
         ImGui::Button("Apply", ImVec2(100.0f, 0.0f));
-
-        ImGui::EndPopup();
-    }
-
-    if (ImGui::BeginPopup("MultiplayerServerStatus"))
-    {
-        ImGui::Text("Multiplayer Server Status");
-        ImGui::Separator();
-        ImGui::Spacing();
-
-        ImGui::BeginTable("table_server_status", 5, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
-        ImGui::TableSetupColumn("Status");
-        ImGui::TableSetupColumn("Address");
-        ImGui::TableSetupColumn("Location");
-        ImGui::TableSetupColumn("Version");
-        ImGui::TableSetupColumn("Clients");
-        ImGui::TableHeadersRow();
-        {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
-                ImGui::TableNextRow();
-                ImGui::TableNextColumn();
-                ImGui::Text("Up");
-                ImGui::TableNextColumn();
-                ImGui::Text("mpserver01.flightgear.org");
-                ImGui::TableNextColumn();
-                ImGui::Text("Essen, Germany");
-                ImGui::TableNextColumn();
-                ImGui::Text("0.13.9");
-                ImGui::TableNextColumn();
-                ImGui::Text("42:43");
-                ImGui::PopStyleColor();
-        }
-        {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
-                ImGui::TableNextRow();
-                ImGui::TableNextColumn();
-                ImGui::Text("Up");
-                ImGui::TableNextColumn();
-                ImGui::Text("mpserver03.flightgear.org");
-                ImGui::TableNextColumn();
-                ImGui::Text("Hamburg, Germany");
-                ImGui::TableNextColumn();
-                ImGui::Text("0.13.5");
-                ImGui::TableNextColumn();
-                ImGui::Text(" 1:42");
-                ImGui::PopStyleColor();
-        }
-        {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.3f, 0.3f, 1.0f));
-                ImGui::TableNextRow();
-                ImGui::TableNextColumn();
-                ImGui::Text("Down");
-                ImGui::TableNextColumn();
-                ImGui::Text("mpserver16.flightgear.org");
-                ImGui::TableNextColumn();
-                ImGui::Text("Dallas, TX, USA");
-                ImGui::TableNextColumn();
-                ImGui::Text("---");
-                ImGui::TableNextColumn();
-                ImGui::Text("---");
-                ImGui::PopStyleColor();
-        }
-        {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.9f, 0.3f, 1.0f));
-                ImGui::TableNextRow();
-                ImGui::TableNextColumn();
-                ImGui::Text("Up");
-                ImGui::TableNextColumn();
-                ImGui::Text("mpserver87.flightgear.org");
-                ImGui::TableNextColumn();
-                ImGui::Text("Paris, France");
-                ImGui::TableNextColumn();
-                ImGui::Text("0.13.9");
-                ImGui::TableNextColumn();
-                ImGui::Text(" 0:42");
-                ImGui::PopStyleColor();
-        }
-        ImGui::EndTable();
 
         ImGui::EndPopup();
     }

@@ -219,8 +219,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "MultiplayerSwiftConnection";
             if (ImGui::MenuItem("Lag Settings", NULL))
                 menu_action = "MultiplayerLag";
-            if (ImGui::MenuItem("Server Status", NULL))
-                menu_action = "MultiplayerServerStatus";
 
             ImGui::Separator();
 
