@@ -594,7 +594,14 @@ int main(int, char**)
         doMenuLocationDialogs();
         doMenuAutopilotDialogs();
         doMenuEnvironmentDialogs();
-        doMenuEquipmentDialogs();
+
+        static bool showATCDialog = false;
+        doMenuEquipmentDialogs(showATCDialog);
+        if (showATCDialog) {
+            showATCDialog = false;
+            ImGui::OpenPopup("AIAirTrafficControl");
+        }
+
         doMenuAIDialogs();
         doMenuMultiplayerDialogs();
         doMenuDebugDialogs();

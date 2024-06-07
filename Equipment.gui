@@ -187,7 +187,7 @@ static void ShowWindowMapCanvas(bool *p_show) {
     }
 }
 
-static void doMenuEquipmentDialogs()
+static void doMenuEquipmentDialogs(bool &showATCDialog)
 {
     if (ImGui::BeginPopup("EquipmentRadio"))
     {
@@ -373,7 +373,9 @@ static void doMenuEquipmentDialogs()
         ImGui::Spacing();
 
         ImGui::Separator();
-        ImGui::Button("ATC Services");
+        if (ImGui::Button("ATC Services"))
+            showATCDialog = true;
+
         ImGui::EndPopup();
     }
 

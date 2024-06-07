@@ -51,7 +51,7 @@ static void doMenuAIDialogs()
         static const char* const freq[] { "KSFO", "KSQL", "KHAF", "KOAK", "KHWD", "KPAO", "KNUQ", "CA35", "KSJC", "KLVK", "KCCR", "KRHV", "23Q", "KDVO",
                                 "CL77", "KAPC", "0Q3", "C83", "0Q9", "O69", "8Q0", "KSUU", "KTCY", "O88", "E16", "KWVI", "CA54", "KVCB"};
 
-        ImGui::Text("Display Nearest Airport Frequencies");
+        ImGui::Text("Nearest Airport Frequencies");
         ImGui::Separator();
         ImGui::Spacing();
 
