@@ -1,14 +1,36 @@
 
+#include <string>
+
 #include "imgui.h"
+#include "nfd.hpp"
 
 
-static void doMenuFileDialogs(bool &showReplayDialog, bool &showLagDialog)
+static void doMenuFileDialogs(bool &promptScreenshotFolder, bool &showReplayDialog, bool &showLagDialog)
 {
     if (ImGui::BeginPopup("FileScreenshotFolder"))
     {
+        static std::string screenshotFolder { "~/" };
+
+        if (promptScreenshotFolder) {
+            promptScreenshotFolder = false;
+
+            NFD::Guard nfdGuard;
+            NFD::UniquePath outPath;
+
+            nfdresult_t result = NFD::PickFolder(outPath);
+            if (result == NFD_OKAY) {
+                screenshotFolder = outPath.get();
+            }
+            else {
+                ImGui::CloseCurrentPopup();
+                return;
+            }
+        }
+
         ImGui::Text("Screenshot Folder");
         ImGui::Separator();
 
+        ImGui::Text("'%s'", screenshotFolder.c_str());
         ImGui::EndPopup();
     }
 
@@ -21,14 +43,14 @@ static void doMenuFileDialogs(bool &showReplayDialog, bool &showLagDialog)
         static int codec = 2;
 
         ImGui::Text("Video Control");
-        //ImGui::Separator();
+        ImGui::Separator();
+        ImGui::Spacing();
 
         ImGui::SeparatorText("Format");
         ImGui::RadioButton("MP4", &format, 0);
         ImGui::RadioButton("MPEG", &format, 1);
         ImGui::RadioButton("MKV", &format, 2);
         ImGui::RadioButton("OGV", &format, 3);
-        //ImGui::Separator();
 
         ImGui::SeparatorText("Codec");
         ImGui::RadioButton("MPEG2", &codec, 0);
@@ -36,7 +58,6 @@ static void doMenuFileDialogs(bool &showReplayDialog, bool &showLagDialog)
         ImGui::RadioButton("H.265", &codec, 2);
         ImGui::RadioButton("VP8", &codec, 3);
         ImGui::RadioButton("Theora", &codec, 4);
-        //ImGui::Separator();
 
         ImGui::SeparatorText("Settings");
         ImGui::PushItemWidth(100.0f);
@@ -44,6 +65,12 @@ static void doMenuFileDialogs(bool &showReplayDialog, bool &showLagDialog)
         ImGui::InputFloat("Speed (-1 or 0..1)", &f_speed);
         ImGui::InputInt("Bitrate", &i_bitRate);
         ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("Start", ImVec2(80.0f, 0.0f));
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::Button("Stop", ImVec2(80.0f, 0.0f));
 
         ImGui::EndPopup();
     }

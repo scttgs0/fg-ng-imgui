@@ -577,9 +577,12 @@ int main(int, char**)
             showWindowMapCanvas = true;
         ShowWindowMapCanvas(&showWindowMapCanvas);
 
+        static bool promptScreenshotFolder = false;
         static bool showReplayDialog = false;
         static bool showLagDialog = false;
-        doMenuFileDialogs(showReplayDialog, showLagDialog);
+        if (menu_action == "FileScreenshotFolder")
+            promptScreenshotFolder = true;
+        doMenuFileDialogs(promptScreenshotFolder, showReplayDialog, showLagDialog);
         if (showReplayDialog) {
             showReplayDialog = false;
             ImGui::OpenPopup("ViewReplay");

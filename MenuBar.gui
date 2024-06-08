@@ -9,23 +9,16 @@ static void doMenuBar(std::string& menu_action)
         if (ImGui::BeginMenu("File"))
         {
             if (ImGui::MenuItem("Reset", "Shift-Esc")) {}
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Screenshot", "F3")) {}
 
             if (ImGui::MenuItem("Screenshot Folder...", NULL))
                 menu_action = "FileScreenshotFolder";
-
             ImGui::Separator();
-
-            if (ImGui::MenuItem("Video Start", NULL)) {}
-
-            if (ImGui::MenuItem("Video Stop", NULL, false)) {}
 
             if (ImGui::MenuItem("Video Control", NULL))
                 menu_action = "FileVideoControl";
-
             ImGui::Separator();
 
             if (ImGui::BeginMenu("Configuration")) {
@@ -46,7 +39,6 @@ static void doMenuBar(std::string& menu_action)
 
             if (ImGui::MenuItem("View Errors", NULL))
                 menu_action = "FileViewErrors";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Exit...", NULL))
@@ -59,7 +51,6 @@ static void doMenuBar(std::string& menu_action)
         {
             if (ImGui::MenuItem("Toggle Fullscreen", "Shift-F10")) {}
             if (ImGui::MenuItem("Toggle Glideslope", NULL)) {}
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("View Position", NULL))
@@ -70,12 +61,10 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "ViewHud";
             if (ImGui::MenuItem("Filter Effects", NULL))
                 menu_action = "ViewFilterEffects";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Replay", "Ctrl-R"))
                 menu_action = "ViewReplay";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("New View", NULL)) {}
@@ -113,7 +102,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "LocationAirborne";
             if (ImGui::MenuItem("Airport", NULL))
                 menu_action = "LocationAirport";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Random Location", NULL)) {}
@@ -128,7 +116,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "AutopilotSettings";
             if (ImGui::MenuItem("Route Manager", NULL))
                 menu_action = "autopilotRouteManager";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Waypoint Previous", NULL)) {}
@@ -168,7 +155,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "EquipmentInstruments";
             if (ImGui::MenuItem("Lights", NULL))
                 menu_action = "EquipmentLights";
-
             ImGui::Separator();
 
             if (ImGui::BeginMenu("Failures")) {
@@ -180,7 +166,6 @@ static void doMenuBar(std::string& menu_action)
                     menu_action = "EquipmentFailureInstruments";
                 ImGui::EndMenu();
             }
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Fuel and Payload", NULL))
@@ -219,7 +204,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "MultiplayerSwiftConnection";
             if (ImGui::MenuItem("Lag Settings", NULL))
                 menu_action = "MultiplayerLag";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Chat", NULL))
@@ -350,7 +334,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "HelpDocs";
             if (ImGui::MenuItem("Help (external)", NULL))
                 menu_action = "HelpExternal";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Aircraft Help", "?"))
@@ -359,7 +342,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "HelpAircraftChecklists";
             if (ImGui::MenuItem("Common Aircraft Keys", NULL))
                 menu_action = "HelpCommonAircraftKeys";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("Highlighting", NULL))
@@ -368,7 +350,6 @@ static void doMenuBar(std::string& menu_action)
                 menu_action = "HelpTutorials";
             if (ImGui::MenuItem("Scenery Sources", NULL))
                 menu_action = "HelpScenerySources";
-
             ImGui::Separator();
 
             if (ImGui::MenuItem("About", NULL))
