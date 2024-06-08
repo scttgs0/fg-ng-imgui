@@ -28,12 +28,16 @@ include_directories(${GLFW_DIR}/include)
 set(IMGUI_DIR 3rdparty/imgui)
 include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends ..)
 
+# nativefiledialog-extended
+add_subdirectory(3rdparty/nfd-extended)
+include_directories(3rdparty/nfd-extended/include)
+
 # Libraries
 find_package(Vulkan REQUIRED)
 #find_library(VULKAN_LIBRARY
   #NAMES vulkan vulkan-1)
 #set(LIBRARIES "glfw;${VULKAN_LIBRARY}")
-set(LIBRARIES "glfw;Vulkan::Vulkan")
+set(LIBRARIES "glfw;Vulkan::Vulkan;nfd")
 
 # Use vulkan headers from glfw:
 include_directories(${GLFW_DIR}/deps)
@@ -51,3 +55,4 @@ add_executable(experimentalGUI_glfw_vulkan
 
 target_link_libraries(experimentalGUI_glfw_vulkan ${LIBRARIES})
 target_compile_definitions(experimentalGUI_glfw_vulkan PUBLIC -DImTextureID=ImU64)
+
