@@ -433,9 +433,26 @@ static void doMenuOptionsDialogs()
 
     if (ImGui::BeginPopup("OptionsVirtualReality"))
     {
-        ImGui::Text("Virtual Reality Options");
+        static bool isEnabled = true;
+        static bool isDesktopMirror = true;
+
+        static int mirrorType = 0;
+
+        ImGui::Text("VR Options");
         ImGui::Separator();
 
+        ImGui::Checkbox("Enable", &isEnabled);
+        ImGui::Spacing();
+
+        ImGui::SeparatorText("OpenXR Information");
+        ImGui::LabelText("OpenXR Runtime", "");
+        ImGui::LabelText("OpenXR System ", "");
+        ImGui::LabelText("VR State      ", "");
+        ImGui::Spacing();
+
+        ImGui::Checkbox("Desktop Mirror", &isDesktopMirror);
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::Combo("##mirrorType", &mirrorType, "Automatic\0");
         ImGui::EndPopup();
     }
 }
