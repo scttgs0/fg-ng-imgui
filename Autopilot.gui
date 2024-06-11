@@ -101,21 +101,138 @@ static void doMenuAutopilotDialogs()
 
     if (ImGui::BeginPopup("autopilotRouteManager"))
     {
+        static char departureICAO[8] { "" };
+        static char arrivalICAO[8] { "" };
+        static char cruiseSpeed[8] { "" };
+        static char cruiseAltitude[8] { "" };
+        static char waypoint[80] { "" };
+
+        static int departureRunway = 0;
+        static int departureSID = 0;
+        static int arrivalRunway = 0;
+        static int arrivalApproach = 0;
+        static int arrivalSTAR = 0;
+
+        static short eteHour = 0;
+        static short eteMinute = 0;
+        static short durationHour = 0;
+        static short durationMinute = 0;
+
+        static double distance = 0.0;
+        static double distanceRemaining = 0.0;
+
         ImGui::Text("Route Manager");
         ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(50.0f);
+        ImGui::InputText("Departure", departureICAO, sizeof(departureICAO));
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Combo("Runway", &departureRunway, "\0");
+        ImGui::SameLine(0.0f, 200.0f);
+        ImGui::Combo("SID", &departureSID, "\0");
+        ImGui::PopItemWidth();
+
+        ImGui::PushItemWidth(50.0f);
+        ImGui::InputText("Departure", arrivalICAO, sizeof(arrivalICAO));
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Combo("Runway", &arrivalRunway, "\0");
+        ImGui::SameLine(0.0f, 60.0f);
+        ImGui::Combo("Approach", &arrivalApproach, "\0");
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Combo("STAR", &arrivalSTAR, "\0");
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(50.0f);
+        ImGui::InputText("Cruise Speed (kts)", cruiseSpeed, sizeof(cruiseSpeed));
+        ImGui::SameLine(0.0f, 123.0f);
+        ImGui::InputText("Cruise Altitude (ft/FL)", cruiseAltitude, sizeof(cruiseAltitude));
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::PushItemWidth(50.0f);
+        ImGui::LabelText("Total Dist", "%0.2f nm", distance);
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::LabelText("Dist Remaining", "%0.2f nm", distanceRemaining);
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::LabelText("ETE", "%02d:%02d", eteHour, eteMinute);
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::LabelText("Flight Time", "%02d:%02d", durationHour, durationMinute);
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::BeginTable("route_table", 4, ImGuiTableFlags_BordersInnerV);
+            ImGui::TableSetupColumn("Leg");
+            ImGui::TableSetupColumn("Target");
+            ImGui::TableSetupColumn("Coordinate");
+            ImGui::TableHeadersRow();
+
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+            }
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+                ImGui::TableNextColumn();
+                ImGui::Text("   ");
+            }
+        ImGui::EndTable();
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(470.0f);
+        ImGui::InputText("Waypoint", waypoint, sizeof(waypoint));
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::Button("Add");
         ImGui::Spacing();
 
         ImGui::Separator();
         ImGui::Button("Clear List");
         ImGui::SameLine();
         ImGui::Button("Remove");
-        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::SameLine(0.0f, 50.0f);
         ImGui::Button("Route");
         ImGui::SameLine();
         ImGui::Button("Jump To");
         ImGui::SameLine();
         ImGui::Button("Activate");
-        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::SameLine(0.0f, 50.0f);
         ImGui::Button("Load...");
         ImGui::SameLine();
         ImGui::Button("Save...");
