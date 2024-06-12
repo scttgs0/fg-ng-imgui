@@ -12,7 +12,7 @@ static void doMenuViewDialogs() {
         ImGui::Text("Adjust View Position");
         ImGui::Separator();
 
-        ImGui::Text("Horizontal");  ImGui::SameLine();  ImGui::InputInt("m", &horzDelta);
+        ImGui::Text("Horizontal");    ImGui::SameLine();  ImGui::InputInt("m", &horzDelta);
         ImGui::Text("Vertical  ");    ImGui::SameLine();  ImGui::InputInt("m", &vertDelta);
         ImGui::Text("Fore/Aft  ");    ImGui::SameLine();  ImGui::InputInt("m", &forwardDelta);
 
@@ -193,8 +193,66 @@ static void doMenuViewDialogs() {
 
     if (ImGui::BeginPopup("ViewReplay"))
     {
+        static int viewFrom = 0;
+        static int timeline = 0;
+        static int timeMinute = 0;
+        static int timeSec = 0;
+        static int timeSubsec = 0;
+        static int playbackSpeed = 2;
+
+        static bool isLoop = false;
+
+        static char repeatDuration[8] { "" };
+
         ImGui::Text("Replay");
+        ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::Button(">", ImVec2(20.0f, 0.0f));
+        ImGui::SameLine(0.0f, 2.0f);
+        ImGui::Button("||", ImVec2(20.0f, 0.0f));
+        ImGui::SameLine(0.0f, 2.0f);
+        ImGui::Button("Cx", ImVec2(20.0f, 0.0f));
+        ImGui::SameLine(0.0f, 2.0f);
+        ImGui::Button("W", ImVec2(20.0f, 0.0f));
+        ImGui::SameLine(0.0f, 2.0f);
+        ImGui::Button("X", ImVec2(20.0f, 0.0f));
+        ImGui::PopStyleColor();
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::PushItemWidth(120.0f);
+        ImGui::Combo("##viewFrom", &viewFrom, "Cockpit\0Tower\0");
+        ImGui::PopItemWidth();
         ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Button("<<");
+        ImGui::SameLine(0.0f, 2.0f);
+        ImGui::Button("<");
+        ImGui::SameLine(0.0f, 2.0f);
+        char buff[10];
+        snprintf(buff, sizeof(buff), "%2d:%02d.%01d", timeMinute, timeSec, timeSubsec);
+        ImGui::SliderInt("##timeline", &timeline, 0, 100, buff);
+        ImGui::SameLine(0.0f, 2.0f);
+        ImGui::Button(">");
+        ImGui::SameLine(0.0f, 2.0f);
+        ImGui::Button(">>");
+        ImGui::SameLine(0.0f, 20.0f);
+        ImGui::PushItemWidth(60.0f);
+        ImGui::Combo("##playbackSpeed", &playbackSpeed, "1/4x\0""1/2x\0""1x\0""2x\0""3x\0");
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::PushItemWidth(50.0f);
+        ImGui::LabelText("Time", "0:05.6");
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::LabelText("Size", "2.0 MB");
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::Checkbox("Loop", &isLoop);
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::PushItemWidth(40.0f);
+        ImGui::InputText("sec##repeatDuration", repeatDuration, sizeof(repeatDuration));
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
 
         ImGui::EndPopup();
     }
