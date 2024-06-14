@@ -236,8 +236,8 @@ static void doMenuBar(std::string& menu_action)
             if (ImGui::BeginMenu("Nasal")) {
                 if (ImGui::MenuItem("Console", NULL))
                     menu_action = "DebugNasalConsole";
-                if (ImGui::MenuItem("REPL Interpreter", NULL))
-                    menu_action = "DebugNasalREPL";
+                // if (ImGui::MenuItem("REPL Interpreter", NULL))
+                //     menu_action = "DebugNasalREPL";
                 if (ImGui::MenuItem("Test", NULL))
                     menu_action = "DebugNasalTest";
                 ImGui::EndMenu();
@@ -248,8 +248,6 @@ static void doMenuBar(std::string& menu_action)
                     menu_action = "DebugDevKeys";
                 if (ImGui::MenuItem("Extensions", NULL))
                     menu_action = "DebugDevExtensions";
-                if (ImGui::MenuItem("Test", NULL))
-                    menu_action = "DebugDevTest";
                 if (ImGui::MenuItem("Display Tutorial Marker", NULL))
                     menu_action = "DebugDevTutorialMarker";
                 if (ImGui::MenuItem("Dump Scenegraph", NULL)) {}
@@ -278,16 +276,16 @@ static void doMenuBar(std::string& menu_action)
             if (ImGui::MenuItem("Cycle GUI Style", NULL)) {}
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Local Weather", NULL))
-                    menu_action = "DebugLocalWeather";
-            if (ImGui::BeginMenu("FG1000")) {
-                if (ImGui::MenuItem("Primary Flight Display", NULL))
-                    menu_action = "DebugFG1000PFD";
-                if (ImGui::MenuItem("Multi-function Display", NULL))
-                    menu_action = "DebugFG1000MFD";
-                ImGui::EndMenu();
-            }
-            ImGui::Separator();
+            // if (ImGui::MenuItem("Local Weather", NULL))
+            //         menu_action = "DebugLocalWeather";
+            // if (ImGui::BeginMenu("FG1000")) {
+            //     if (ImGui::MenuItem("Primary Flight Display", NULL))
+            //         menu_action = "DebugFG1000PFD";
+            //     if (ImGui::MenuItem("Multi-function Display", NULL))
+            //         menu_action = "DebugFG1000MFD";
+            //     ImGui::EndMenu();
+            // }
+            // ImGui::Separator();
 
             if (ImGui::BeginMenu("Translate")) {
                 if (ImGui::MenuItem("Languages", NULL))

@@ -18,21 +18,63 @@ static void doMenuDebugDialogs()
 
     if (ImGui::BeginPopup("DebugNasalConsole"))
     {
-        ImGui::Text("DebugNasalConsole");
+        static char consoleContent[1024 * 16] { "" };
+
+        static ImVector<int> active_tabs;
+        static int next_tab_id = 0;
+
+        if (next_tab_id == 0)
+            active_tabs.push_back(next_tab_id++);
+
+        ImGui::Text("Nasal Console                                                                      ");
         ImGui::Separator();
         ImGui::Spacing();
+
+        if (ImGui::BeginTabBar("NasalConsoleTabBar", 0))
+        {
+            if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
+                active_tabs.push_back(next_tab_id++);
+
+            for (int n = 0; n < active_tabs.Size; ++n) {
+                char tabname[16];
+                snprintf(tabname, IM_ARRAYSIZE(tabname), "WS%1d", active_tabs[n]+1);
+
+                if (ImGui::BeginTabItem(tabname))
+                {
+                    ImGui::InputTextMultiline("##nasalconsole", consoleContent, IM_ARRAYSIZE(consoleContent), ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), ImGuiInputTextFlags_AllowTabInput);
+                    ImGui::Spacing();
+                    ImGui::TextWrapped("nasal runtime error: undefined symbol: formation\n\n\n\n\n\n\n\n\n\n\n");
+
+                    ImGui::EndTabItem();
+                }
+            }
+
+            ImGui::EndTabBar();
+        }
+        ImGui::Spacing();
+
+        ImGui::Separator();
+        ImGui::Button("Copy", ImVec2(80.0f, 0.0f));
+        ImGui::SameLine(0.0f, 10.0f);
+        ImGui::Button("Paste", ImVec2(80.0f, 0.0f));
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Button("Clear", ImVec2(80.0f, 0.0f));
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Button("Dump", ImVec2(80.0f, 0.0f));
+        ImGui::SameLine(0.0f, 30.0f);
+        ImGui::Button("Execute", ImVec2(80.0f, 0.0f));
 
         ImGui::EndPopup();
     }
 
-    if (ImGui::BeginPopup("DebugNasalREPL"))
-    {
-        ImGui::Text("DebugNasalREPL");
-        ImGui::Separator();
-        ImGui::Spacing();
+    // if (ImGui::BeginPopup("DebugNasalREPL"))
+    // {
+    //     ImGui::Text("DebugNasalREPL");
+    //     ImGui::Separator();
+    //     ImGui::Spacing();
 
-        ImGui::EndPopup();
-    }
+    //     ImGui::EndPopup();
+    // }
 
     if (ImGui::BeginPopup("DebugNasalTest"))
     {
@@ -103,15 +145,6 @@ static void doMenuDebugDialogs()
         ImGui::Combo("OSG statistics", &osgStatistics, "0 - Off\0");
         ImGui::Combo("OSG log level", &osgLogLevel, "Warn\0");
         ImGui::Combo("FG log level", &fgLogLevel, "Alert\0");
-
-        ImGui::EndPopup();
-    }
-
-    if (ImGui::BeginPopup("DebugDevTest"))
-    {
-        ImGui::Text("DebugDevTest");
-        ImGui::Separator();
-        ImGui::Spacing();
 
         ImGui::EndPopup();
     }
@@ -272,9 +305,71 @@ static void doMenuDebugDialogs()
 
     if (ImGui::BeginPopup("DebugLogging"))
     {
-        ImGui::Text("DebugLogging");
+        static bool isEnabled = false;
+        static bool isRowEnabled[10] {false};
+
+        static char logFile[256] { "fg_log.csv" };
+        static char logInterval[8] { "1000" };
+        static char rowTitle[][256] {"Longitude", "Latitude", "Altitude", "Roll", "Pitch", "Heading", "", "", "", ""};
+        static char rowProperty[][256] {"/position/longitude-deg", "/position/latitude-deg", "/position/altitude-deg", "/orientation/roll-deg", "/orientation/pitch-deg", "/orientation/heading-deg", "", "", "", ""};
+
+        ImGui::Text("Logging");
         ImGui::Separator();
         ImGui::Spacing();
+
+        ImGui::Checkbox("Enable", &isEnabled);
+        ImGui::InputText("Log File", logFile, sizeof(logFile));
+        ImGui::SameLine(0.0f, 50.0f);
+        ImGui::PushItemWidth(60.0f);
+        ImGui::InputText("ms Interval", logInterval, sizeof(logInterval), ImGuiInputTextFlags_CharsDecimal);
+        ImGui::PopItemWidth();
+        ImGui::Spacing();
+
+        ImGui::BeginTable("tableLogging", 3, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit);
+        ImGui::TableSetupColumn("##logID");
+        ImGui::TableSetupColumn("Title");
+        ImGui::TableSetupColumn("Property");
+        ImGui::TableHeadersRow();
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Checkbox("##row0_enabled", &isRowEnabled[0]);
+            ImGui::TableNextColumn();
+            ImGui::PushItemWidth(300.0f);
+            ImGui::InputText("##row0_title", rowTitle[0], 256);
+            ImGui::PopItemWidth();
+            ImGui::TableNextColumn();
+            ImGui::PushItemWidth(300.0f);
+            ImGui::InputText("##row0_property", rowProperty[0], 256);
+            ImGui::PopItemWidth();
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Checkbox("##row1_enabled", &isRowEnabled[1]);
+            ImGui::TableNextColumn();
+            ImGui::PushItemWidth(300.0f);
+            ImGui::InputText("##row1_title", rowTitle[1], 256);
+            ImGui::PopItemWidth();
+            ImGui::TableNextColumn();
+            ImGui::PushItemWidth(300.0f);
+            ImGui::InputText("##row1_property", rowProperty[1], 256);
+            ImGui::PopItemWidth();
+        }
+        {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Checkbox("##row2_enabled", &isRowEnabled[2]);
+            ImGui::TableNextColumn();
+            ImGui::PushItemWidth(300.0f);
+            ImGui::InputText("##row2_title", rowTitle[2], 256);
+            ImGui::PopItemWidth();
+            ImGui::TableNextColumn();
+            ImGui::PushItemWidth(300.0f);
+            ImGui::InputText("##row2_property", rowProperty[2], 256);
+            ImGui::PopItemWidth();
+        }
+        ImGui::EndTable();
 
         ImGui::EndPopup();
     }
