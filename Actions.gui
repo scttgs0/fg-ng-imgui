@@ -131,8 +131,6 @@ static void doMenuAction(std::string& menu_action)
         ImGui::OpenPopup("DebugDevKeys");
     if (menu_action == "DebugDevExtensions")
         ImGui::OpenPopup("DebugDevExtensions");
-    if (menu_action == "DebugDevTest")
-        ImGui::OpenPopup("DebugDevTest");
     if (menu_action == "DebugDevTutorialMarker")
         ImGui::OpenPopup("DebugDevTutorialMarker");
     if (menu_action == "DebugStatPerformance")
